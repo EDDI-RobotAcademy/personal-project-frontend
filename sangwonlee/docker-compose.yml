@@ -1,8 +1,8 @@
 version: "3.7"
 services:
   frontend:
-    image: ghcr.io/qnfthslr/3-2front-cicd:latest
-    container_name: docker-frontend-deploy-server
+    image: ghcr.io/qnfthslr/health-community:latest
+    container_name: docker-frontend-health-community-server
     ports:
       - "80:80"
     networks:

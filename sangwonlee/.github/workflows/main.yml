@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/health-community-front
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/health-community
   VERSION: ${{ github.sha }}
   NAME: frontend-server
 
@@ -46,7 +46,7 @@ jobs:
         run: |
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u${{ github.actor }} --password-stdin
           docker buildx create --name arm64builder --use
-          docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/qnfthslr/health-community-front:latest --push .
+          docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/qnfthslr/personal-project-frontend:latest --push .
           docker logout
 
   deploy:
@@ -76,7 +76,7 @@ jobs:
 
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            docker pull ghcr.io/qnfthslr/health-community-front:latest
+            docker pull ghcr.io/qnfthslr/personal-project-frontend:latest
 
             docker image prune -f
             docker logout
