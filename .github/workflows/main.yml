@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/health-community
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/personal-project-frontend
   VERSION: ${{ github.sha }}
   NAME: frontend-server
 
