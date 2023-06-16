@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   frontend:
-    image: ghcr.io/qnfthslr/health-community:latest
+    image: ghcr.io/qnfthslr/personal-project-frontend:latest
     container_name: docker-frontend-health-community-server
     ports:
       - "80:80"
