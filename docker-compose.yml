@@ -1,8 +1,13 @@
 version: "3.7"
 services:
-  frontend:
-    image: ghcr.io/qnfthslr/personal-project-frontend:latest
-    container_name: docker-frontend-health-community-server
+  nginx:
+    image: "nginx:latest"
+    container_name: health-frontend-deploy
+    restart: unless-stopped
+    volumes:
+      - /home/ec2-user/health-front/conf:/etc/nginx/conf.d
+      - /home/ec2-user/health-front/html:/usr/share/nginx/html
+
     ports:
       - "80:80"
     networks:
