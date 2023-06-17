@@ -63,7 +63,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./dist/*"
-          target: "/home/ec2-user/actions-tmp-repo"
+          target: "/home/ec2-user/health-front/actions-tmp-repo"
       - name: Remove Github Actions IP From Security Group
         run: |
           aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
@@ -81,7 +81,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd personal-project-frontend
+            cd health-front
             cp -r ~/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
