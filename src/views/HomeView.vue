@@ -1,15 +1,18 @@
 <template>
-  <hello-world />
+  <v-container>
+    <nav>
+      <router-link to="/account-register-page">계정 등록 </router-link> |
+      <router-link to="/account-list-page">계정 목록 </router-link> |
+    </nav>
+  </v-container>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
 
-  export default {
-    name: 'Home',
 
-    components: {
-      HelloWorld,
-    },
-  }
+export default {
+  name: 'Home',
+  components: {
+  },
+}
 </script>
