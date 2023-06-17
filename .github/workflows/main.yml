@@ -81,8 +81,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd health-front
-            cp -r ~/actions-tmp-repo/dist/* ./html/
+            cd personal-project-frontend
+            cp -r ~/health-front/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
             docker logout
