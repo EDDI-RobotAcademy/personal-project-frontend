@@ -1,8 +1,8 @@
 <template lang="">
     <div align="center">
 
-        <v-btn outlined color="cyan"  @click="readyToAccountList">회원 목록 보기</v-btn>
-            <div v-if="isPressedButton">
+        <!-- <v-btn outlined color="cyan"  @click="readyToAccountList">회원 목록 보기</v-btn>
+            <div v-if="isPressedButton"> -->
                 <br>
         <table>
             <tr>
@@ -42,7 +42,7 @@ const accountModule = 'accountModule'
 export default {
     data() {
         return {
-            isPressedButton: false,
+            // isPressedButton: false,
         }
     },
     props: {
@@ -57,10 +57,10 @@ export default {
     methods: {
         ...mapActions(accountModule, ['requestDelete']),
 
-        readyToAccountList() {
-            this.isPressedButton = true
-            alert("계정 목록을 보여드릴게요.")
-        },
+        // readyToAccountList() {
+        //     this.isPressedButton = true
+        //     alert("계정 목록을 보여드릴게요.")
+        // },
         async onDelete(email) {
 
             await this.requestDelete(email)

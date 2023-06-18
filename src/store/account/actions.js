@@ -27,7 +27,7 @@ export default {
     const { email, password } = payload;
 
     return axiosInst
-      .post("/account/regist", { email, password })
+      .post("/account/regist", { email, password, accountName, accountBirth, accountPhone, accountAddress })
       .then((res) => {
         alert("계정 등록 성공!");
         return res;
