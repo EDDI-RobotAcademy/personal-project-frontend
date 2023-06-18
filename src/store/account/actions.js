@@ -6,7 +6,6 @@ export default {
   requestSpringToCheckEmail({ }, payload) {
     const { email } = payload;
     console.log("email: " + email);
-
     return axiosInst
       .get(`/account/check-email/${email}`)
       .then((res) => {

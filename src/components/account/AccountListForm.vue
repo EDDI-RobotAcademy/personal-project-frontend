@@ -6,22 +6,43 @@
                 <br>
         <table>
             <tr>
+                <th align="center">ID NUMBER</th>
                 <th align="center">이메일</th>
                 <th align="center">비밀번호</th>
+                <th align="center">이름</th>
+                <th align="center">생년월일</th>
+                <th align="center">휴대폰 번호</th>
+                <th align="center">주소</th>
+
             </tr>
 
             <tr v-if="!accounts || (Array.isArray(accounts) && accounts.length === 0)">
-                <td colspan="2">
+                <td colspan="7">
                     등록된 계정이 없습니다.
                 </td>
             </tr>
 
             <tr v-else v-for="account in accounts" :key="account.email">
-                <td aling="center">
+                <td align="center">
+                    {{ account.id }}
+                </td>
+                <td align="center">
                     {{ account.email }}
                 </td>
                 <td align="center">
                     {{ account.password }}
+                </td>
+                <td align="center">
+                    {{ account.accountName }}
+                </td>
+                <td align="center">
+                    {{ account.accountBirth }}
+                </td>
+                <td align="center">
+                    {{ account.accountPhone }}
+                </td>
+                <td align="center">
+                    {{ account.accountAddress }}
                 </td>
                 <td>
                     <v-btn outlined color="red" @click="onDelete(account.email)">삭제</v-btn>

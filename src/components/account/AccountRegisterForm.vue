@@ -191,8 +191,6 @@ export default {
                     this.Address = addr;
                     this.$refs.DetailAddress.$refs.input.focus();
 
-
-
                     // document.getElementById("accountAddress").value = addr; // 주소 정보를 넣는다.
                     // document.getElementById("accountDetailAddress").focus(); //상세 주소로 focus
 
