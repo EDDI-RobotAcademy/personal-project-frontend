@@ -188,8 +188,8 @@ export default {
                         addr = data.jibunAddress; // 지번 주소
                     }
 
-                    this.accountAddress = addr;
-                    this.$refs.accountDetailAddress.$refs.input.focus();
+                    this.Address = addr;
+                    this.$refs.DetailAddress.$refs.input.focus();
 
 
 
