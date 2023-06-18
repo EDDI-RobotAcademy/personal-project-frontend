@@ -26,8 +26,6 @@ export default {
   requestCreateAccountToSpring({ }, payload) {
     const { email, password, accountName, accountBirth, accountPhone, accountAddress } = payload;
 
-    console.log(typeof this.email, typeof this.password, typeof this.accountName, typeof this.accountBirth, typeof this.accountPhone, typeof this.accountAddress)
-
     return axiosInst
       .post("/account/regist", { email, password, accountName, accountBirth, accountPhone, accountAddress })
       .then((res) => {
