@@ -1,9 +1,7 @@
 
 <template lang="">
     <div> 
-         
                 <br>
-                
             <v-form @submit.prevent="onSubmit" ref="form">
                 <table>
 
