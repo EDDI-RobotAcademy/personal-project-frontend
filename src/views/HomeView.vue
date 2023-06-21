@@ -14,7 +14,8 @@
 
       <router-link to="/way-to-come-page">오시는 길 page</router-link> |
       <router-link class="complete" to="/manager-list-page">관리자용 계정 목록</router-link> |
-      <router-link to="/manager-notice-regist-page">관리자용 공지사항 regist page</router-link> |
+      <router-link class="complete" to="/manager-notice-regist-page">관리자용 공지사항 regist page</router-link> |
+      <router-link to="/manager-notice-list-page">관리자용 공지사항 list page</router-link> |
       <router-link to="/manager-event-page">관리자용 이벤트 page</router-link> |
       <router-link to="/manager-shop-page">관리자용 샾 page</router-link> |
 

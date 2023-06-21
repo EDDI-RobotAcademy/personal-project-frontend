@@ -7,11 +7,11 @@ import state from "@/store/notice/states";
 
 Vue.use(Vuex);
 
-const noticeModule = {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
+const noticeBoardModule = {
+  namespaced: true,
+  state,
+  actions,
+  mutations,
 };
 
-export default noticeModule;
+export default noticeBoardModule;

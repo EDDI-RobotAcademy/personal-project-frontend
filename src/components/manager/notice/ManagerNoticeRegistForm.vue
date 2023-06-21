@@ -2,7 +2,7 @@
     <div>
         <v-form @submit.prevent="onSubmit" ref="form">
             <v-container>
-                <v-table>
+                <table>
                     <tr>
                         <v-text-field clearable label="Title" v-model="title" placeholder="제목을 입력하세요." style="width:500px;"/>
                     </tr>
@@ -18,9 +18,7 @@
                     <td>
                         <v-btn class="noticeButton" style="float:right; " to="/manager-notice-list-page">돌아가기</v-btn>
                     </td>
-                </v-table>
-
-
+                </table>
             </v-container>
 
         </v-form>

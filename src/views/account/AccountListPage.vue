@@ -1,12 +1,9 @@
 <template lang="">
     <div>
-
         <br>
+        <h2 align="center">Account List Page</h2>
         <account-list-form :accounts="accounts"/>
         <br>
-
-
-
     </div>
 </template>
 <script>

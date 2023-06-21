@@ -14,7 +14,7 @@ const accountRoutes = [
   },
 
   {
-    path: "/manager-list-page",
+    path: "/account-list-page",
     name: "AccountListPage",
     component: AccountListPage,
   },

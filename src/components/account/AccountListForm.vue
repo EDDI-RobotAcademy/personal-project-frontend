@@ -1,58 +1,22 @@
 <template lang="">
     <div align="center">
-
         <!-- <v-btn outlined color="cyan"  @click="readyToAccountList">회원 목록 보기</v-btn>
             <div v-if="isPressedButton"> -->
                 <br>
-        <table>
-            <tr>
-                <th align="center">ID NUMBER</th>
-                <th align="center">이메일</th>
-                <th align="center">비밀번호</th>
-                <th align="center">이름</th>
-                <th align="center">생년월일</th>
-                <th align="center">휴대폰 번호</th>
-                <th align="center">주소</th>
+        <v-container>
+            <v-data-table :headers="accountHeaders" :items="accounts">
+                <template #item.email="{ item }">
+                    <a :href="'mailto:' + item.email">{{ item.email }}</a>
+                </template>
 
-            </tr>
-
-            <tr v-if="!accounts || (Array.isArray(accounts) && accounts.length === 0)">
-                <td colspan="7">
-                    등록된 계정이 없습니다.
-                </td>
-            </tr>
-
-            <tr v-else v-for="account in accounts" :key="account.email">
-                <td align="center">
-                    {{ account.id }}
-                </td>
-                <td align="center">
-                    {{ account.email }}
-                </td>
-                <td align="center">
-                    {{ account.password }}
-                </td>
-                <td align="center">
-                    {{ account.accountName }}
-                </td>
-                <td align="center">
-                    {{ account.accountBirth }}
-                </td>
-                <td align="center">
-                    {{ account.accountPhone }}
-                </td>
-                <td align="center">
-                    {{ account.accountAddress }}
-                </td>
-                <td>
+                <template #item.accountDelete="{ item }">
+                    
                     <v-btn outlined color="red" @click="onDelete(account.email)">삭제</v-btn>
-                </td>
-            </tr>
-        </table>
-        <br><br>
-
+                    
+                </template>
+            </v-data-table>
+        </v-container>
         <v-btn outlined color="green" to="/">돌아가기</v-btn>
-        </div>
     </div>
 </template>
 <script>
@@ -63,6 +27,17 @@ const accountModule = 'accountModule'
 export default {
     data() {
         return {
+            accountHeaders: [
+                { text: 'ID', value: 'id' },
+                { text: 'E-MAIL', value: 'email' },
+                { text: 'PASSWORD', value: 'password' },
+                { text: '이름', value: 'accountName' },
+                { text: '생년월일', value: 'accountBirth' },
+                { text: 'PHONE', value: 'accountPhone' },
+                { text: 'ADDRESS', value: 'accountAddress' },
+                { text: 'DELETE', value: 'accountDelete' }
+            ]
+
             // isPressedButton: false,
         }
     },
