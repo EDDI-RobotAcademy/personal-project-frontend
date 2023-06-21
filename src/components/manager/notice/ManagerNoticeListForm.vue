@@ -3,16 +3,17 @@
         <v-container>
             <v-data-table :headers="noticeHeaders" :items="noticeBoards">
             <template #item.noticeTitle="{ item }">
-            <a :href="generateNoticeLink(item.noticeNumber)">{{ item.noticeTitle }}</a>
+            <a :href="generateNoticeLink(item.noticeTitle)">{{ item.noticeTitle }}</a>
 
             </template>
             </v-data-table>
-
         </v-container>
-
     </div>
 </template>
 <script>
+import noticeBoardModule from '@/store/notice/noticeModule';
+import { mapActions, mapState } from 'vuex';
+
 export default {
     props: {
         noticeBoards: {
@@ -30,7 +31,14 @@ export default {
             ]
         }
     },
-
+    props: {
+        noticeBoards: {
+            type: Array
+        }
+    },
+    computed: {
+        ...mapState(noticeBoardModule, ['noticeBoard'])
+    },
 }
 </script>
 <style lang="">

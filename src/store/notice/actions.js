@@ -11,6 +11,11 @@ export default {
         }).catch(() => {
             alert("게시물 등록 실패");
         })
+    },
+    noticeListBoard({ commit }) {
+        axiosInst.get("notice/list").then((res) => {
+            commit(MANAGER_NOTICE_LIST, res.data);
+        });
     }
 
 }

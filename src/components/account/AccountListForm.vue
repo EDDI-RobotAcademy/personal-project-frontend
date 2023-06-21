@@ -30,10 +30,10 @@ export default {
             accountHeaders: [
                 { text: 'ID', value: 'id' },
                 { text: 'E-MAIL', value: 'email' },
-                { text: 'PASSWORD', value: 'password' },
+                { text: 'PASSWORD', value: 'password', sortable: false },
                 { text: '이름', value: 'accountName' },
                 { text: '생년월일', value: 'accountBirth' },
-                { text: 'PHONE', value: 'accountPhone' },
+                { text: 'PHONE', value: 'accountPhone', sortable: false },
                 { text: 'ADDRESS', value: 'accountAddress' },
                 { text: 'DELETE', value: 'accountDelete' }
             ]
@@ -46,9 +46,9 @@ export default {
             type: Array
         }
     },
-    computed: {
-        ...mapState(accountModule, ['account'])
-    },
+    // computed: {
+    //     ...mapState(accountModule, ['account'])
+    // },
 
     methods: {
         ...mapActions(accountModule, ['requestDelete']),
