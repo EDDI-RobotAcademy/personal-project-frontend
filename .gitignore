@@ -23,6 +23,5 @@ pnpm-debug.log*
 *.sw?
 
 # 배포
-docker-compose.yml
 .env.development
 .env.production
