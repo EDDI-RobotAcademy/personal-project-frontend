@@ -18,10 +18,10 @@ export default {
     name: 'ManagerNoticeRegistPage',
     methods: {
         ...mapActions(
-            noticeBoardModule, ['CreateNoticeBoard']
+            noticeBoardModule, ['createNoticeBoard']
         ),
         async onSubmit(payload) {
-            const board = await this.CreateNoticeBoard(payload)
+            const board = await this.createNoticeBoard(payload)
 
             console.log('typeof(board): ' + typeof (board))
             console.log('board: ' + JSON.stringify(board))

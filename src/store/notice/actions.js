@@ -1,8 +1,8 @@
 import axiosInst from "@/utility/axiosInst";
-
+import { MANAGER_NOTICE_LIST } from "./mutation-types";
 
 export default {
-    CreateNoticeBoard({ }, payload) {
+    createNoticeBoard({ }, payload) {
         const { title, content } = payload;
 
         return axiosInst.post("/notice/regist", { title, content }).then((res) => {
@@ -13,7 +13,7 @@ export default {
         })
     },
     noticeListBoard({ commit }) {
-        axiosInst.get("notice/list").then((res) => {
+        axiosInst.get("/notice/list").then((res) => {
             commit(MANAGER_NOTICE_LIST, res.data);
         });
     }

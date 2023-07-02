@@ -2,10 +2,13 @@
     <div>
         <v-container>
             <v-data-table :headers="noticeHeaders" :items="noticeBoards">
-            <template #item.noticeTitle="{ item }">
-            <a :href="generateNoticeLink(item.noticeTitle)">{{ item.noticeTitle }}</a>
-
+            <template #item.noticeNumber="{ item }">
+                {{ item.noticeNumber }}
             </template>
+            <template #item.noticeTitle="{ item }">
+            <a :href="readNoticeLink(item.noticeTitle)">{{ item.noticeTitle }}</a>
+            </template>
+
             </v-data-table>
         </v-container>
     </div>
@@ -20,7 +23,6 @@ export default {
             type: Array
         }
     },
-
 
     data() {
         return {
@@ -39,6 +41,11 @@ export default {
     computed: {
         ...mapState(noticeBoardModule, ['noticeBoard'])
     },
+    methods: {
+        readNoticeLink(noticeTitle) {
+            return `/notice/${noticeTitle}`;
+        },
+    }
 }
 </script>
 <style lang="">

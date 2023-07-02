@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import accountRoutes from "./account";
 import noticeRoutes from "./notice";
-import asdf from "@/views/asdf.vue"
 
 Vue.use(VueRouter)
 
@@ -24,11 +23,6 @@ const routes = [
 
   ...accountRoutes,
   ...noticeRoutes,
-  {
-    path: '/asdf',
-    name: 'asdf',
-    component: asdf
-  },
 ]
 
 const router = new VueRouter({
