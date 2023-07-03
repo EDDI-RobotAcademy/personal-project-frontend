@@ -1,16 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import AccountRegisterPage from "@/views/account/AccountRegisterPage.vue";
+import AccountRegistPage from "@/views/account/AccountRegistPage.vue";
 import AccountListPage from "@/views/account/AccountListPage.vue";
 
 Vue.use(VueRouter);
 
 const accountRoutes = [
   {
-    path: "/account-register-page",
-    name: "AccountRegisterPage",
-    component: AccountRegisterPage,
+    path: "/account-regist-page",
+    name: "AccountRegistPage",
+    component: AccountRegistPage,
   },
 
   {

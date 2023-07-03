@@ -102,7 +102,7 @@ import { mapActions } from 'vuex'
 const accountModule = 'accountModule'
 
 export default {
-    name: "AccountRegisterForm",
+    name: "AccountRegistForm",
     data() {
         return {
             email: '',
