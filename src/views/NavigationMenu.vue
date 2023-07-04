@@ -6,9 +6,10 @@
       color="grey lighten-5"
       >
       <div class="d-flex align-center">
-        <a href="/">
-            <v-icon>mdi-home</v-icon>
-        </a>
+        <router-link to="/">
+            <v-img :src="require('../assets/icon/coffeeground.png')"
+                            width="110" ratio="1"></v-img>
+        </router-link>
       </div>
       <v-spacer></v-spacer> 
         <div class="search">
@@ -18,18 +19,23 @@
         </div>
         <v-row justify="end">
           <v-col cols="auto"> 
-            <router-link v-if="!login" to="/account-creation-page">
-              <v-btn>
+            <router-link v-if="!login" to="/member-sign-up-page">
+              <v-btn text>
                 <span>회원가입</span>
               </v-btn>
             </router-link>
             <router-link v-if="!login" to="/account-login-page">
-              <v-btn>
+              <v-btn text>
                 <span>로그인</span>
               </v-btn>
             </router-link>
+            <router-link v-if="login" to="/account-mypage">
+              <v-btn @click="myPage" text>
+                <span>마이 페이지</span>
+              </v-btn>
+            </router-link>
             <router-link v-if="login" to="/">
-              <v-btn @click="logout">
+              <v-btn @click="logout" text>
                 <span>로그아웃</span>
               </v-btn>
             </router-link>
@@ -73,7 +79,7 @@ export default {
   background: white no-repeat url("../assets/icon/magnify.svg") 15px center; 
   background-size: 20px 20px;
   font-size: 16px;
-  border: none;
+  border:  1.5px solid #84d9b3;
   border-radius: 16px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;

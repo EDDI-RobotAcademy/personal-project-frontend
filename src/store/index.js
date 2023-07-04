@@ -1,17 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+import memberModule from './member/MemberModule'
 
-export default new Vuex.Store({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+Vue.use(Vuex)
+const store = new Vuex.Store({
   modules: {
-  }
+    memberModule: memberModule,    
+
+  },
 })
+
+export default store
