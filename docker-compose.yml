@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  frontend:
+    image: ghcr.io/bbbii/frontend-server:latest
+    container_name: docker-frontend-deploy-server
+    ports:
+      - "80:80"
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
