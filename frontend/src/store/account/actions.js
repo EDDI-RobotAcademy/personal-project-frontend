@@ -8,10 +8,22 @@ export default {
             .then((resNormalRegister) => {
                 if(resNormalRegister.data == true) {
                     alert('회원 가입 성공')
-                    router.push('/account-login')
+                    router.push('/login')
                 } else {
                     alert('회원가입 실패!')
                 }
             })
     },
+    requestLoginAccountToSpring({ }, payload){
+        
+        return axiosInst.post('/account/login', payload)
+            .then((res)=>{
+                if(res.data==null){
+                    alert('입력을 확인해 주세요!')
+                } else{
+                  localStorage.setItem('userToken',res.data)
+                    router.push('/')
+                }
+            })
+    }
 }

@@ -2,3 +2,4 @@
 *.development
 *.production
 *.example
+frontend/.env

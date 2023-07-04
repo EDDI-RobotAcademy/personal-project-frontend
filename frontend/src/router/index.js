@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import accountRoutes from './account'
-import example from '@/views/example.vue'
+import mapRoutes from './map'
 
 
 Vue.use(VueRouter)
@@ -9,11 +9,7 @@ Vue.use(VueRouter)
 const routes = [
 
 ...accountRoutes,
-{
-  path:'/example',
-  name: 'example',
-  component: example
-}
+...mapRoutes,
 
   
 ]
