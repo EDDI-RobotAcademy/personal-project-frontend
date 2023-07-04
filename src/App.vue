@@ -1,14 +1,19 @@
 <template>
   <v-app>
-    <v-main>
-      <router-view/>
-    </v-main>
+    <navigation-menu-page/>
+      <v-main>
+        <router-view/>
+      </v-main>
   </v-app>
 </template>
 
 <script>
+import NavigationMenuPage from '@/domain/settings/layout/navigationbar/NavigationMenuPage.vue'
 
 export default {
+  components: {
+    NavigationMenuPage,
+  }
 }
 </script>
 
