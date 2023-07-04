@@ -1,42 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
+    <navigation-menu/>
     <v-main>
       <router-view/>
     </v-main>
@@ -44,12 +8,78 @@
 </template>
 
 <script>
+import NavigationMenu from '@/views/NavigationMenu.vue'
 
 export default {
+  components: { NavigationMenu,
+  },
   name: 'App',
 
-  data: () => ({
-    //
-  }),
-};
+  data(){
+    return{
+      login: false
+    }
+  },
+  name: 'App',
+
+  created(){
+    this.check() 
+  },
+  beforeUpdate() {
+    this.check()
+  },
+  methods:{
+  check(){
+    if (localStorage.getItem("login")) {
+      this.login = true;
+      //router.go("/")
+    }},
+  logout() {
+    localStorage.clear()
+    this.login = false;
+  }
+  },
+}
+
+
 </script>
+<style scoped>
+.listLink{
+  color: white !important;
+  height: 18px;
+  padding-left: 20px;
+  text-decoration: none;
+  right: 0;
+}
+
+abbr {
+  position: relative;
+}
+
+abbr[title]:hover::after {
+  content: ' (' attr(title) ') ';
+  position: absolute;
+  left: 110%;
+  width: 500px;
+  text-decoration: none;
+}
+
+.search{
+  display: block;
+  padding: 4px 8px;
+  margin: 10px auto;
+  width: 400px;
+  font-size: 16px;
+  outline: solid black;
+}
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+#app{
+  font-family: IBMPlexSansKR-Regular;
+}
+
+</style>
