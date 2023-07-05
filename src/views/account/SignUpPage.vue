@@ -15,9 +15,9 @@ export default {
     SignUpForm,
   },
   methods: {
-    ...mapActions(accountModule, ["requestCheckCreateAccountToSpring"]),
+    ...mapActions(accountModule, ["requestRegisterAccountToSpring"]),
     async createAccount(payload) {
-      const isSuccess = await this.requestCheckCreateAccountToSpring(payload);
+      const isSuccess = await this.requestRegisterAccountToSpring(payload);
       if (isSuccess) {
         this.$router.push("/");
       }
