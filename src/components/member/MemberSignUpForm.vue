@@ -3,7 +3,7 @@
         <v-container class="white">
             <v-row justify="center">
                 <v-col cols="auto" style="padding-top: 90px">
-                    <v-card width="460">
+                    <v-card width="460" style="box-shadow: none; border: solid #84d9b3">
                         <v-card-text class="text-center px-12 py-16">
                             <v-form @submit.prevent="onSubmit" ref="form">
                                 <div class="text-h4 font-weight-black mb-10">회원 신청하기</div>
@@ -60,6 +60,7 @@ export default {
             email: "",
             nickName: "",
             password: "",
+            roleType: "NORMAL",
             nickNamePass: false,
             email_rule: [
                 v => !!v || '이메일을 입력해주세요!',
@@ -75,8 +76,8 @@ export default {
         ...mapActions('memberModule', ['requestSpringToCheckNickNameDuplication']),
         onSubmit () {
             if (this.$refs.form.validate()) {
-                const { email, nickName, password } = this
-                this.$emit("submit", { email, nickName, password })
+                const { email, nickName, password, roleType } = this
+                this.$emit("submit", { email, nickName, password, roleType })
             } else {
                 alert('올바른 정보를 입력하세요!')
             }

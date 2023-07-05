@@ -1,11 +1,10 @@
 
+import router from "@/router"
 import axiosInst from "@/router/utility/axiosInst"
 
 export default {
     requestSpringToCheckNickNameDuplication ({ }, payload) {
         const { nickName } = payload
-        console.log('email: ' + nickName)
-
         return axiosInst.get(`/member/check-nickName/${nickName}`)
             .then((res) => {
                 if (res.data) {
@@ -22,11 +21,9 @@ export default {
     },
     requestRegisterMemberToSpring ({ }, payload) {
 
-        const { email, nickName, password } = payload
-
-        return axiosInst.post('/member/sign-up', { email, nickName, password })
+        const { email, nickName, password,roleType } = payload
+        return axiosInst.post('/member/sign-up', { email, nickName, password, roleType })
             .then((res) => {
-                alert('회원 신청하기 성공!')
                 return res.data
             })
             .catch(() => {
