@@ -15,12 +15,10 @@ export default {
     methods: {
         ...mapActions(memberModule, ['requestSpringToLogin']),
         async onSubmit (payload) {
-            const resdata = await this.requestSpringToLogin(payload)
-            console.log(resdata)
-            let isSuccess = resdata.isLogin
-            if (isSuccess) {
+            await this.requestSpringToLogin(payload)
+              .then(()=>{
                 this.$router.push('/')
-            }
+              })
         }
     }
     

@@ -1,6 +1,7 @@
 
 import router from "@/router"
 import axiosInst from "@/router/utility/axiosInst"
+import { LOGIN_COMPLETE } from "./mutation-types"
 
 export default {
     requestSpringToCheckNickNameDuplication ({ }, payload) {
@@ -30,14 +31,14 @@ export default {
                 alert('문제 발생!')
             })
     },
-    requestSpringToLogin({ }, payload){
+    requestSpringToLogin(context, payload){
         const { email, password,roleType } = payload
         return axiosInst.post('/member/login', { email, password, roleType })
             .then((res) => {
                 localStorage.setItem("userToken", res.data.userToken)
                 localStorage.setItem("roleType", res.data.roleType)
                 localStorage.setItem("isLogin", res.data.isLogin)
-
+                context.commit(LOGIN_COMPLETE, true)
                 return res.data
             })
             .catch(() => {

@@ -45,28 +45,17 @@
     </div>
 </template>
 <script>
+import { mapState } from "vuex";
+const memberModule= 'memberModule'
 export default {
     data(){
         return{
-          isLogin: false
+         
     }
     },
-    created(){
-    this.checkLogin() 
-    },
-    beforeUpdate() {
-    this.checkLogin()
-    },
-    methods:{
-        checkLogin(){
-            if (localStorage.getItem("isLogin")) {
-                this.isLogin = true;
-    }},
-        logout() {
-            localStorage.clear()
-            this.isLogin = false;
-        }
-    },
+    computed: {
+        ...mapState(memberModule, ['isLogin'])
+    }
 }
 </script>
 <style scoped>
