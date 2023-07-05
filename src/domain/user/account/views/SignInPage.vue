@@ -19,12 +19,9 @@ export default {
     methods: {
         ...mapActions(accountModule, ['requestLoginAccountToSpring']),
         async onSubmit (payload) {  
-            // console.log(payload)          
             await this.requestLoginAccountToSpring(payload)
             const userToken = localStorage.getItem("userToken")
-            // console.log(userToken)     
             if( userToken ) {
-                
                 await this.$router.push("/")
                 location.reload()
             }         

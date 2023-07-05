@@ -1,6 +1,5 @@
 <template lang="">
-    <v-app-bar color="primary" app dark height="64">
-        <!-- <v-app-bar-nav-icon @click="navigation_drawer = !navigation_drawer"/> -->
+    <v-app-bar color="primary" app dark height="64" fixed>
         <v-btn @click="goHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>STOCK & CHAT</span>
@@ -10,12 +9,10 @@
         <v-spacer></v-spacer>
 
         <v-btn v-if="!isLogin" text @click="toLoginAndSignUpPage">
-        <!-- <v-btn v-if="!isLogin" text @click="toLoginAndSignUpPage"></v-btn> -->
             <span>SignIn / SignUp</span>
             <v-icon right>mdi-login</v-icon>
         </v-btn>
         <v-btn v-if="isLogin" text @click="signOut">
-        <!-- <v-btn v-if="isLogin" text @click="signOut"> -->
             <span>로그아웃</span>
             <v-icon right>mdi-exit-to-app</v-icon>
         </v-btn>
@@ -33,7 +30,6 @@ const accountModule = 'accountModule'
 export default {
     data () {
         return {
-            // navigation_drawer: false,
             isLogin: false,
         }
     },
@@ -58,8 +54,6 @@ export default {
         },        
     },    
     computed: {
-        // ...mapState(AccountModule, 'isLogin')
-        
     },
     mounted () {
         this.isLoggedIn()      

@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        <board-list-form :boards="boards"/>
+        <board-list-form :boards="boards" :stockName="stockName"/>
         <div style="text-align: left; margin: 15px;">
             <router-link :to="{ 
                 name: 'BoardRegisterPage',
@@ -23,7 +23,11 @@ export default {
         ticker: {
             type: String,
             required: true,
-        }
+        },
+        stockName: {
+            type: String,
+            required: true,
+        },
     },
     data () {
         return {

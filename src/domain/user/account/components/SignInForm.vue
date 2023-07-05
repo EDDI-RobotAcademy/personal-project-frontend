@@ -60,8 +60,6 @@ export default {
         onSubmit() {
         const { email, password } = this
         this.$emit("submit", { email, password })
-        // console.log(email)
-        // console.log(password)
         }
     }
     

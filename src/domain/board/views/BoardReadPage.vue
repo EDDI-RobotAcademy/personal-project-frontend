@@ -28,6 +28,10 @@ export default {
             type: String,
             required: true,
         },
+        ticker: {
+            type: String,
+            required: true
+        }
     },
     computed: {
         ...mapState(boardModule, ['board'])
@@ -42,7 +46,7 @@ export default {
         }
     },
     created () {
-        this.requestBoardToSpring(this.id)
+        this.requestBoardToSpring(this.ticker, this.id)
     }
 }
 </script>

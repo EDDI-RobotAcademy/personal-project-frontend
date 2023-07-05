@@ -19,13 +19,6 @@
                                         :rules="email_rule"
                                         :disabled="false"
                                         required>
-                                        <!-- <template v-slot:append>
-                                            <v-btn text large outlined style="font-size: 13px"
-                                            class="mt-3 ml-5" color="teal lighten-1"
-                                            @click="checkDuplicateEmail">
-                                        이메일 <br/>중복 확인
-                                    </v-btn>     
-                                        </template> -->
                                     </v-text-field>
                                                                 
                                     <v-text-field
@@ -37,9 +30,6 @@
                                         required>
                                     </v-text-field>                                                             
                                   </div>
-                                <!-- <v-btn type="submit" block x-large rounded
-                                        color="orange lighten-1" class="mt-6"
-                                        :disabled="!isFormValid()">회원 신청하기</v-btn> -->
                                     <v-btn type="submit" block x-large rounded
                                     color="orange lighten-1" class="mt-6">회원 신청하기</v-btn>
                             </v-form>
@@ -56,7 +46,6 @@ export default {
     data () {
         return {
             email: "",
-            // emailPass: false,
             email_rule: [
                 v => !!v || '이메일을 입력해주세요!',
                 v => {
@@ -76,37 +65,11 @@ export default {
             ],
         }
     },
-    // props:{
-    //     emailPass: {
-    //         type: Boolean,
-    //         required: true
-    //     }
-    // },
     methods: {
         onSubmit () {
                 const { email, password } = this
                 this.$emit("submit", { email, password })
         }        
-        // onSubmit () {
-        //     if (this.$refs.form.validate()) {
-        //         const { email, password } = this
-        //         this.$emit("submit", { email, password })
-        //     } else {
-        //         alert('올바른 정보를 입력하세요')
-        //     }
-        //     if (!this.emailPass) {
-        //         alert("이메일 중복 확인을 해주세요")
-        //     }
-        // },       
-        // checkDuplicateEmail() {
-        //     const {email, emailPass} = this
-        //     this.$emit("checkDuplicateEmail", { email, emailPass })
-        // },
-        // isFormValid () {
-        //     return this.emailPass && 
-        //     this.email_rule[1](this.email) && 
-        //     this.password_rule[1](this.password) === true
-        // },
     },
 }
 

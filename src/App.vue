@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <navigation-menu-page/>
-      <v-main>
-        <router-view/>
-      </v-main>
+    <navigation-menu-page />
+    <v-main style="padding-top: 64px;">
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
