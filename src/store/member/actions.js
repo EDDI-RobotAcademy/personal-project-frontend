@@ -30,4 +30,18 @@ export default {
                 alert('문제 발생!')
             })
     },
+    requestSpringToLogin({ }, payload){
+        const { email, password,roleType } = payload
+        return axiosInst.post('/member/login', { email, password, roleType })
+            .then((res) => {
+                localStorage.setItem("userToken", res.data.userToken)
+                localStorage.setItem("roleType", res.data.roleType)
+                localStorage.setItem("isLogin", res.data.isLogin)
+
+                return res.data
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })  
+    }
 }

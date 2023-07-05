@@ -19,22 +19,22 @@
         </div>
         <v-row justify="end">
           <v-col cols="auto"> 
-            <router-link v-if="!login" to="/member-sign-up-page">
-              <v-btn text>
-                <span>회원가입</span>
-              </v-btn>
-            </router-link>
-            <router-link v-if="!login" to="/memeber-login-page">
+            <router-link v-if="!isLogin" to="/member-login-page">
               <v-btn text>
                 <span>로그인</span>
               </v-btn>
             </router-link>
-            <router-link v-if="login" to="/account-mypage">
+            <router-link v-if="!isLogin" to="/member-sign-up-page">
+              <v-btn text>
+                <span>회원가입</span>
+              </v-btn>
+            </router-link>
+            <router-link v-if="isLogin" to="/account-mypage">
               <v-btn @click="myPage" text>
                 <span>마이 페이지</span>
               </v-btn>
             </router-link>
-            <router-link v-if="login" to="/">
+            <router-link v-if="isLogin" to="/">
               <v-btn @click="logout" text>
                 <span>로그아웃</span>
               </v-btn>
@@ -48,7 +48,7 @@
 export default {
     data(){
         return{
-        login: false
+          isLogin: false
     }
     },
     created(){
@@ -59,13 +59,12 @@ export default {
     },
     methods:{
         checkLogin(){
-            if (localStorage.getItem("login")) {
-                this.login = true;
-                //router.go("/")
+            if (localStorage.getItem("isLogin")) {
+                this.isLogin = true;
     }},
         logout() {
             localStorage.clear()
-            this.login = false;
+            this.isLogin = false;
         }
     },
 }
