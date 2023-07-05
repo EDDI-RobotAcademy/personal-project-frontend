@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="grey lighten-5" style="font-family: 'Noto Sans KR', sans-serif">
+    <div>
         <v-container class="white">
             <v-row justify="center">
                 <v-col cols="auto" style="padding-top: 90px">
