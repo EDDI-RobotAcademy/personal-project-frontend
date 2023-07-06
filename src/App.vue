@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <NavigationBar />
-    <RouterView />
+    <div class="app__contents">
+      <RouterView />
+    </div>
   </div>
 </template>
 

@@ -52,7 +52,7 @@ export default {
 
       &:hover {
         font-weight: 600;
-        color: #0100FF;
+        color: #24FCFF;
       }
 
       &.link--user {

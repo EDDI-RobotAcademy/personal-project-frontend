@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainPage from '../views/MainPage.vue';
+import LoginPage from '../views/account/LoginPage.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -10,6 +11,12 @@ const routes = [
     name: 'mainPage',
     component: MainPage
   },
+  {
+    path: '/login',
+    name: 'loginPage',
+    component: LoginPage
+  },
+
 ]
 
 const router = new VueRouter({
