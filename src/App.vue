@@ -1,20 +1,20 @@
 <template>
-  <v-app>
-    <navigation-menu-page />
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <div id="app">
+    <NavigationBar />
+    <RouterView />
+  </div>
 </template>
 
-
 <script>
-import NavigationMenuPage from './views/navigation/NavigationMenuPage.vue';
+import NavigationBar from '@/components/navigation/NavigationBar.vue'
 
 export default {
+  name: 'App',
   components: {
-    NavigationMenuPage
-  }
-}
+    NavigationBar,
+  },
+};
 </script>
-<style scoped></style>
+
+<style>
+</style>
