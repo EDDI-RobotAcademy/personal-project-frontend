@@ -31,7 +31,7 @@
             </router-link>
             <router-link v-if="isLogin" to="/account-mypage">
               <v-btn @click="myPage" text>
-                <span>마이 페이지</span>
+                <span>{{ nickName }}님 공간</span>
               </v-btn>
             </router-link>
             <router-link v-if="isLogin" to="/">
@@ -45,7 +45,7 @@
     </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import {  mapActions, mapMutations, mapState } from "vuex";
 const memberModule= 'memberModule'
 export default {
     data(){
@@ -53,8 +53,25 @@ export default {
          
     }
     },
+    methods:{
+      logout(){
+        localStorage.clear(),
+        this.LOGIN_COMPLETE(false)
+      },
+      myPage(){
+
+      },
+      ...mapMutations(memberModule,['LOGIN_COMPLETE'])
+
+
+    },
+    created(){
+      if(localStorage.getItem("userToken")){
+        this.LOGIN_COMPLETE(true)
+      }
+    },
     computed: {
-        ...mapState(memberModule, ['isLogin'])
+        ...mapState(memberModule, ['isLogin','nickName'])
     }
 }
 </script>
