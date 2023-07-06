@@ -3,11 +3,14 @@ import VueRouter from 'vue-router'
 
 import memberRoutes from './member/index'
 import defaultSetRoutes from './defaultRouterSet'
+import memberBoardRoutes from './board'
 Vue.use(VueRouter)
 
 const routes = [
   ...memberRoutes,
-  ...defaultSetRoutes
+  ...defaultSetRoutes,
+  ...memberBoardRoutes
+
 ]
 
 const router = new VueRouter({
