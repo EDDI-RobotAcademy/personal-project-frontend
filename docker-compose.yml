@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  frontend:
+    image: ghcr.io/jinho1593/personal-project-frontend:latest
+    container_name: personal-project-frontend-server
+    ports:
+      - "80:80"
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
