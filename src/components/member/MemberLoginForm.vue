@@ -6,21 +6,8 @@
                     <v-card width="460" style="box-shadow: none; border: solid #84d9b3">
                         <v-card-text class="text-center px-12 py-16">
                             <v-form @submit.prevent="onSubmit" ref="form">
-                                <div class="text-h4 font-weight-black mb-10">회원 신청하기</div>
+                                <div class="text-h4 font-weight-black mb-10">로그인</div>
                                 <div>
-                                    <div class="d-flex">
-                                    <v-text-field
-                                        v-model="nickName"
-                                        label="닉네임"
-                                        required>
-                                    </v-text-field>
-                                    <v-btn text large outlined style="font-size: 12px"
-                                            class="mt-3 ml-5" color="#84d9b3"
-                                            @click="checkDuplicateNickName"
-                                            :disabled="false">
-                                        닉네임 <br/>중복 확인
-                                    </v-btn>
-                                    </div>
                                     <v-text-field
                                         v-model="email"
                                         label="email"
@@ -35,10 +22,20 @@
                                         required>
                                     </v-text-field>
                                 </div>
-
-                                <v-btn text type="submit" block x-large outlined rounded
+                                <v-btn text type="submit" block x-large outlined
                                         color="#84d9b3" class="mt-6"
-                                        >회원가입</v-btn>
+                                        >로그인
+                                </v-btn>
+
+                                <div style="padding:20px 0px 0px 0px; text-align: center; display:inline-block">
+                                    <div class="fl" style="border-bottom:solid #bfbfbf 1px;"></div>
+                                    <div class="fl tc" style="width:40px; font-size: 15px;">or</div>
+                                    <div class="fr" style="border-bottom:solid #bfbfbf 1px;"></div>
+                				</div>
+                                <div style="padding:20px 0;">
+                                    <v-btn block x-large color="#26c826"><p style="color:white; margin: 0">네이버 로그인</p></v-btn>
+                                    <v-btn block x-large color="black"><p style="color:white; margin: 0">구글 로그인</p></v-btn>
+                                </div>
                             </v-form>
                         </v-card-text>
                     </v-card>
@@ -61,7 +58,6 @@ export default {
             nickName: "",
             password: "",
             roleType: "NORMAL",
-            nickNamePass: false,
             email_rule: [
                 v => !!v || '이메일을 입력해주세요!',
                 v => {
@@ -73,31 +69,33 @@ export default {
         }
     },
     methods: {
-        ...mapActions('memberModule', ['requestSpringToCheckNickNameDuplication']),
+        ...mapActions('memberModule', ['requestSpringToLogin']),
         onSubmit () {
             if (this.$refs.form.validate()) {
-                const { email, nickName, password, roleType } = this
-                this.$emit("submit", { email, nickName, password, roleType })
+                const { email, password, roleType } = this
+                this.$emit("submit", { email, password, roleType })
             } else {
                 alert('올바른 정보를 입력하세요!')
-            }
-
-            if (!this.nickNamePass) {
-                alert("닉네임 중복 확인을 해주세요!")
-            }
-        },
-        async checkDuplicateNickName () {
-                const { nickName } = this
-                this.nickNamePass = await this.requestSpringToCheckNickNameDuplication({ nickName })
             }
         },
         
     }
 
-
+}
 
 </script>
 
-<style lang="">
+<style scoped>
+.fl {
+    float: left;
+    width:160px; 
+    height:15px;
+}
+
+.fr {
+    float: right;
+    width:160px; 
+    height:15px;
+}
 
 </style>

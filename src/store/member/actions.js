@@ -1,11 +1,11 @@
 
+import router from "@/router"
 import axiosInst from "@/router/utility/axiosInst"
+import { LOGIN_COMPLETE } from "./mutation-types"
 
 export default {
     requestSpringToCheckNickNameDuplication ({ }, payload) {
         const { nickName } = payload
-        console.log('email: ' + nickName)
-
         return axiosInst.get(`/member/check-nickName/${nickName}`)
             .then((res) => {
                 if (res.data) {
@@ -22,15 +22,27 @@ export default {
     },
     requestRegisterMemberToSpring ({ }, payload) {
 
-        const { email, nickName, password } = payload
-
-        return axiosInst.post('/member/sign-up', { email, nickName, password })
+        const { email, nickName, password,roleType } = payload
+        return axiosInst.post('/member/sign-up', { email, nickName, password, roleType })
             .then((res) => {
-                alert('회원 신청하기 성공!')
                 return res.data
             })
             .catch(() => {
                 alert('문제 발생!')
             })
     },
+    requestSpringToLogin(context, payload){
+        const { email, password,roleType } = payload
+        return axiosInst.post('/member/login', { email, password, roleType })
+            .then((res) => {
+                localStorage.setItem("userToken", res.data.userToken)
+                localStorage.setItem("roleType", res.data.roleType)
+                localStorage.setItem("isLogin", res.data.isLogin)
+                context.commit(LOGIN_COMPLETE, true)
+                return res.data
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })  
+    }
 }

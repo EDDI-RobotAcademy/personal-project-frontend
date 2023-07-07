@@ -19,7 +19,7 @@ export default {
         async onSubmit (payload) {
             const isSuccess = await this.requestRegisterMemberToSpring(payload)
             if (isSuccess) {
-                this.$router.push("/member-sign-in-page")
+                this.$router.push("/member-login-page")
             }
         }
     }
