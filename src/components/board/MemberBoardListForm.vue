@@ -1,13 +1,19 @@
 <template lang="">
     <div>
-        <h3>게시물 목록</h3>
-        <table style="margin: 10px;">
-            <tr>
-                <th align="center" width="6%">번호</th>
-                <th align="center" width="70%">제목</th>
-                <th align="center" width="10%">작성자</th>
-                <th align="center" width="14%">등록일자</th>
+        <h1 class="list_title_1">나만의 카페 공유</h1>
+        <v-simple-table 
+            style="margin: 10px; width:1000px; margin: 0 auto"
+            :items-per-page="5">
+            <template>
+            <thead>
+                <tr>
+                <th width="10%" style="text-align:center; font-size: 17px">번호</th>
+                <th width="60%" style="text-align:center; font-size: 17px">제목</th>
+                <th width="10%" style="text-align:center; font-size: 17px">작성자</th>
+                <th width="20%" style="text-align:center; font-size: 17px">작성일자</th>
             </tr>
+            </thead>
+            <tbody style="border:">
             <tr v-if="!boards || (Array.isArray(boards) && boards.length === 0)">
                 <td colspan="4">
                     현재 등록된 게시물이 없습니다!
@@ -31,7 +37,9 @@
                     {{ board.createDate }}
                 </td>
             </tr>
-        </table>
+            </tbody>
+            </template>
+        </v-simple-table>
     </div>
 </template>
 
@@ -45,6 +53,13 @@ export default {
 }
 </script>
 
-<style lang="">
-    
+<style>
+.list_title_1{
+    min-height: 30px;
+    margin: 40px 0 30px;
+    text-align: center;
+}
+.list_titles{
+    font-size: 15px;
+}
 </style>
