@@ -1,6 +1,9 @@
 <template>
+  <v-container>
+    <v-row>
+      <v-col>
     <div>
-        <v-app-bar class="nav"
+        <v-app-bar class="nav" 
       app
       elevation="1"
       color="grey lighten-5"
@@ -43,6 +46,27 @@
         </v-row>
     </v-app-bar>
     </div>
+  </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="subNav">
+          <div >
+            <div style="float: right;">
+            <router-link to="/member-board-list-page">
+              <v-btn text style="font-weight: bold;">board</v-btn>
+            </router-link>
+          </div>
+            <div style="float:right">
+            <router-link to="/member-board-list-page">
+              <v-btn text style="font-weight: bold;">board</v-btn>
+            </router-link>
+          </div>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
 import {  mapActions, mapMutations, mapState } from "vuex";
@@ -101,5 +125,18 @@ input{
 
 spacer{
   width: 100px
+}
+
+.subNav{
+  background-color: #84d9b3; 
+  top: 58px; 
+  z-index: 1; 
+  position: fixed; 
+  left: 0px; 
+  width: calc((100% - 0px) - 0px);
+  height: 40px;
+  padding: 2px 0 0 0;
+  
+
 }
 </style>
