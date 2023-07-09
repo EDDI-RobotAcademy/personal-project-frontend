@@ -1,4 +1,5 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const axiosInst = axios.create({
     baseURL: process.env.VUE_APP_SPRING_URL,
