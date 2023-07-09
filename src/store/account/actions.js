@@ -42,4 +42,18 @@ export default {
                 alert("문제 발생!")
             })
     },
+    requestLoginToSpring({ }, payload) {
+        const { email, password } = payload;
+        return axiosInst.springAxiosInst.post("/account/login", { email, password })
+            .then((res) => {
+                if (res.data != null) {
+                    alert("로그인 성공!");
+
+                    return true
+                } else {
+                    alert("로그인 실패!");
+                    return false
+                }
+            });
+    },
 }
