@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <navigation-menu/>
-    <v-main>
+    <v-main style="padding-top: 49px;">
       <router-view/>
     </v-main>
   </v-app>
@@ -20,7 +20,6 @@ export default {
       login: false
     }
   },
-  name: 'App',
 
   created(){
     this.check() 
