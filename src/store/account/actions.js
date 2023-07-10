@@ -56,4 +56,13 @@ export default {
                 }
             });
     },
+    requestLogoutToSpring({ }) {
+        return axiosInst.springAxiosInst.post("/account/logout")
+            .then((res) => {
+                alert("로그아웃")
+            })
+            .catch(() => {
+                alert("실패")
+            })
+    }
 }
