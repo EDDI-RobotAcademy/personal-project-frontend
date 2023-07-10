@@ -27,7 +27,8 @@ export default {
 </script>
 <style>
 .kmap {
-  width: 100%;
+  width: 600px;
   height: 500px;
+  margin: auto;
 }
 </style>
