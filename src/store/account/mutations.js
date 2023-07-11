@@ -1,4 +1,4 @@
-import { REQUEST_BOARD_LIST_TO_SPRING, REQUEST_BOARD_TO_SPRING } from "./mutation-types";
+import { REQUEST_BOARD_LIST_TO_SPRING, REQUEST_BOARD_TO_SPRING, IS_SIGNIN } from "./mutation-types";
 
 export default {
   [REQUEST_BOARD_LIST_TO_SPRING](state, receivedData) {
@@ -6,5 +6,8 @@ export default {
   },
   [REQUEST_BOARD_TO_SPRING](state, receivedData) {
     state.board = receivedData;
+  },
+  [IS_SIGNIN](state, receivedData) {
+    state.isSignIn = receivedData;
   },
 };

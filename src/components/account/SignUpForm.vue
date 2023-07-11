@@ -41,6 +41,15 @@
                   :disabled="false"
                   required
                 />
+                <v-container>
+                  <span>회원 역할</span>
+                  <v-radio-group row v-model="roleType">
+                    <v-radio label="일반 회원" value="NORMAL"></v-radio>
+                    <v-radio label="사업자 회원" value="BUSINESS"></v-radio>
+                  </v-radio-group>
+                  <span style="font-size: 120%; font-weight: bold">{{ displayRole }}</span>
+                  <span>은 ~</span>
+                </v-container>
                 <v-btn
                   text
                   outlined
@@ -81,6 +90,7 @@ export default {
       email: "",
       password: "",
       passwordCheck: "",
+      roleType: "NORMAL",
       emailPass: false,
       email_rule: [
         (v) => !!v || "이메일을 입력해주세요",
@@ -125,12 +135,19 @@ export default {
     },
     createAccount() {
       if (this.$refs.form.validate()) {
-        const { email, password } = this;
-        this.$emit("submit", { email, password });
+        const { email, password, roleType } = this;
+        this.$emit("submit", { email, password, roleType });
       }
     },
   },
   computed: {
+    displayRole() {
+      if (this.roleType === "NORMAL") {
+        return "일반 회원";
+      } else if (this.roleType === "BUSINESS") {
+        return "사업자 회원";
+      }
+    },
     isEmailValid() {
       return this.email_rule[1](this.email) === true;
     },
