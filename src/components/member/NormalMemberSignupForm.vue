@@ -1,6 +1,6 @@
 <template lang="">
     <div>  
-        <div class="myPageMenu">
+        <div class="signupForm">
             <h2>회원가입</h2>
             <hr class="signupFormTopLine">
             <form>
@@ -43,7 +43,7 @@
                 </v-col>
             </v-row>
             </div>
-            <hr class="signupFormBottomLine">
+            <!-- <hr class="signupFormBottomLine"> -->
         </div>
     </div>
 </template>
@@ -91,21 +91,34 @@ export default {
         ...mapActions(memberModule, ['requestCheckEmailDuplicate', 'requestAuthorizeEmailToSpring']),
         onSubmit () {
             this.checkPassword()
-            if(this.checkPasswordValid == true && this.emailDuplicate == false && this.email != null  && this.password != null && this.checkEmailAuthorize == true) {
+
+            const emailValid = this.email_rule.every(rule => rule(this.email) === true);
+            const passwordValid = this.password_rule.every(rule => rule(this.password) === true);
+
+            if(this.checkPasswordValid == true && this.emailDuplicate == false && this.email != null  && this.password != null && this.checkEmailAuthorize == false && emailValid && passwordValid) {
                 const { email, password, roleType } = this
                 this.$emit('submit', { email, password, roleType })
             } else if (this.emailDuplicate == true && this.checkEmailDuplicate == true) {
                 alert("중복된 이메일입니다.")
             } else if (this.checkEmailDuplicate == false ) {
                 alert("이메일 중복 여부를 확인하세요.")
+            } else if (!passwordValid) {
+                alert("비밀번호 형식을 확인해주세요.")
+            } else if (!emailValid) {
+                alert("이메일 형식을 확인해주세요.")
             }
+            
+            // 인증은 일단 보류, 테스트하면서 매번 인증해야 해서 번거롭다 -> 시현할 때 설정 예정
+            // else if (this.checkEmailAuthorize == false ) {
+            //     alert("이메일 인증이 필요합니다.")
+            // }
         },
         checkPassword() {
             if(this.password === this.passwordCheck) {
                 this.checkPasswordValid = true
             } else {
                 this.checkPasswordValid = false
-                alert('비밀번호를 확인해주세요.')
+                alert('비밀번호가 일치하지 않습니다.')
             }
         },
         clear () {
@@ -138,26 +151,8 @@ export default {
 
 <style scoped>
 
-.myPageMenu {
+.signupForm {
     padding-top: 100px;
-}
-.myPageMenu ul {
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-    background-color: rgb(255, 0, 0);
-    height: 46px;
-    margin-top: 20px;
-    width: 60%;
-}
-.myPageMenu li {
-    display: block;
-    width: 100%;
-    text-align:center;
-    font-weight: lighter;
-    font-size: 14px;
-    color: rgb(0, 255, 34);
-    padding-top: 12px;
 }
 h2{
     text-align: center;
@@ -181,7 +176,7 @@ form {
     width: 30%;
     height: 400px;
     margin: auto;
-    padding-top: 40px;
+    padding-top: 20px;
     padding-bottom: 40px;
     font-family: 'GmarketSans';
     font-weight: 100;
@@ -218,14 +213,15 @@ span {
     padding-left: 20px;
     padding-right: 60px;
     font-family: 'GmarketSans';
-    font-weight: 600;
-    color: rgb(73, 73, 73);
+    font-weight: 500;
+    color: rgb(37, 37, 37);
 }
 .checkEmailInfo {
     margin-top: 10px;
 }
 .snsForm {
     margin-top: 60px;
+    background-color: rgb(247, 247, 247);
 }
 #inputCode{
     width: 310px;

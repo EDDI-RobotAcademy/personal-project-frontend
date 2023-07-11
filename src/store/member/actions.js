@@ -4,22 +4,40 @@ import axiosInst from '@/utility/axiosInst'
 export default {
     requestLoginMemberToSpring ({ }, { email, password }) {
         return axiosInst.post('/member/login', { email, password })
-            .then((response) => {
-                const receivedToken = response.headers.get("Authorization")
-
-                const accessToken = receivedToken.split(' ')[1];
-                const refreshToken = receivedToken.split(' ')[2];
-
-                console.log("accessToken: " + accessToken);
-                console.log("refreshToken: " + refreshToken);
-
-                sessionStorage.setItem("accessToken", accessToken);
-                sessionStorage.setItem("refreshToken", refreshToken);
-
-                alert('로그인되었습니다.')
+            .then((res) => {
+                console.log("궁금쓰 res: " + res.data)
+                if(res.data == true) {
+                    const cookieString = document.cookie;
+                    const cookies = cookieString.split(';');
+                    console.log("궁금해: " + cookies)
+    
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+    
+                        var separatorIndex = cookie.indexOf('=');
+                        var name = cookie.substring(0, separatorIndex);
+                        var value = cookie.substring(separatorIndex + 1);
+                    
+                        if (name === "AccessToken") {
+                            localStorage.setItem("AccessToken", value)
+                        }
+                    }
+                    alert('로그인되었습니다.')
+                    router.push('/')
+                } else {
+                    alert('로그인이 실패하였습니다.')
+                }
             })
             .catch(() => {
                 alert('로그인이 실패하였습니다.')
+            })
+    },
+    requestMemberLogoutToSpring ({ }) {
+
+        return axiosInst.post('/member/logout')
+            .then((res) => {
+                localStorage.removeItem("AccessToken")
+                alert("로그아웃")
             })
     },
     requestNormalMemberSignupToSpring ({ }, payload) {
@@ -68,8 +86,39 @@ export default {
             }
         })
     },
-    requestAuthorizeToSpring ({}, payload) {
-        return axiosInst.post('/member/auth', payload)
+    requestCheckNickNameDuplicate ({ }, payload) {
+
+        return axiosInst.post('member/check-nickName-duplicate', payload)
+        .then((res) => {
+            if(res.data == true) {
+                return res.data
+            } else {
+                return res.data
+            }
+        })
+    },
+    requestAuthorizeToSpring ({}) {
+        return axiosInst.post('/member/auth')
+            .then((res) => {
+                if(res.data != null) {
+                    return res.data
+                } else {
+                    alert("문제 발생")
+                }
+            })
+    },
+    requestAuthorizeForUserProfileToSpring ({}) {
+        return axiosInst.post('/member/auth-userProfile')
+            .then((res) => {
+                if(res.data != null) {
+                    return res.data
+                } else {
+                    alert("문제 발생")
+                }
+            })
+    },
+    requestAuthorizeForSellerInfoToSpring ({}) {
+        return axiosInst.post('/member/auth-sellerInfo')
             .then((res) => {
                 if(res.data != null) {
                     return res.data
@@ -82,6 +131,28 @@ export default {
         return axiosInst.post('/member/check-email-authorize', payload)
             .then((res) => {
                 if(res.data > 0) {
+                    return res.data
+                } else {
+                    alert("문제 발생")
+                }
+            })
+    },
+    requestRegisterProfileToSpring ({}, payload) {
+        return axiosInst.post('/member/profile-register', payload)
+            .then((res) => {
+                if(res.data == true) {
+                    router.push('/')
+                    return res.data
+                } else {
+                    alert("문제 발생")
+                }
+            })
+    },
+    requestRegisterSellerInfoToSpring ({}, payload) {
+        return axiosInst.post('/member/sellerInfo-register', payload)
+            .then((res) => {
+                if(res.data == true) {
+                    router.push('/')
                     return res.data
                 } else {
                     alert("문제 발생")

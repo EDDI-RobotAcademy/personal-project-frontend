@@ -5,6 +5,8 @@ import MemberLoginPage from '@/views/member/MemberLoginPage.vue'
 import NormalMemberSignupPage from '@/views/member/NormalMemberSignupPage.vue'
 import BusinessMemberSignupPage from '@/views/member/BusinessMemberSignupPage.vue'
 import MemberMyPage from '@/views/member/MemberMyPage.vue'
+import NormalMemberProfileRegisterPage from '@/views/member/NormalMemberProfileRegisterPage.vue'
+import BusinessMemberSellerInfoRegisterPage from '@/views/member/BusinessMemberSellerInfoRegisterPage.vue'
 
 Vue.use(VueRouter)
 
@@ -27,7 +29,20 @@ const memberRoutes = [
   {
     path: '/myPage',
     name: 'MemberMyPage',
-    component: MemberMyPage
+    component: MemberMyPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/myProfilePage',
+    name: 'NormalMemberProfileRegisterPage',
+    component: NormalMemberProfileRegisterPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/sellerInfoPage',
+    name: 'BusinessMemberSellerInfoRegisterPage',
+    component: BusinessMemberSellerInfoRegisterPage,
+    meta: { requiresAuth: true }
   },
 ]
 
