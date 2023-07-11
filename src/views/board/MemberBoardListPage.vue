@@ -1,6 +1,16 @@
 <template lang="">
     <div>
-        <member-board-list-form :boards="boards"/>
+        <div>
+            <member-board-list-form :boards="boards"/>
+        </div>
+    <div>
+        <router-link to="/member-board-register-page">
+            <v-btn class="register_btn"
+                outlined
+                color="black">게시글 쓰기
+            </v-btn>
+        </router-link>
+    </div>
     </div>
 </template>
 
@@ -24,10 +34,14 @@ export default {
     methods: {
         ...mapActions(
             boardModule, ['requestBoardListToSpring']
-        )
+        ),
     }
 }
 </script>
 <style>
-    
+.register_btn{
+position: absolute;
+top: 5%;
+right: 14%
+}
 </style>
