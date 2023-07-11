@@ -1,0 +1,107 @@
+name: Frontend CD
+
+# 이벤트 트리거 설정: main 브랜치에 push가 발생하면 이 GitHub Action이 실행됩니다.
+on:
+  push:
+    branches: [main]
+
+# 전역 환경 변수 설정
+env:
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/personal-project-frontend
+  VERSION: ${{ github.sha }}
+  NAME: frontend-server
+
+# 빌드 및 배포 작업 정의
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 첫 번째 단계: 소스 코드를 작업의 실행 환경에 가져옴
+      # actions/checkout: GitHub 레포지토리의 코드를 가져와 실행 환경에 저장
+      - name: Check out source code
+        uses: actions/checkout@v2
+        
+      # 두 번째 단계: docker buildx 설정
+      # docker/setup-buildx-action: 멀티 아키텍처 이미지를 동시에 빌드할 수 있는 buildx를 설정
+      - name: Set up docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1      
+        
+      # 세 번째 단계: 도커 레이어 캐싱
+      # actions/cache: 이전 빌드에서 사용한 레이어를 재사용하여 빌드 시간 단축
+      - name: Cache Docker Layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-      
+
+      # 네 번째 단계: Node.js 설정
+      # actions/setup-node: 필요한 Node.js 버전을 설치하고 환경 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          
+      # 다섯 번째 단계: 종속성 설치
+      # npm ci: 프로젝트에 필요한 패키지를 설치 및 종속성를 일치시키기 위한 커맨드 실행
+      - name: Install Dependencies
+        run: |
+          pwd # 현재 작업 디렉토리 출력
+          npm ci # 종속성(라이브러리) 일치시키며 패키지 설치
+
+      # 여섯 번째 단계: 배포용 환경 파일 생성
+      # 이 작업은 .env.production 파일에 정의된 환경 변수를 사용하기 위한 것
+      - name: Create .env.production for CD Deploy
+        run: |
+          pwd # 현재 작업 디렉토리 출력
+          echo "${{ secrets.CD_DEPLOY_CONFIG }}" > .env.production # .env.production 파일 생성
+          cat .env.production # .env.production 파일 확인
+
+      # 일곱 번째 단계: 도커 이미지 생성 후 GitHub Container Registry에 푸시
+      # Docker 이미지를 빌드하고, 이름을 지정한 뒤 GitHub Container Registry에 푸시하는 작업
+      - name: Docker build & push to prod
+        run: |
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin # GitHub Container Registry 로그인
+          docker buildx create --name arm64builder --use
+          docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/ryukyungwoo/personal-project-frontend:latest --push . # 도커 빌드 및 푸시
+          docker logout # 로그아웃
+
+  # 배포 작업 정의
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [self-hosted, deploy-frontend]
+    
+    steps:
+      # 첫 번째 단계: GitHub Container Registry에 로그인
+      # docker/login-action: GitHub Container Registry에 로그인하는 작업
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # 두 번째 단계: 배포 스크립트 실행
+      # appleboy/ssh-action: SSH 접속 후 배포 스크립트를 실행하는 작업
+      - name: Deploy to prod
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST_PROD }}
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            pwd # 현재 작업 디렉토리 출력
+            ls -al # 작업 디렉토리에 있는 모든 파일과 폴더를 출력
+            cd frontend # 디플로이 할 디렉토리로 이동
+            pwd # 현재 작업 디렉토리 출력
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin # GitHub Container Registry 로그인
+            docker pull ghcr.io/ryukyungwoo/personal-project-frontend:latest # 도커 이미지 pull
+            docker image prune -f # 사용되지 않은 도커 이미지 정리
+            docker logout # 로그아웃
+            docker-compose up -d # 도커 컴포즈를 사용해 이전 컨테이너 중지 후 업데이트 된 이미지로 새 컨테이너 실행

@@ -29,7 +29,7 @@
                     {{ board.writer }}
                 </td>
                 <td align="center">
-                    {{ board.createDate }}
+                    {{ board.updateDate }}
                 </td>
             </tr>
         </table>

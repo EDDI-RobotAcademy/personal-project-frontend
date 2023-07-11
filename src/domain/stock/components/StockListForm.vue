@@ -6,9 +6,7 @@
         <th style="text-align: center; width: 50%; padding: 0 5px;">티커</th>
         <th style="text-align: center; width: 50%; padding: 0 5px;">주식</th>
       </tr>
-      <tr
-        v-if="!stocks || (Array.isArray(stocks) && stocks.length === 0)"
-      >
+      <tr v-if="!stocks || (Array.isArray(stocks) && stocks.length === 0)">
         <td colspan="2" style="text-align: center;">
           현재 등록된 게시물이 없습니다!
         </td>

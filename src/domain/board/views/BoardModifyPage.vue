@@ -20,6 +20,10 @@ export default {
         id: {
             type: String,
             required: true,
+        },
+        ticker: {
+            type: String,
+            required: true
         }
     },
     computed: {
@@ -29,20 +33,31 @@ export default {
         ...mapActions(
             boardModule, ['requestBoardToSpring', 'requestBoardModifyToSpring']
         ),
+        async fetchData() {
+            const payload = {
+            ticker: this.ticker,
+            id: this.id,
+            };
+            await this.requestBoardToSpring(payload);
+        },
         async onSubmit (payload) {
             const { title, content, writer } = payload
             const id = this.id
+            const ticker = this.ticker
 
-            await this.requestBoardModifyToSpring({ title, content, writer, id })
+            await this.requestBoardModifyToSpring({ title, content, writer, id, ticker })
             await this.$router.push({
                 name: 'BoardReadPage',
-                params: { id: this.id }
+                params: { 
+                    id: this.id,
+                    ticker: this.ticker
+                 }
             })
         }
     },
     created () {
-        this.requestBoardToSpring(this.id)
-    }
+        this.fetchData();
+    }    
 }
 </script>
 
