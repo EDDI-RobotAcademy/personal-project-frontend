@@ -4,93 +4,67 @@
     <nav class="header__nav">
       <RouterLink to="/" class="nav__link">지도</RouterLink>
       <RouterLink to="/" class="nav__link">분양</RouterLink>
-      <RouterLink to="/" class="nav__link">방내놓기</RouterLink>
+      <RouterLink to="/" class="nav__link">분양 등록</RouterLink>
       <RouterLink to="/" class="nav__link">관심목록</RouterLink>
-      <RouterLink to="/login" class="nav__link link--user">
-        로그인 <span class="nav__bar"></span> 회원가입
-      </RouterLink>
+      <RouterLink to="/service/inquiry" class="nav__link">1:1 문의</RouterLink>
+      <template v-if="!isLogin">
+        <RouterLink to="/login" class="nav__link link--user">
+          로그인 <span class="nav__bar"></span> 회원가입
+        </RouterLink>
+      </template>
+      <template v-else>
+        <div class="header__user">
+          <ADropdown-button style="font-size: 16px">
+            {{ getNickname }}
+            <AMenu slot="overlay">
+              <AMenu-item key="1">
+                <RouterLink to="/account/inquiry-lise" style="font-size: 16px">
+                  내 정보
+                </RouterLink>
+              </AMenu-item>
+              <AMenu-item key="2">
+                <RouterLink to="/account/inquiry-list?page=1" style="font-size: 16px">
+                  1:1 문의 내역
+                </RouterLink>
+              </AMenu-item>
+              <AMenu-item key="3">
+                <button @click="clickLogout" style="
+										border: none;
+										background-color: transparent;
+										font-size: 16px;
+										cursor: pointer;
+									">
+                  로그아웃
+                </button>
+              </AMenu-item>
+            </AMenu>
+            <AIcon slot="icon" type="user" />
+          </ADropdown-button>
+        </div>
+      </template>
     </nav>
   </header>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex';
 
+export default {
+  computed: {
+    ...mapGetters('userStore', ['getNickname', 'isLogin']),
+  },
+  methods: {
+    clickLogout() {
+      this.$store.dispatch('userStore/LOGOUT');
+      clearAllCookies();
+      this.$router.history.current.fullPath === '/'
+        ? this.$router.go()
+        : this.$router.push('/');
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-#header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  height: 80px;
-  border-bottom: 1px solid transparent;
-  padding: 0 30px;
-  /* background-color: transparent; */
-  background-image: linear-gradient(
-		134deg,
-		rgb(19, 183, 207) -5%,
-		rgb(54, 91, 180) 56%,
-		rgb(54, 91, 180) 56%
-	);
-
-  .header__title {
-    font-size: 26px;
-    font-weight: 600;
-    color: #000000;
-  }
-
-  .header__nav {
-    display: flex;
-    align-items: center;
-
-    .nav__link {
-      font-size: 16px;
-      color: #FFFFFF;
-      margin-left: 40px;
-      transition: all 0.3;
-
-      &:hover {
-        font-weight: 600;
-        color: #24FCFF;
-      }
-
-      &.link--user {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        padding: 0px 20px;
-        border: 1px solid rgb(223, 223, 223);
-        border-radius: 3px;
-        font-size: 14px;
-        font-weight: 700;
-        line-height: 24px;
-        color: #FFFFFF;
-        transition: all 0.3s;
-
-        &:hover {
-          background-color: rgb(255, 255, 255, 0.2);
-          color: #24FCFF;
-        }
-
-        .nav__bar {
-          display: block;
-          position: relative;
-          top: 1px;
-          margin: 0px 14px;
-          width: 1px;
-          height: 14px;
-          background-color: rgb(223, 223, 223);
-        }
-      }
-    }
-  }
-}
+@import '../css/NavigationBar.scss';
 </style>
