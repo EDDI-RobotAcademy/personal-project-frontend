@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import memberModule from './member/MemberModule'
 import boardModule from './board/BoardModule'
@@ -11,6 +12,9 @@ const store = new Vuex.Store({
     boardModule: boardModule    
 
   },
+  plugins: [createPersistedState({
+    paths: ["memberModule",]
+  })]
 })
 
 export default store
