@@ -9,7 +9,7 @@
 <script>
 
 import { mapActions, mapState } from 'vuex';
-import ManagerNoticeListForm from '@/components/manager/notice/ManagerNoticeListForm.vue';
+import ManagerNoticeListForm from '@/components/notice/ManagerNoticeListForm.vue';
 
 const noticeBoardModule = 'noticeBoardModule'
 

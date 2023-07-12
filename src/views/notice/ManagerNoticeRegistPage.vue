@@ -7,7 +7,7 @@
 </template>
 <script>
 
-import ManagerNoticeRegistForm from '@/components/manager/notice/ManagerNoticeRegistForm.vue'
+import ManagerNoticeRegistForm from '@/components/notice/ManagerNoticeRegistForm.vue';
 import { mapActions } from 'vuex';
 
 const noticeBoardModule = 'noticeBoardModule'
