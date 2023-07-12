@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import ManagerNoticeRegistPage from "@/views/noticePage/ManagerNoticeRegistPage.vue";
-import ManagerNoticeListPage from "@/views/noticePage/ManagerNoticeListPage.vue";
+import ManagerNoticeRegistPage from "@/views/notice/ManagerNoticeRegistPage.vue";
+import ManagerNoticeListPage from "@/views/notice/ManagerNoticeListPage.vue";
 
 Vue.use(VueRouter);
 
