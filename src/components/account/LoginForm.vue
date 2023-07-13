@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         ...mapActions('accountModule', ['accountLogin']),
-        onsubmit() {
+        onSubmit() {
             if (this.$refs.form.validate()) {
                 const { email, password } = this
                 this.$emit('submit', { email, password });
