@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import accountRoutes from './account'
+import playlistRoutes from './playlist'
+import songRoutes from './song'
 
 Vue.use(VueRouter)
 
@@ -20,6 +22,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   ...accountRoutes,
+  ...playlistRoutes,
+  ...songRoutes,
 ]
 
 const router = new VueRouter({
