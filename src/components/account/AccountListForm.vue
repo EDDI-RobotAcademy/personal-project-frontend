@@ -28,13 +28,14 @@ export default {
     data() {
         return {
             accountHeaders: [
-                { text: 'ID', value: 'id' },
+                { text: 'ID', value: 'accountId' },
                 { text: 'E-MAIL', value: 'email' },
                 { text: 'PASSWORD', value: 'password', sortable: false },
                 { text: '이름', value: 'accountName' },
                 { text: '생년월일', value: 'accountBirth' },
                 { text: 'PHONE', value: 'accountPhone', sortable: false },
                 { text: 'ADDRESS', value: 'accountAddress' },
+                { text: "userType", value: 'userType' },
                 { text: 'DELETE', value: 'accountDelete' }
             ]
 

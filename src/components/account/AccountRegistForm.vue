@@ -12,7 +12,7 @@
                             <v-text-field :rules="email_rule" v-model="email" label="이메일 입력"/>
                         </td>
                         <td>
-                            <v-btn text large color="grey" @click="checkEmail" :disabled="false">
+                            <v-btn color="black" dark @click="checkEmail" :disabled="false">
                                 중복 확인
                             </v-btn>
                         </td>
@@ -60,7 +60,7 @@
                             주소 입력
                         </td>
                         <td colspan="2">
-                            <v-btn @click="findAddress" color="blue">우편번호 찾기</v-btn>
+                            <v-btn @click="findAddress" color="black" dark>우편번호 찾기</v-btn>
                             <v-text-field ref="Address" v-model="Address" label="주소"/>
                             <v-text-field ref="DetailAddress" v-model="DetailAddress" label="상세 주소"/>
 
