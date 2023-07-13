@@ -48,7 +48,7 @@ export default {
             .then((res) => {
                 if (res.data != null) {
                     alert("로그인 성공!");
-
+                    localStorage.setItem("nickname", res.data)
                     return true
                 } else {
                     alert("로그인 실패!");
