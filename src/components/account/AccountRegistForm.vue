@@ -149,7 +149,6 @@ export default {
 
             if (emailValid) {
                 const { email } = this
-                console.log('before actions - email: ' + email)
                 this.emailPass = await this.requestSpringToCheckEmail({ email })
             }
         },
