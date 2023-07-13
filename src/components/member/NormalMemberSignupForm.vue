@@ -2,44 +2,40 @@
     <div>  
         <div class="signupForm">
             <h2>회원가입</h2>
-            <hr class="signupFormTopLine">
+            <!-- <hr class="signupFormTopLine"> -->
             <form>
                 <v-text-field v-model="email" label="이메일" :rules="email_rule" color="red" required></v-text-field>  
                 <div class="checkEmailInfo">
                     <v-btn class="checkValue" @click="checkEmail">중복확인</v-btn>
-                    <span>{{ guide1 }}</span>
+                    <span>{{ guideemail }}</span>
                 </div>
+
                 <div class="checkEmailInfo">
                     <v-btn class="checkValue" @click="sendEmail">인증하기</v-btn>
-                    <span>{{ guide2 }}</span>
+                    <span>{{ guidecode }}</span>
                     <input type="text" id="inputCode" v-model="inputAuthCode">
-                    <v-btn class="checkValue" @click="checkCode">확인</v-btn>
+                    <!-- <v-btn class="checkValue" @click="checkCode">확인</v-btn> -->
                 </div>
+
                 <v-text-field v-model="password" label="비밀번호" :rules="password_rule" color="red"></v-text-field>
+                    <span class="guide">{{ guidepassword }}</span>
                 <v-text-field v-model="passwordCheck" label="비밀번호 확인" color="red"></v-text-field>
-                            
+                    <span class="guide">{{ guidepasswordcheck }}</span>       
+
                 <v-row align="center" justify="center">
                     <v-col cols="auto">
-                        <v-btn class="submitBtn" color="#73916A" elevation="0" @click="onSubmit">가입</v-btn>
+                        <v-btn class="submitBtn" color="black" elevation="0" @click="onSubmit">가입</v-btn>
                     </v-col>
                     <v-col cols="auto">
                         <v-btn class="clearBtn" elevation="0" @click="clear">취소</v-btn>
                     </v-col>
                 </v-row>
             </form>
+
             <div class="snsForm">
             <v-row align="center" justify="center">
                 <v-col cols="auto" id="SNS">
-                    SNS로 가입
-                </v-col>
-                <v-col cols="auto">
-                    <v-img class="snsLogo" src="@/assets/snsLogo/kakao.png"></v-img>
-                </v-col>
-                <v-col cols="auto">
-                    <v-img class="snsLogo" src="@/assets/snsLogo/google.jpg"></v-img>
-                </v-col>
-                <v-col cols="auto">
-                    <v-img class="snsLogo" src="@/assets/snsLogo/naver.png"></v-img>
+                    카카오 1초 회원가입
                 </v-col>
             </v-row>
             </div>
@@ -57,16 +53,18 @@ const memberModule = 'memberModule'
 export default {
     data () {
         return {
-            guide1: '중복 확인이 필요합니다.',
-            guide2: '인증코드 입력: ',
-            authCode: 0,
-            inputAuthCode: '',
+            guideemail: '중복 확인이 필요합니다.',
+            guidecode: '입력: ',
+
             email: '',
             password: '',
             passwordCheck: '',
             roleType: "NORMAL",
+            authCode: 0,
+            inputAuthCode: '',
 
             emailDuplicate: true,
+
             checkPasswordValid: false,
             checkEmailDuplicate: false,
             checkEmailAuthorize: false,
@@ -90,8 +88,20 @@ export default {
     methods: {
         ...mapActions(memberModule, ['requestCheckEmailDuplicate', 'requestAuthorizeEmailToSpring']),
         onSubmit () {
-            this.checkPassword()
+            if(this.email == '') {
+                this.guideemail = "이메일은 필수 항목입니다."
+            }
+            if(this.password == '') {
+                this.guidepassword = "비밀번호는 필수 항목입니다."
+            }
+            if(this.passwordCheck == '') {
+                this.guidepasswordcheck = "비밀번호를 한 번 더 입력 후 확인해주세요."
+            }
+            if(this.passwordCheck == '') {
+                this.guidepasswordcheck = "비밀번호를 한 번 더 입력 후 확인해주세요."
+            }
 
+            this.checkPassword()
             const emailValid = this.email_rule.every(rule => rule(this.email) === true);
             const passwordValid = this.password_rule.every(rule => rule(this.password) === true);
 
@@ -127,10 +137,10 @@ export default {
         async checkEmail () {
             this.emailDuplicate = await this.requestCheckEmailDuplicate({email: this.email})
             if(this.emailDuplicate == false) {
-                this.guide1 = "확인이 완료되었습니다."
+                this.guideemail = "확인이 완료되었습니다."
                 this.checkEmailDuplicate = true;
             } else {
-                this.guide1 = "중복된 이메일입니다."
+                this.guideemail = "중복된 이메일입니다."
                 this.checkEmailDuplicate = true;
             }
         },
@@ -150,16 +160,17 @@ export default {
 </script>
 
 <style scoped>
-
+@import "../../assets/styles/fonts.css";
 .signupForm {
     padding-top: 100px;
 }
 h2{
     text-align: center;
-    font-family: 'GmarketSans';
+    font-family: 'SUIT-Regular';
     font-weight: 200;
-    font-size: 40px;
+    font-size: 38px;
     padding-top: 20px;
+    padding-bottom: 20px;
 }
 .signupFormTopLine {
     width: 40%;
@@ -173,17 +184,18 @@ h2{
     margin-top: 80px;
 }
 form {
-    width: 30%;
+    width: 60%;
     height: 400px;
     margin: auto;
     padding-top: 20px;
     padding-bottom: 40px;
-    font-family: 'GmarketSans';
+    font-family: 'SUIT-Regular';
     font-weight: 100;
 }
 span {
     padding-left: 10px;
     font-size: 14px;
+    color: red;
 }
 .checkValue {
     border-radius: 10px;
@@ -191,39 +203,46 @@ span {
     padding: 2px 10px 1px 10px;
 }
 .submitBtn {
-    width: 140px;
+    width: 200px;
+    min-height: 60px;
     margin-top: 40px;
+    margin-bottom: 80px;
     color: white;
-    font-family: 'GmarketSans';
-    font-size: 15px;
+    font-family: 'SUIT-Regular';
+    font-size: 18px;
     font-weight: 200;
 }
 .clearBtn {
-    width: 140px;
+    width: 200px;
+    min-height: 60px;
     margin-top: 40px;
-    font-family: 'GmarketSans';
-    font-size: 15px;
+    margin-bottom: 80px;
+    font-family: 'SUIT-Regular';
+    font-size: 18px;
     font-weight: 200;
 }
-.snsLogo {
-    width: 40px;
-}
 #SNS {
-    font-size: 20px;
-    padding-left: 20px;
-    padding-right: 60px;
-    font-family: 'GmarketSans';
-    font-weight: 500;
-    color: rgb(37, 37, 37);
+    font-size: 18px;
+    font-family: 'SUIT-Regular';
+    font-weight: 400;
+    color: rgb(255, 255, 255);
 }
 .checkEmailInfo {
     margin-top: 10px;
 }
 .snsForm {
-    margin-top: 60px;
-    background-color: rgb(247, 247, 247);
+    margin-top: 120px;
+    height: 40px;
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    display: flex;
 }
 #inputCode{
+    margin-right: 10px;
     width: 310px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgb(122, 122, 122);
+    width: 100px;
 }
 </style>
