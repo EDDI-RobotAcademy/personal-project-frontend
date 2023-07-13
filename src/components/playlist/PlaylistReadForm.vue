@@ -19,12 +19,19 @@
             <tr v-for="songList in playlist.songList" :key="songList.title">
                 <router-link :to="{
               name: 'SongReadPage',
-              params: { id: songList.id.toString() }
+              params: { id: songList.id.toString()}
             }">
                 <td>{{songList.id}}. {{songList.title}}</td>
             </router-link>
             </tr>
         </table>
+        <div v-if="playlist.playlist">
+            <router-link :to="{
+                name: 'SongRegisterPage',
+                params: {playlistId: playlist.playlist.id}}">
+            노래 등록
+            </router-link>
+    </div>
     </div>
 </template>
 <script>

@@ -19,18 +19,17 @@ export default {
                 return res.data
             })
     },
-    requestCreateBoardToSpring({ }, payload) {
-
-        const { title, singer, genre, link } = payload
-
-        return axiosInst.post('/song/register', { title, singer, genre, link })
+    requestRegisterSongToSpring(_, { payload, playlistId }) {
+        const { title, singer, genre, link } = payload;
+        return axiosInst.springAxiosInst
+            .post("/song/register", { playlistId, title, singer, genre, link })
             .then((res) => {
-                alert('게시물 등록 성공!')
-                return res
+                alert("등록 성공!")
+                return res;
             })
             .catch(() => {
-                alert('문제 발생!')
-            })
+                alert("문제 발생!")
+            });
     },
     requestSongToSpring({ commit }, id) {
         return axiosInst.springAxiosInst.get(`/song/${id}`)
