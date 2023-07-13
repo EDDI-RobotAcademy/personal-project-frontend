@@ -51,10 +51,15 @@ export default {
   },
 
   requestAccountListToSpring({ commit }) {
-    axiosInst.get("/account/list").then((res) => {
-      commit(REQUEST_ACCOUNT_LIST_TO_SPRING, res.data);
-      console.log(res.data);
-    });
+    axiosInst
+      .get("/account/list")
+      .then((res) => {
+        commit(REQUEST_ACCOUNT_LIST_TO_SPRING, res.data);
+        console.log(res.data);
+      })
+      .catch(() => {
+        alert("문제 발생");
+      });
   },
 
   requestLogin({}, payload) {
