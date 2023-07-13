@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Box, Button, Container, Grid, TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from 'react-query'
-import { checkEmailDuplicate, signupAccount } from '../api/AccountApi'
+import { accessSignupAccount, checkEmailDuplicate } from '../api/AccountApi'
 
 const SignUpPage = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const mutation = useMutation(signupAccount, {
+  const mutation = useMutation(accessSignupAccount, {
     onSuccess: (data) => {
       queryClient.setQueriesData('account', data)
       navigate('/login')
@@ -18,7 +18,7 @@ const SignUpPage = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordCheck, setPasswordCheck] = useState<string>('')
-  const [phoneNumber, setPhoneNumber] = useState<string>('')
+  const [accessNumber, setAccessNumber] = useState<string>('')
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [isEmailAvailable, setIsEmailAvailable] = useState<boolean>(false)
   const [isEmailDuplicateChecked, setIsEmailDuplicateChecked] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const SignUpPage = () => {
   const [emailMessage, setEmailMessage] = useState('')
   const [passwordMessage, setPasswordMessage] = useState('')
   const [passwordCheckMessage, setPasswordCheckMessage] = useState('')
-  
+  const [accessNumberMessage, setAccessNumberMessage] = useState('')
 
   // 이메일 유효성 검사
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,18 +71,6 @@ const SignUpPage = () => {
     checkFormValidity();
   }
 
-  // 휴대폰 번호 '-' 자동 생성
-  const handlePhoneNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    let formattedPhoneNumber = value.replace(/[^0-9]/g, ''); // 숫자 이외의 문자 제거
-    formattedPhoneNumber = formattedPhoneNumber.slice(0, 11); // 11자리까지만 유지
-    if (formattedPhoneNumber.length === 11) {
-      formattedPhoneNumber = `${formattedPhoneNumber.slice(0, 3)}-${formattedPhoneNumber.slice(3, 7)}-${formattedPhoneNumber.slice(7)}`;
-    }
-    setPhoneNumber(formattedPhoneNumber);
-    checkFormValidity();
-  };
-
   // 이메일 중복 검사
   const handleDuplicateCheck = async () => {
     try {
@@ -101,6 +89,12 @@ const SignUpPage = () => {
     setIsEmailDuplicateChecked(true);
     checkFormValidity();
   };
+
+  const handleAccessNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checkAccessNumber = e.target.value
+    setAccessNumber(checkAccessNumber)
+    checkFormValidity();
+  }
   
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -111,19 +105,17 @@ const SignUpPage = () => {
         email: { value: string }
         password: { value: string }
         checkPassword: { value: string }
-        name: { value: string }
-        phoneNumber: { value: string }
+        accessNumber: { value: string }
       }
     }
 
-    const { email, password, checkPassword, name, phoneNumber } = target.elements
+    const { email, password, checkPassword, accessNumber } = target.elements
 
     const data = {
       email: email.value,
       password: password.value,
       checkPassword: checkPassword.value,
-      name: name.value,
-      phoneNumber: phoneNumber.value,
+      accessNumber: accessNumber.value
     }
 
     await mutation.mutateAsync(data)
@@ -135,7 +127,7 @@ const SignUpPage = () => {
       email !== '' &&
       password !== '' &&
       passwordCheck !== '' &&
-      phoneNumber !== '' &&
+      accessNumber !== '' &&
       isEmailAvailable && // 사용 가능한 이메일인지 확인
       isEmailDuplicateChecked // 중복 체크가 완료된 상태인지 확인
     );
@@ -176,14 +168,10 @@ const SignUpPage = () => {
             </Grid>
             <Grid item xs={12}>
               <div style={{ position: 'relative' }}>
-                <TextField label='이름' name='name' fullWidth variant="filled" margin="normal"
-                              sx={{ borderRadius: '2px' }} />
-              </div>
-            </Grid>
-            <Grid item xs={12}>
-              <div style={{ position: 'relative' }}>
-                <TextField label='휴대폰 번호' name='phoneNumber' fullWidth variant="filled" margin="normal"
-                              sx={{ borderRadius: '2px' }} value={phoneNumber} onChange={handlePhoneNumber}/>
+                <TextField label='인증번호' name='accessNumber' fullWidth variant="filled" margin="normal"
+                              sx={{ borderRadius: '2px' }} onChange={handleAccessNumber} />
+                {passwordCheckMessage && <p style={{ fontSize: '12px', color: 'red', 
+                              marginTop: '5px', position: 'absolute', bottom: '-20px' }}>{accessNumberMessage}</p>}
               </div>
             </Grid>
             <Grid item xs={12}>
