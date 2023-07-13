@@ -41,9 +41,10 @@ export default {
         if (res.data.userToken) {
           alert("로그인 완료");
           localStorage.setItem("userToken", res.data.userToken);
-          commit(IS_SIGNIN, res.data.email);
+          console.log(res);
+          commit(IS_SIGNIN, res.data.userToken);
           // commit하지 않으면 로그인 이후에 navbar가 갱신되지 않음
-          console.log("IS_SIGNIN");
+          console.log(res.data.userToken);
           return res.data.email;
         } else {
           alert("이메일 또는 비밀번호를 확인해주세요");
