@@ -3,7 +3,7 @@ import axiosInst from "@/utility/axiosInst";
 import { REQUEST_ACCOUNT_LIST_TO_SPRING } from "./mutation-types";
 
 export default {
-  requestSpringToCheckEmail({ }, payload) {
+  requestSpringToCheckEmail({}, payload) {
     const { email } = payload;
     console.log("email: " + email);
     return axiosInst
@@ -22,11 +22,25 @@ export default {
       });
   },
 
-  requestCreateAccountToSpring({ }, payload) {
-    const { email, password, accountName, accountBirth, accountPhone, accountAddress } = payload;
+  requestCreateAccountToSpring({}, payload) {
+    const {
+      email,
+      password,
+      accountName,
+      accountBirth,
+      accountPhone,
+      accountAddress,
+    } = payload;
 
     return axiosInst
-      .post("/account/regist", { email, password, accountName, accountBirth, accountPhone, accountAddress })
+      .post("/account/regist", {
+        email,
+        password,
+        accountName,
+        accountBirth,
+        accountPhone,
+        accountAddress,
+      })
       .then((res) => {
         alert("계정 등록 성공!");
         return res;
@@ -42,7 +56,7 @@ export default {
     });
   },
 
-  requestLogin({ }, payload) {
+  requestLogin({}, payload) {
     axiosInst
       .post("/account/login", payload)
       .then((res) => {
@@ -53,7 +67,7 @@ export default {
       .catch(() => alert("ERROR"));
   },
 
-  requestDelete({ }, email) {
+  requestDelete({}, email) {
     return axiosInst
       .delete(`/account/delete/${email}`)
       .then((res) => {
@@ -62,5 +76,17 @@ export default {
       .catch(() => {
         alert("문제 발생 ~");
       });
+  },
+  accountLogin({}, payload) {
+    const { email, password } = payload;
+    return axiosInst.get("/account/login", { email, password }).then((res) => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.loginStatus);
+      console.log(res.data.userTocken);
+      // if (res.data.loginStatus == "id X") {
+      //   alert("아이디가 틀림");
+      // }
+    });
   },
 };
