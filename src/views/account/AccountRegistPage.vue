@@ -1,6 +1,7 @@
 <template>
     <div>
         <br>
+        <h2 align="center">Account Regist Page</h2>
         <account-regist-form align="center" @submit="onSubmit" />
         <br>
 
