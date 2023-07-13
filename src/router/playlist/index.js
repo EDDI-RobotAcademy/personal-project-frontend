@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import PlaylistReadPage from '@/views/playlist/PlaylistReadPage'
+import PlaylistRegisterPage from '@/views/playlist/PlaylistRegisterPage'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const playlistRoutes = [
     props: {
       default: true
     },
+  },
+  {
+    path: '/playlist-register-page',
+    name: 'PlaylistRegisterPage',
+    component: PlaylistRegisterPage
   },
 ]
 

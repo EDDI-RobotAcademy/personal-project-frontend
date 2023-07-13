@@ -26,4 +26,15 @@ export default {
                 commit(REQUEST_PALYLIST_TO_SPRING, res.data)
             })
     },
+    requestRegisterPlaylistToSpring({ }, payload) {
+        const { title } = payload;
+        return axiosInst.springAxiosInst.post('/playlist/register', { title })
+            .then((res) => {
+                alert('등록 성공!')
+                return res.data
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    },
 }

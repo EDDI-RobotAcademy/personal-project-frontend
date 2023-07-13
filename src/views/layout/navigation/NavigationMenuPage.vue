@@ -9,18 +9,22 @@
 
       <v-spacer></v-spacer>
 
-      <v-responsive max-width="260">
-        <router-link to="account-login-page">
+      <v-responsive max-width="400">
+        <router-link to="/account-login-page">
           <v-btn v-if="!isLogin" color="white" text>로그인
           </v-btn>
         </router-link>
-        <router-link to="account-register-page">
+        <router-link to="/account-register-page">
           <v-btn v-if="!isLogin" color="white" text>회원가입
           </v-btn>
         </router-link>
         <v-btn v-if="isLogin" color="white" text @click="accountLogout">로그아웃
         </v-btn>
-        <router-link to="account-my-page">
+        <router-link to="/playlist-register-page">
+          <v-btn v-if="isLogin" color="white" text>플레이리스트 등록
+          </v-btn>
+        </router-link>
+        <router-link to="/account-my-page">
           <v-btn v-if="isLogin" color="white" text>마이페이지
           </v-btn>
         </router-link>
