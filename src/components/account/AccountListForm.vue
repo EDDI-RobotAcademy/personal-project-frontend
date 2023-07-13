@@ -29,6 +29,7 @@ export default {
         return {
             accountHeaders: [
                 { text: 'ID', value: 'accountId' },
+                { text: 'notice', value: 'noticeBoards' },
                 { text: 'E-MAIL', value: 'email' },
                 { text: 'PASSWORD', value: 'password', sortable: false },
                 { text: '이름', value: 'accountName' },
