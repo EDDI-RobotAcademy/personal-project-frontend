@@ -48,9 +48,9 @@ export default {
             type: Array
         }
     },
-    // computed: {
-    //     ...mapState(accountModule, ['account'])
-    // },
+    computed: {
+        ...mapState(accountModule, ['account'])
+    },
 
     methods: {
         ...mapActions(accountModule, ['requestDelete']),
