@@ -8,4 +8,3 @@ const axiosInst = axios.create({
   timeout: 2500,
 });
 export default axiosInst;
-

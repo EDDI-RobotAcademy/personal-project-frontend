@@ -4,7 +4,6 @@
                 <br>
             <v-form @submit.prevent="onSubmit" ref="form">
                 <table>
-
                     <tr>
                         <td>
                             이메일 (ID)
@@ -31,10 +30,7 @@
                         <td>
                         <v-text-field label="비밀번호 확인" type="password" v-model="passwordConfirm" :rules="[passwordCheck]"/>
                         </td>
-
                     </tr>
-
-
                     <tr>
                         <td>
                             이름
@@ -43,7 +39,6 @@
                             <v-text-field v-model="accountName" label="이름 입력" type=""/>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             생년월일
@@ -52,7 +47,6 @@
                             <v-text-field v-model="accountBirth" label="생년월일 입력" type="Date"/>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             휴대폰 번호
@@ -61,7 +55,6 @@
                             <v-text-field placeholder=" '-'  빼고 입력해주세요" v-model="accountPhone" label="휴대폰 번호 입력" type="tel" v-mask="'###-####-####'"/>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             주소 입력
@@ -76,18 +69,12 @@
                             </div>
                         </td>
                     </tr>
-
-
                 </table>
-
                 <div>
-                    <v-btn outlined color="cyan" type ="submit" :disabled="!isFormValid()">회원 가입</v-btn>
-
+                    <v-btn outlined color="black" type ="submit" :disabled="!isFormValid()">회원 가입</v-btn>
                     <br><br>
-                    
                     <v-btn outlined color="green" to="/">돌아가기</v-btn>
                 </div>
-
             </v-form>
         </div>
 

@@ -20,4 +20,16 @@ export default {
       commit(COMMUNITY_LIST, res.data);
     });
   },
+  accountLogin({}, payload) {
+    const { email, password } = payload;
+    return axiosInst.get("/account/login", { email, password }).then((res) => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.loginStatus);
+      console.log(res.data.userTocken);
+      // if (res.data.loginStatus == "id X") {
+      //   alert("아이디가 틀림");
+      // }
+    });
+  },
 };
