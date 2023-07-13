@@ -34,7 +34,7 @@
             </router-link>
             <router-link v-if="isLogin" to="/account-mypage">
               <v-btn @click="myPage" text>
-                <span>{{ nickName }}님 공간</span>
+                <span class="text-none">{{ nickName }}님 공간</span>
               </v-btn>
             </router-link>
             <router-link v-if="isLogin" to="/">
