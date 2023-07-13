@@ -37,11 +37,9 @@ export default {
     }
 }
 </script>
-<style lang="">
-
+<style scoped>
 .communityButton {
     background-color: black !important;
     color: white;
 }
-    
 </style>
