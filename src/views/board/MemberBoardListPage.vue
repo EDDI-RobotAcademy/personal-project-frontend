@@ -1,16 +1,19 @@
 <template lang="">
     <div>
+        <h1 class="list_title">나만의 카페 공유</h1>
+            <div class="btn_router_div">
+                <v-container class="btn_container">
+                    <router-link to="/member-board-register-page" style="float: right">
+                       <v-btn
+                        outlined
+                        color="black">게시글 쓰기
+                        </v-btn>
+                    </router-link>
+                </v-container>
+            </div>
         <div>
             <member-board-list-form :boards="boards"/>
         </div>
-    <div>
-        <router-link to="/member-board-register-page">
-            <v-btn class="register_btn"
-                outlined
-                color="black">게시글 쓰기
-            </v-btn>
-        </router-link>
-    </div>
     </div>
 </template>
 
@@ -39,9 +42,17 @@ export default {
 }
 </script>
 <style>
-.register_btn{
-position: absolute;
-top: 5%;
-right: 14%
+.list_title{
+    min-height: 30px;
+    margin: 40px 0 0px;
+    text-align: center;
+}
+.btn_router_div{
+    justify-content: center; 
+    display: flex;
+}
+.btn_container{
+    display: inline-block; 
+    width:1000px;
 }
 </style>

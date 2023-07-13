@@ -1,6 +1,5 @@
 <template lang="">
     <div>
-        <h1 class="list_title_1">나만의 카페 공유</h1>
         <v-simple-table 
             style="margin: 10px; width:1000px; margin: 0 auto"
             :items-per-page="5">
@@ -25,13 +24,13 @@
                 </td>
                 <td align="center">
                     <router-link :to="{ 
-                        name: 'BoardReadPage',  
+                        name: 'MemberBoardReadPage',  
                         params: { boardId: board.boardId.toString() }}">
                             {{ board.title }}
                     </router-link>
                 </td>
                 <td align="center">
-                    {{ board.writer }}
+                    {{ board.nickName }}
                 </td>
                 <td align="center">
                     {{ board.createDate }}
@@ -53,12 +52,7 @@ export default {
 }
 </script>
 
-<style>
-.list_title_1{
-    min-height: 30px;
-    margin: 40px 0 30px;
-    text-align: center;
-}
+<style scoped>
 .list_titles{
     font-size: 15px;
 }
