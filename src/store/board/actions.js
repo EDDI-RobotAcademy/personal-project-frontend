@@ -29,4 +29,10 @@ export default {
                 
             })
     },
+    requestBoardToSpring ({commit}, boardId) {
+        return axiosInst.get(`/member-board/${boardId}`)
+            .then((res) => {
+                commit(REQUEST_BOARD_TO_SPRING, res.data)
+            })
+    },
 }

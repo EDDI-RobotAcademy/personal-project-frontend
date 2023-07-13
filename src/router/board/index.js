@@ -18,10 +18,15 @@ const memberBoardRoutes = [
         component: MemberBoardRegisterPage
     },
     {
-        path: '/member-board-read-page',
+        path: '/member-board-read-page/:boardId',
         name: 'MemberBoardReadPage',
-        component: MemberBoardReadPage
-    },
+        components: {
+            default: MemberBoardReadPage
+        },
+        props: {
+            default: true
+        }
+    }
 ]
 
 export default memberBoardRoutes
