@@ -1,18 +1,21 @@
 <template>
     <div>
         <MemberBoardRegisterForm @submit="onSubmit"/> 
+        <!-- <Test2 @submit="onSubmit"/> -->
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import MemberBoardRegisterForm from '@/components/board/MemberBoardRegisterForm.vue'
+// import Test2 from '@/components/test2.vue'
 const boardModule = 'boardModule'
 
 
 export default {
     components: {
         MemberBoardRegisterForm,
+        // Test2
     },
     name: "MemberBoardRegisterPage",
     methods: {

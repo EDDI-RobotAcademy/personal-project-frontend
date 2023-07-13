@@ -26,8 +26,7 @@
                 <tr>
                     <td>첨부파일</td>
                     <td style="width: 100px;">
-                        <input id="file-seslector" ref="file" type="file" @change="handleFileUpload()"/>
-                        <v-btn @click="uploadAwsS3" color="primary" text>업로드</v-btn>
+                        <v-file-input v-model="awsFileList" multiple />
                     </td>    
                         
                 </tr>
@@ -35,9 +34,7 @@
                     <td style="width: 50px; align-items: center; padding-right: 150PX;" colspan="4">
                         <div class="image-container">
                             <div v-for="(file, index) in awsFileList" :key="file.Key" class="image-item">
-                                <v-img :src='`https://${awsBucketName}.s3.${awsBucketRegion}.amazonaws.com/${file.Key}`' style="width: 10vw;"/>
-                                    #{{index + 1}} {{file.Key}}
-                                    <v-btn @click="deleteAwsS3File(file.Key)" color="red" text icon>x</v-btn>
+                                <img src="" alt="">
                             </div>
                         </div>
                     </td>
@@ -76,22 +73,17 @@ export default {
         }
     },
     methods: {
-        async onSubmit () {
-            // const { title, nickName, content } = this
-            await this.getAwsS3Files()
-
+        onSubmit () {
+            this.uploadAwsS3()
             let boardInfo = {
                 title: this.title,
                 nickName: this.nickName,
                 content: this.content,
-                awsFileList: this.awsFileList.map((imagePath)=>imagePath.Key)
+                awsFileList: this.awsFileList.map((imagePath)=>imagePath.name)
             }
             this.$emit('submit', boardInfo)
         },
-        handleFileUpload(){
-            this.file = this.$refs.file.files[0]
-            console.log('file: ' + this.file.name)
-        },awsS3Config(){
+        awsS3Config(){
             AWS.config.update({
                 region: this.awsBucketRegion,
                 credentials: new AWS.CognitoIdentityCredentials({
@@ -106,12 +98,16 @@ export default {
                 }
             })
         },
+        newFileName(){
+            return Math.random().toString().slice()
+        },
         uploadAwsS3(){
             this.awsS3Config()
-
+            for(let i=0 ; i< this.awsFileList.length; i++ ){
+            let f = this.awsFileList[i]    
             this.s3.upload({
-                Key: this.file.name, 
-                Body: this.file, 
+                Key: f.name, 
+                Body: f, 
                 ACL: 'public-read'
             }, (err, data)=>{
                 if(err){
@@ -119,25 +115,9 @@ export default {
                     return alert('업로드 중 문제 발생(사진파일에 문제가 있음)' + err.message)
                 }
                 alert('업로드 성공')
-                this.getAwsS3Files()
+                // this.getAwsS3Files()
                 
-            })
-        },
-        getAwsS3Files(){
-            this.awsS3Config()
-
-            let res = this.s3.listObjects({
-                Delimiter: '/',
-                MaxKeys: 10,
-            }, (err, data)=>{
-                if (err) {
-                    return alert('AWS 버킷내에 문제가 있습니다. ' + err.message)
-                }else {
-                    this.awsFileList = data.Contents
-                    console.log('s3 리스트: ', data)
-                    this.startAfterAwsS3Bucket = data.NextMarker
-                }
-            })
+            })}
         },
         deleteAwsS3File(key){
             this.awsS3Config()
@@ -148,22 +128,15 @@ export default {
                 if(err){
                     return alert('AWS 버킷 데이터 삭제에 문제가 발생했습니다.: ' + err.message)
                 }
-                this.getAwsS3Files()
             })
         }
     },
     created(){
-        this.getAwsS3Files(),
         this.$store.state.nickName
     },
     computed: {
         ...mapState(memberModule, ['nickName'])
     },
-    // unmounted() {
-    //     this.awsFileList = []
-    //     console.log(1)
-    // },
-
     }
 
 </script>
