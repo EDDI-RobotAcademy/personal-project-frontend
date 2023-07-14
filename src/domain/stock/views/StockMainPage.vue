@@ -1,51 +1,59 @@
 <template>
-    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-      <div style="width: 1200px; border: 2px solid skyblue;">
-        <chart-display-form :ticker="ticker" />
+  <div>
+    <div>
+      <h1>{{ stockName }}</h1>
+    </div>
+    <div style="border: 2px solid skyblue;">
+      <chart-display-form :ticker="ticker" />
+    </div>
+    <div>
+      <div style="border: 2px solid skyblue;">
+        <board-list-form :boards="boards" :ticker="ticker" />
+        <div>
+          <router-link
+            :to="{
+              name: 'BoardRegisterPage',
+              params: { ticker: ticker.toString() }
+            }"
+          >
+            게시물 작성
+          </router-link>
+        </div>
       </div>
-      <div style="display: flex; margin-top: 20px;">
-        <div style="width: 600px; height: 600px; overflow: auto; border: 2px solid skyblue;">
-          <board-list-form :boards="boards" :stockName="stockName" :ticker="ticker" />
-          <div style="text-align: left; margin: 15px;">
-            <router-link
-              :to="{
-                name: 'BoardRegisterPage',
-                params: { ticker: ticker.toString() }
-              }"
-            >
-              게시물 작성
-            </router-link>
-          </div>
-        </div>
-        <div class="chat-table" style="width: 500px; position: sticky; top: 64px; right: 0; height: calc(60vh - 64px);">
-          <v-container>
-            <chat-form :ticker="ticker" />
-          </v-container>
-        </div>
+      <div style="border: 2px solid skyblue;">
+        <v-container>
+          <chat-form :ticker="ticker" />
+        </v-container>
+      </div>
+      <div>
+        <v-container>
+          <article-display-form :articles="articles" />
+        </v-container>
       </div>
     </div>
-  </template>  
+  </div>
+</template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import BoardListForm from '@/domain/board/components/BoardListForm.vue';
 import ChartDisplayForm from '@/domain/stock/components/ChartDisplayForm.vue'
 import ChatForm from '@/domain/chat/components/ChatForm.vue';
+import ArticleDisplayForm from '@/domain/article/components/ArticleDisplayForm.vue';
 
 const boardModule = 'boardModule'
+const stockMoudle = 'stockModule'
+const articleModule = 'articleModule'
 
 export default {
     components: { 
         BoardListForm,
         ChartDisplayForm,
         ChatForm,
+        ArticleDisplayForm,
     },
     props: {
         ticker: {
-            type: String,
-            required: true,
-        },
-        stockName: {
             type: String,
             required: true,
         },
@@ -56,14 +64,19 @@ export default {
     },
     computed: {
         ...mapState(boardModule, ['boards']),
+        ...mapState(stockMoudle, ['stock']),
+        ...mapState(articleModule, ['articles']),
+        stockName() {return this.stock.stockName;}
     },
-    created () {
-        this.requestBoardListToSpring(this.ticker)
+    async created() {
+        await this.requestBoardListToSpring(this.ticker);
+        await this.requestStockToSpring(this.ticker);
+        this.requestAritcleListToFastApi(this.stock.stockName);
     },
     methods: {
-        ...mapActions(
-            boardModule, ['requestBoardListToSpring']
-        )
+        ...mapActions(boardModule, ['requestBoardListToSpring']),
+        ...mapActions(stockMoudle, ['requestStockToSpring']),
+        ...mapActions(articleModule, ['requestAritcleListToFastApi'])
     }
 }
 </script>
