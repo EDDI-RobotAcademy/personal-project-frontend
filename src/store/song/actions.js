@@ -21,11 +21,14 @@ export default {
     },
     requestRegisterSongToSpring(_, { payload, playlistId }) {
         const { title, singer, genre, link } = payload;
-        return axiosInst.springAxiosInst
-            .post("/song/register", { playlistId, title, singer, genre, link })
+        const requestData = {
+            playlistId, title, singer, genre, link
+        }
+        console.log(requestData)
+        return axiosInst.springAxiosInst.post("/song/register", requestData)
             .then((res) => {
                 alert("등록 성공!")
-                return res;
+                return res.data;
             })
             .catch(() => {
                 alert("문제 발생!")
@@ -35,6 +38,20 @@ export default {
         return axiosInst.springAxiosInst.get(`/song/${id}`)
             .then((res) => {
                 commit(REQUEST_SONG_TO_SPRING, res.data)
+            })
+    },
+    requestModifySongToSpring({ }, { payload, songId }) {
+        const { title, singer, genre, link } = payload
+        const requestData = { songId, title, singer, genre, link }
+
+        console.log(requestData)
+        return axiosInst.springAxiosInst.post('/song/modify', requestData)
+            .then((res) => {
+                alert('수정 성공!')
+                return res.data
+            })
+            .catch(() => {
+                alert('문제 발생!')
             })
     },
 }

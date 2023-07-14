@@ -1,7 +1,7 @@
 <template>
     <v-container id="form-container" class="d-flex justify-center align-center" fluid>
         <v-card class="mx-auto pa-0 custom-card" color="white" width="500">
-            <v-card-title class="custom-title">노래 등록</v-card-title>
+            <v-card-title class="custom-title">노래 수정</v-card-title>
             <v-card-text>
                 <form @submit.prevent="onSubmit">
                     <v-text-field label="제목" v-model="title" />
@@ -23,6 +23,12 @@
 
 <script>
 export default {
+    props: {
+        song: {
+            type: Object,
+            required: true,
+        }
+    },
     data() {
         return {
             title: '',
@@ -39,6 +45,12 @@ export default {
         cancel() {
             this.$router.go(-1)
         }
+    },
+    created() {
+        this.title = this.song.title
+        this.singer = this.song.singer
+        this.genre = this.song.genre
+        this.link = this.song.link
     },
 }
 </script>

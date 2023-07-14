@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import SongReadPage from '@/views/song/SongReadPage'
 import SongRegisterPage from '@/views/song/SongRegisterPage'
+import SongModifyPage from '@/views/song/SongModifyPage'
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,24 @@ const songRoutes = [
     },
   },
   {
-    path: '/song-register-page',
+    path: '/song-register-page/:playlistId',
     name: 'SongRegisterPage',
-    component: SongRegisterPage
+    components: {
+      default: SongRegisterPage,
+    },
+    props: {
+      default: true
+    }
+  },
+  {
+    path: '/song-modify-page/:id',
+    name: 'SongModifyPage',
+    components: {
+      default: SongModifyPage
+    },
+    props: {
+      default: true
+    },
   },
 ]
 
