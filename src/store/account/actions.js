@@ -1,4 +1,5 @@
 import axiosInst from "@/utility/axiosInst";
+import router from "@/router";
 
 import { REQUEST_ACCOUNT_LIST_TO_SPRING } from "./mutation-types";
 
@@ -86,13 +87,11 @@ export default {
   accountLogin({}, payload) {
     const { email, password } = payload;
     return axiosInst.post("/account/login", { email, password }).then((res) => {
-      console.log(res);
       console.log(res.data);
-      console.log(res.data.loginStatus);
-      console.log(res.data.userTocken);
-      // if (res.data.loginStatus == "id X") {
-      //   alert("아이디가 틀림");
-      // }
+      if (res.data.loginStatus == "WRONG_ID") alert("아이디가 잘못되었습니다.");
+      if (res.data.loginStatus == "WRONG_PW")
+        alert("비밀번호가 잘못되었습니다..");
+      if (res.data.loginStatus == "SUCCESS_LOGIN") router.push("/");
     });
   },
 };

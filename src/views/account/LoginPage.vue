@@ -24,7 +24,7 @@ export default {
             const account = await this.accountLogin(payload)
             console.log('typeof(account): ' + typeof (account))
             console.log('account: ' + JSON.stringify(account))
-            await this.$router.push({ name: 'HomeView' })
+
         }
     },
 }
