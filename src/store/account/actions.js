@@ -85,7 +85,7 @@ export default {
   },
   accountLogin({}, payload) {
     const { email, password } = payload;
-    return axiosInst.get("/account/login", { email, password }).then((res) => {
+    return axiosInst.post("/account/login", { email, password }).then((res) => {
       console.log(res);
       console.log(res.data);
       console.log(res.data.loginStatus);
