@@ -17,9 +17,9 @@ export default {
     methods: {
         ...mapActions(accountModule, ['requestRegisterAccountToSpring']),
         async onSubmit (payload) {
-            const {email, password, memberType} = payload
+            const {email, password, memberType, nickname} = payload
             await this.requestRegisterAccountToSpring(
-                {email, password, memberType})
+                {email, password, memberType, nickname})
         }
     }
 }

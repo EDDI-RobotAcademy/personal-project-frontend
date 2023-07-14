@@ -25,6 +25,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Nickname</td>
+                        <td class="input">
+                            <input type="text" class="inputValue" v-model="nickname">
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Account Type</td>
                         <td class="radio">
                            <label><input type="radio" class="inputValue" v-model="memberType" value="normal">일반</label> 
@@ -49,6 +55,7 @@ export default {
             password: '',
             passwordCheck: '',
             memberType:'',
+            nickname:'',
 
             checkEmailValid: false,
             checkPasswordValid: false
@@ -59,8 +66,8 @@ export default {
             this.checkEmail()
             this.checkPassword()
             if(this.checkEmailValid == true && this.checkPasswordValid == true) {
-                const { email, password, memberType } = this
-                this.$emit('submit', { email, password, memberType })
+                const { email, password, memberType ,nickname} = this
+                this.$emit('submit', { email, password, memberType ,nickname})
             }
         },
         checkEmail() {

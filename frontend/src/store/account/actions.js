@@ -21,7 +21,8 @@ export default {
                 if(res.data==null){
                     alert('입력을 확인해 주세요!')
                 } else{
-                  localStorage.setItem('userToken',res.data)
+                  localStorage.setItem('userToken',res.data[0])
+                  localStorage.setItem('nickname',res.data[1])
                     router.push('/')
                 }
             })
