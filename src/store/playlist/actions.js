@@ -37,4 +37,18 @@ export default {
                 alert('문제 발생!')
             })
     },
+    requestModifyPlaylistToSpring({ }, { payload, playlistId }) {
+        const { title } = payload
+        const id = playlistId
+        const requestData = { id, title }
+
+        return axiosInst.springAxiosInst.post('/playlist/modify', requestData)
+            .then((res) => {
+                alert('수정 성공!')
+                return res.data
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    },
 }
