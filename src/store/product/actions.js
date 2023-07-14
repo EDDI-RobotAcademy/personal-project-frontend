@@ -7,10 +7,10 @@ import axiosInst from '@/utility/axiosInst'
 
 export default {
     requestRegisterProductToSpring ({}, payload) {
-        const { productName, category, productDetails, city, street, addressDetail, zipcode, mainImageName, imageNameList, optionNameList, optionPriceList } = payload
+        const { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList } = payload
 
         return axiosInst.post('/product/register', 
-        { productName, category, productDetails, city, street, addressDetail, zipcode, mainImageName, imageNameList, optionNameList, optionPriceList })
+        { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList })
             .then((res) => {
                 if(res.data == true) {
                     alert("상품 등록 성공!")
@@ -49,6 +49,14 @@ export default {
     requestStockToSpring({ }, { id, checkInDate, checkOutDate }) {
         return axiosInst.post('/product/check-stock', { id, checkInDate, checkOutDate })
         .then((res) => {
+            return res.data
+        })
+    },
+    requestStockByMapToSpring({ }, { checkInDate, checkOutDate }) {
+        console.log("입력받은 날짜: " + checkInDate + " " + checkOutDate)
+        return axiosInst.post('/product/map-vacancy', { checkInDate, checkOutDate })
+        .then((res) => {
+            console.log("서버 응답: " + JSON.stringify(res.data))
             return res.data
         })
     }
