@@ -64,5 +64,18 @@ export default {
             .catch(() => {
                 alert("실패")
             })
-    }
+    },
+    requestPasswordCheckToSpring({ }, payload) {
+        const { password } = payload;
+        return axiosInst.springAxiosInst.post("/account/password-check", { password })
+            .then((res) => {
+                if (res.data != null) {
+                    alert("확인 성공!");
+                    return true
+                } else {
+                    alert("확인 실패!");
+                    return false
+                }
+            });
+    },
 }
