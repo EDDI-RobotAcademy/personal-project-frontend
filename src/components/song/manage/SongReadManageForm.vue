@@ -37,7 +37,7 @@ export default {
             type: Object,
             required: true,
         },
-        id: {
+        playlistId: {
             type: String,
             required: true,
         }
@@ -47,7 +47,7 @@ export default {
             const songId = this.song.id
             await this.$router.push({
                 name: 'SongModifyManagePage',
-                params: { songId: songId.toString(), playlistId: this.id.toString() }
+                params: { songId: songId.toString(), playlistId: this.playlistId.toString() }
             })
         },
         async goBack() {
