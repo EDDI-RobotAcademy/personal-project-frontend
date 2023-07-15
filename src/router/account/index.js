@@ -6,6 +6,7 @@ import AccountLoginPage from '@/views/account/AccountLoginPage.vue'
 import AccountMyPage from '@/views/account/AccountMyPage.vue'
 import AccountPasswordCheckPage from '@/views/account/AccountPasswordCheckPage.vue'
 import AccountModifyPage from '@/views/account/AccountModifyPage.vue'
+import AccountWithdrawPage from '@/views/account/AccountWithdrawPage.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const accountRoutes = [
     path: '/account-modify-page',
     name: 'AccountModifyPage',
     component: AccountModifyPage
+  },
+  {
+    path: '/account-withdraw-page',
+    name: 'AccountWithdrawPage',
+    component: AccountWithdrawPage
   },
 ]
 

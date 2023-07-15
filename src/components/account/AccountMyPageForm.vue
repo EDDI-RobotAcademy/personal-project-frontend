@@ -51,7 +51,7 @@ export default {
             { title: "내 정보 홈", address: "/account-my-page" },
             { title: "회원 정보 수정", address: "/account-password-check-page" },
             { title: "플레이리스트 관리", address: "/playlist-list-manage-page" },
-            { title: "회원 탈퇴", address: "/account-withdrawal-page" },
+            { title: "회원 탈퇴", address: "/account-withdraw-page" },
         ],
         playlistValue: 0,
         songValue: 0,

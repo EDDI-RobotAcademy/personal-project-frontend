@@ -77,7 +77,6 @@ export default {
         return axiosInst.springAxiosInst.post("/account/password-check", { password })
             .then((res) => {
                 if (res.data != null) {
-                    alert("확인 성공!");
                     return true
                 } else {
                     alert("확인 실패!");
@@ -95,6 +94,19 @@ export default {
                     return true
                 } else {
                     alert("수정 실패!");
+                    return false
+                }
+            });
+    },
+    // 회원 탈퇴 요청
+    requestAccountWithdrawToSpring({ }) {
+        return axiosInst.springAxiosInst.delete("/account/withdraw")
+            .then((res) => {
+                if (res.data) {
+                    alert("탈퇴 성공!");
+                    return true
+                } else {
+                    alert("탈퇴 실패!");
                     return false
                 }
             });
