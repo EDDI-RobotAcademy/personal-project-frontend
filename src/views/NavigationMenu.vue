@@ -58,8 +58,8 @@
             </router-link>
           </div>
             <div style="float:right">
-            <router-link to="/member-board-list-page">
-              <v-btn text style="font-weight: bold;">board</v-btn>
+            <router-link to="/cafe-map-page">
+              <v-btn text style="font-weight: bold;">Map</v-btn>
             </router-link>
           </div>
           </div>
