@@ -39,7 +39,6 @@ export default {
     accountLogin() {
       const { email, password } = this;
       this.$emit("submit", { email, password })
-      localStorage.setItem("isLogin", true)
     }
   }
 }
