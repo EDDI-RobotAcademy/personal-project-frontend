@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-import PlaylistReadForm from '../../components/playlist/user/PlaylistReadForm.vue'
+import PlaylistReadForm from '@/components/playlist/user/PlaylistReadForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 const playlistModule = 'playlistModule'

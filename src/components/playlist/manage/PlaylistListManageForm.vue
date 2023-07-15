@@ -18,7 +18,7 @@
                 <td align="center">
                   <router-link :to="{
                     name: 'PlaylistReadManagePage',
-                    params: { id: playlist.id }
+                    params: { id: playlist.id.toString() }
                   }">
                     {{ playlist.title }}
                   </router-link>
