@@ -31,7 +31,7 @@
                                 <tr v-for="(songList, index) in playlist.songList" :key="songList.title">
                                     <router-link :to="{
                                         name: 'SongReadPage',
-                                        params: { id: songList.id.toString() }
+                                        params: { id: songList.id.toString(), playlistId: playlist.playlist.id.toString() }
                                     }" style="text-decoration: none; color: black;">
                                         <td>{{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}</td>
                                     </router-link>
@@ -58,7 +58,9 @@ export default {
     },
     methods: {
         async goBack() {
-            this.$router.go(-1)
+            await this.$router.push({
+                name: 'home',
+            })
         },
     },
 }

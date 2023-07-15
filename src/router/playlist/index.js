@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import PlaylistReadPage from '@/views/playlist/user/PlaylistReadPage'
-import PlaylistRegisterPage from '@/views/playlist/user/PlaylistRegisterPage'
+import PlaylistRegisterPage from '@/views/playlist/manage/PlaylistRegisterPage'
 import PlaylistModifyManagePage from '@/views/playlist/manage/PlaylistModifyManagePage'
 import PlaylistListManagePage from '@/views/playlist/manage/PlaylistListManagePage'
 import PlaylistReadManagePage from '@/views/playlist/manage/PlaylistReadManagePage'

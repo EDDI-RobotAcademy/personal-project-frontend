@@ -30,8 +30,8 @@
                                 style="border-collapse: separate; border-spacing: 1em; width: 100%">
                                 <tr v-for="(songList, index) in playlist.songList" :key="songList.title">
                                     <router-link :to="{
-                                        name: 'SongReadPage',
-                                        params: { id: songList.id.toString() }
+                                        name: 'SongReadManagePage',
+                                        params: { id: songList.id.toString(), playlistId: playlist.playlist.id.toString() }
                                     }" style="text-decoration: none; color: black;">
                                         <td>{{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}</td>
                                     </router-link>
@@ -67,10 +67,9 @@ export default {
     },
     methods: {
         async onModify() {
-            const playlistId = this.playlist.playlist.id
             await this.$router.push({
-                name: 'PlaylistModifyPage',
-                params: { playlistId: playlistId.toString() }
+                name: 'PlaylistModifyManagePage',
+                params: { playlistId: this.playlist.playlist.id.toString() }
             })
         },
         async goBack() {

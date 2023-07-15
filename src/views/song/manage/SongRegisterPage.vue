@@ -1,12 +1,12 @@
 <template lang="">
     <div>
-        <song-register-form @submit="registerSong"/>
+        <song-register-form @submit="registerSong" :playlistId="playlistId"/>
         {{playlistId}}
     </div>
     
 </template>
 <script>
-import SongRegisterForm from '@/components/song/SongRegisterForm.vue'
+import SongRegisterForm from '@/components/song/manage/SongRegisterForm.vue'
 import { mapActions } from 'vuex';
 
 const songModule = 'songModule'

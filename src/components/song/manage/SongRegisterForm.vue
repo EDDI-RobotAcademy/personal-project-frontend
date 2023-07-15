@@ -23,6 +23,12 @@
 
 <script>
 export default {
+    props: {
+        playlistId: {
+            type: String,
+            required: true,
+        }
+    },
     data() {
         return {
             title: '',
@@ -36,8 +42,11 @@ export default {
             const { title, singer, genre, link } = this
             this.$emit('submit', { title, singer, genre, link })
         },
-        goBack() {
-            this.$router.go(-1)
+        async goBack() {
+            await this.$router.push({
+                name: 'PlaylistReadManagePage',
+                params: { id: this.playlistId.toString() }
+            })
         }
     },
 }

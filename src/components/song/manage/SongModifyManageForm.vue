@@ -11,7 +11,7 @@
 
                     <v-row>
                         <v-col>
-                            <v-btn color="black" text type="submit">등록</v-btn>
+                            <v-btn color="black" text type="submit">수정</v-btn>
                             <v-btn color="black" text @click="goBack">취소</v-btn>
                         </v-col>
                     </v-row>
@@ -26,6 +26,10 @@ export default {
     props: {
         song: {
             type: Object,
+            required: true,
+        },
+        playlistId: {
+            type: String,
             required: true,
         }
     },
@@ -43,7 +47,10 @@ export default {
             this.$emit('submit', { title, singer, genre, link })
         },
         async goBack() {
-            this.$router.go(-1)
+            await this.$router.push({
+                name: 'SongReadManagePage',
+                params: { id: this.song.id.toString(), playlistId: this.playlistId.toString() }
+            })
         },
     },
     created() {

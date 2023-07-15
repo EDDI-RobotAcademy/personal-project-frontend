@@ -32,7 +32,10 @@ export default {
             this.$emit('submit', { title })
         },
         async goBack() {
-            this.$router.go(-1)
+            await this.$router.push({
+                name: 'PlaylistReadManagePage',
+                params: { id: this.playlist.id.toString() }
+            })
         },
     }
 }

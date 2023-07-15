@@ -1,19 +1,23 @@
 <template>
     <div>
-        <song-modify-form v-if="song" :song="song" @submit="onSubmit" />
+        <song-modify-manage-form v-if="song" :song="song" :playlistId="playlistId" @submit="onSubmit" />
     </div>
 </template>
 
 <script>
-import SongModifyForm from '@/components/song/SongModifyForm.vue';
+import SongModifyManageForm from '@/components/song/manage/SongModifyManageForm.vue';
 import { mapActions, mapState } from 'vuex';
 const songModule = 'songModule'
 export default {
     components: {
-        SongModifyForm
+        SongModifyManageForm
     },
     props: {
         songId: {
+            type: String,
+            required: true,
+        },
+        playlistId: {
             type: String,
             required: true,
         }
@@ -30,8 +34,8 @@ export default {
 
             await this.requestModifySongToSpring({ payload, songId })
             await this.$router.push({
-                name: 'SongReadPage',
-                params: { id: songId.toString() }
+                name: 'SongReadManagePage',
+                params: { id: songId.toString(), playlistId: this.playlistId.toString() }
             })
         }
     },
