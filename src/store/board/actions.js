@@ -35,4 +35,11 @@ export default {
                 commit(REQUEST_BOARD_TO_SPRING, res.data)
             })
     },
+    requestSearchTextToSpring({}, payload){
+        const {searchs}=payload
+        return axiosInst.post('/memberboard/search', searchs)
+        .then((res)=>{
+            return res
+        })
+    }
 }

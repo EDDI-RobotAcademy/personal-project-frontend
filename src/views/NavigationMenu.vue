@@ -17,8 +17,25 @@
       <v-spacer></v-spacer> 
         <div class="search">
           <input autocomplete="off" 
-          placeholder="Search" type="text" />
-          
+          placeholder="Search" type="text"
+          :value="keyword" 
+          @input="searchText"
+          @keyup.enter="closeCategories"
+          @click="showCategories=!showCategories" />
+          <v-row v-if="showCategories">
+          <v-col cols="12">
+            <div class="category-dropdown">
+              <div @click="navigateTo">
+                <div class="category-dropdown-item">
+                <v-img class="category-dropdown-marker" :src="require('../assets/icon/no_logo.png')"
+                            width="50" ratio="1"></v-img>
+                <span class="category-dropdown-text">근처 카페 찾기</span>
+              </div>
+              <span class="category-dropdown-text">{{ keyword }}</span>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
         </div>
         <v-row justify="end">
           <v-col cols="auto"> 
@@ -71,13 +88,26 @@
 <script>
 import {  mapActions, mapMutations, mapState } from "vuex";
 const memberModule= 'memberModule'
+const boardModule = 'boardModule'
 export default {
     data(){
         return{
+          showCategories: false,
+          keyword: ''
          
     }
     },
     methods:{
+      searchText(event){
+        this.keyword = event.target.value;
+        this.showCategories = true;
+      },
+
+      closeCategories(){
+        this.showCategories = false;
+        const something = this.requestSearchTextToSpring(this.keyword)
+      },
+
       logout(){
         localStorage.clear(),
         this.LOGIN_COMPLETE(false)
@@ -85,8 +115,14 @@ export default {
       myPage(){
 
       },
-      ...mapMutations(memberModule,['LOGIN_COMPLETE'])
-
+      navigateTo(){
+        this.$router.push('/cafe-map-page');
+        this.showCategories=false
+      },
+      ...mapMutations(memberModule,['LOGIN_COMPLETE']),
+      ...mapActions( 
+            boardModule, ['requestSearchTextToSpring']
+      ),
 
     },
     created(){
@@ -101,6 +137,7 @@ export default {
 </script>
 <style scoped>
 .search {
+  position: relative;
   display: block;
   width: 430px;
   margin: 20px auto;
@@ -138,5 +175,37 @@ spacer{
   padding: 2px 0 0 0;
   
 
+}
+.category-dropdown {
+  position: absolute;
+  top: 82%;
+  left:0;
+  background-color: #ffffff;
+  border: 1.9px solid #84d9b3;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding: 5px;
+  width: 100.2%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  transition: box-shadow 0.3s;
+}
+.category-dropdown:hover .category-dropdown-item{
+  background-color: #f2f2f2;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  width: 410px;
+}
+.category-dropdown-item {
+  display: flex;
+  align-items: center;
+}
+.category-dropdown-marker {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 5px;
+}
+.category-dropdown-text {
+  font-weight: bold;
 }
 </style>
