@@ -1,26 +1,13 @@
 <template>
   <v-container>
-  <div class="sc-fsYeqs huXbdS MapDistance">
-    <div data-idx="0">
-      <button aria-label="select map distance" class="" data-idx="0">100m</button>
-    </div>
-    <div data-idx="1">
-      <button aria-label="select map distance" class="" data-idx="1">300m</button>
-    </div>
-      <div data-idx="2">
-        <button aria-label="select map distance" class="selected" data-idx="2">500m</button>
-      </div>
-      <div data-idx="3">
-        <button aria-label="select map distance" class="" data-idx="3">1km</button>
-      </div>
-      <div data-idx="4">
-        <button aria-label="select map distance" class="" data-idx="4">2km</button>
-      </div>
-      <div data-idx="5">
-        <button aria-label="select map distance" class="" data-idx="5">3km</button>
-      </div>
-      <div data-idx="6">
-        <button aria-label="select map distance" class="" data-idx="6">5km</button>
+  <div class="MapDistance">
+      <div v-for="(distance, index) in distances" :key="index" :data-idx="index">
+        <button
+          :class="{ selected: selectedIndex === index }"
+          @click="selectDistance(index)"
+        >
+          <span class="tooltip">{{ distance }}</span>
+        </button>
       </div>
   </div>
   <div>
@@ -38,11 +25,15 @@
 export default {
   data(){
     return{
+      distances: ["100m", "300m", "500m", "1km", "2km"],
+      selectedIndex: 2,
       map: null,
       placesService: null,
       userMarker: null,
       infoWindow: null,
       markers: [],
+      radius: 500,
+      center: null
     }
   },
   mounted() {
@@ -53,7 +44,7 @@ export default {
       const position = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
-      const center = {
+      this.center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
@@ -61,13 +52,14 @@ export default {
 
       const { Map } = await google.maps.importLibrary("maps");
       this.map = new Map(document.getElementById("map"), {
-        center: center,
+        center: this.center,
         zoom: 16,
         mapId: "ab5ddca53fad4bc8",
+        disableDefaultUI: true
       });
 
       this.userMarker = new google.maps.Marker({
-        position: center,
+        position: this.center,
         map: this.map,
         title:"you are here",
       });
@@ -87,13 +79,30 @@ export default {
       const { pMap } = await google.maps.importLibrary("places");
       this.placesService = new google.maps.places.PlacesService(this.map);
 
-      this.searchCafesWithinRange(center, radius);
+      this.searchCafesWithinRange(this.center, radius);
+
+      const buttons = document.querySelectorAll('.MapDistance button');
+      buttons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const buttonText = event.target.innerText;
+          let radius;
+
+          if (buttonText.endsWith('km')) {
+            radius = parseInt(buttonText) * 1000;
+          } else {
+            radius = parseInt(buttonText);
+          }
+
+          this.radius = radius;
+          this.searchCafesWithinRange(this.center, radius);
+        });
+      });
     },
 
-    searchCafesWithinRange(center, radius) {
+    searchCafesWithinRange(center) {
       const request = {
         location: center,
-        radius: radius,
+        radius: this.radius,
         types: ["cafe"],
       };
 
@@ -102,10 +111,8 @@ export default {
 
     processResults(results, status) {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        // Clear previous markers
         this.clearMarkers();
 
-        // Create markers for each cafe found
         for (let i = 0; i < results.length; i++) {
           const place = results[i];
 
@@ -119,14 +126,18 @@ export default {
             }
           });
 
-          // Store the marker in the markers array
           this.markers.push(marker);
 
-          // Add click event listener to show info window
           marker.addListener("click", () => {
             this.showInfoWindow(place, marker);
           });
         }
+        const bounds = new google.maps.LatLngBounds();
+        bounds.extend(this.center);
+        for (let i = 0; i < this.markers.length; i++) {
+          bounds.extend(this.markers[i].getPosition());
+        }
+        this.map.fitBounds(bounds);
       }
     },
 
@@ -150,7 +161,10 @@ export default {
       });
       infoWindow.open(this.map, marker);
     },
-  },
+    selectDistance(index){
+      this.selectedIndex = index
+    }
+  }
 };
 </script>
 <style scoped>
@@ -159,7 +173,7 @@ export default {
   width: 850px;
   margin: auto;
 }
-.huXbdS {
+.MapDistance {
 display: flex;
 justify-content: space-evenly;
 width: 850px;
@@ -168,10 +182,49 @@ border-top-left-radius: 14px;
 border-top-right-radius: 14px;
 background-color: rgb(142, 142, 142);
 margin: 0 auto;
+overflow: hidden;
+font-color: white;
 }
 #button{
 background-color: transparent;
 border: transparent;
 cursor: pointer;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  color: #fff;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  top: 20px;
+}
+.selected {
+  background-color: #d1d1d1;
+  width: 70px;
+  color: #333;
+  border-radius: 999px;
+  padding: 5px 5px;
+  margin: 5px;
 }
 </style>
