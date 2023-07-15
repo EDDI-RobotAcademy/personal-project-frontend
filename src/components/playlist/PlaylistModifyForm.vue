@@ -11,11 +11,8 @@
             </table>
 
             <div>
-                <button type="submit">수정하기</button>
-                <router-link :to="{
-                    name: 'PlaylistReadPage',
-                    params: {id: playlist.id.toString()}
-                    }"> 취소 </router-link>
+                <v-btn type="submit">수정하기</v-btn>
+                <v-btn @click="goBack"> 돌아가기 </v-btn>
             </div>
         </form>
     </div>
@@ -33,7 +30,10 @@ export default {
         onSubmit() {
             const title = this.playlist.title
             this.$emit('submit', { title })
-        }
+        },
+        async goBack() {
+            this.$router.go(-1)
+        },
     }
 }
 </script>

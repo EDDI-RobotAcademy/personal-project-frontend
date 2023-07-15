@@ -26,6 +26,7 @@
                 </td>
             </tr>
             <v-btn @click="onModify"> 수정 </v-btn>
+            <v-btn @click="goBack"> 돌아가기 </v-btn>
         </table>
     </div>
 </template>
@@ -44,6 +45,9 @@ export default {
                 name: 'SongModifyPage',
                 params: { songId: songId.toString() }
             })
+        },
+        async goBack() {
+            this.$router.go(-1)
         },
     },
 }

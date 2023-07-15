@@ -1,7 +1,7 @@
 <template>
     <v-container id="form-container" class="d-flex justify-center align-center" fluid>
         <v-card class="mx-auto pa-0 custom-card" color="white" width="500">
-            <v-card-title class="custom-title">노래 수정</v-card-title>
+            <v-card-title class="custom-title">노래 수정하기</v-card-title>
             <v-card-text>
                 <form @submit.prevent="onSubmit">
                     <v-text-field label="제목" v-model="title" />
@@ -12,7 +12,7 @@
                     <v-row>
                         <v-col>
                             <v-btn color="black" text type="submit">등록</v-btn>
-                            <v-btn color="black" text @click="cancel">취소</v-btn>
+                            <v-btn color="black" text @click="goBack">취소</v-btn>
                         </v-col>
                     </v-row>
                 </form>
@@ -42,9 +42,9 @@ export default {
             const { title, singer, genre, link } = this
             this.$emit('submit', { title, singer, genre, link })
         },
-        cancel() {
+        async goBack() {
             this.$router.go(-1)
-        }
+        },
     },
     created() {
         this.title = this.song.title

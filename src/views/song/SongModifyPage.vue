@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h2>노래 정보 수정</h2>
         <song-modify-form v-if="song" :song="song" @submit="onSubmit" />
     </div>
 </template>
