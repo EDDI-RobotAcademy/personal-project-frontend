@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import PlaylistModifyForm from '@/components/playlist/PlaylistModifyForm.vue';
+import PlaylistModifyForm from '@/components/playlist/manage/PlaylistModifyForm.vue';
 import { mapActions, mapState } from 'vuex';
 const playlistModule = 'playlistModule'
 export default {
@@ -31,7 +31,7 @@ export default {
 
             await this.requestModifyPlaylistToSpring({ payload, playlistId })
             await this.$router.push({
-                name: 'PlaylistReadPage',
+                name: 'PlaylistReadManagePage',
                 params: { id: playlistId.toString() }
             })
         }

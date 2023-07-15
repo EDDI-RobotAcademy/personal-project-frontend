@@ -38,15 +38,6 @@
                                 </tr>
                             </table>
                             <div v-if="playlist.playlist" class="text-center">
-                                <router-link :to="{
-                                    name: 'SongRegisterPage',
-                                    params: { playlistId: playlist.playlist.id.toString() }
-                                }">
-                                    <v-btn class="mr-2" rounded color="gray lighten-1" style="border-radius: 5px;">
-                                        노래 등록
-                                    </v-btn>
-                                </router-link>
-                                <v-btn @click="onModify"> 수정 </v-btn>
                                 <v-btn @click="goBack"> 돌아가기 </v-btn>
                             </div>
                         </v-card-text>
@@ -66,13 +57,6 @@ export default {
         }
     },
     methods: {
-        async onModify() {
-            const playlistId = this.playlist.playlist.id
-            await this.$router.push({
-                name: 'PlaylistModifyPage',
-                params: { playlistId: playlistId.toString() }
-            })
-        },
         async goBack() {
             this.$router.go(-1)
         },

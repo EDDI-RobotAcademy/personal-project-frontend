@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import PlaylistRegisterForm from '@/components/playlist/PlaylistRegisterForm.vue'
+import PlaylistRegisterForm from '@/components/playlist/user/PlaylistRegisterForm.vue'
 import { mapActions } from 'vuex';
 
 const playlistModule = 'playlistModule'
