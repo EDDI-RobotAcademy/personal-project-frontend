@@ -18,8 +18,15 @@ export default {
         ...mapActions(accountModule, ["requestAccountModifyToSpring"]),
 
         async accountModify(payload) {
-            this.passwordCheckPass = await this.requestAccountModifyToSpring(payload)
-            if (this.passwordCheckPass) {
+            console.log(payload)
+            if (payload.nickname === '') {
+                payload.nickname = null
+            }
+            if (payload.password === '') {
+                payload.password = null
+            }
+            this.modifyCheckPass = await this.requestAccountModifyToSpring(payload)
+            if (this.modifyCheckPass) {
                 localStorage.setItem("nickname", payload.nickname)
                 this.$router.push({ name: 'AccountMyPage' })
                     .catch(

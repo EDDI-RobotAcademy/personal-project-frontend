@@ -90,7 +90,7 @@ export default {
         const { nickname, password } = payload;
         return axiosInst.springAxiosInst.post("/account/modify", { nickname, password })
             .then((res) => {
-                if (res.data != null) {
+                if (res.data) {
                     alert("수정 성공!");
                     return true
                 } else {

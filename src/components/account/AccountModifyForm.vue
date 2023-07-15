@@ -9,9 +9,18 @@
                             <div style="margin-bottom: 30px; font-size: 38px; color: #000000;">회원 정보 수정
                                 <v-divider style="margin-top: 16px; border: 2px solid #000000;"></v-divider>
                             </div>
-                            <v-text-field v-model="nickname" label="닉네임" required></v-text-field>
-                            <v-text-field v-model="password" label="비밀번호" type="password" required>
-                            </v-text-field>
+                            <div class="d-flex">
+                                <v-text-field v-model="nickname" label="닉네임" :minlength="2" :maxlength="10"
+                                    :disabled="false" required></v-text-field>
+                                <v-btn text large outlined style="font-size: 13px" class="mt-3 ml-5" color="black"
+                                    @click="checkDuplicateNickName" :disabled="false">
+                                    닉네임 <br> 중복 확인
+                                </v-btn>
+                            </div>
+                            <v-text-field v-model="password" label="비밀번호" :disabled="false" type="password"
+                                :rules="password_rule"></v-text-field>
+                            <v-text-field v-model="realPassword" label="비밀번호 확인" :disabled="false" type="password"
+                                :rules="password_confirm_rule"></v-text-field>
                             <v-btn type="submit" block x-large rounded color="gray lighten-1" class="mt-6"
                                 style="border-radius: 5px;">
                                 확인
@@ -26,14 +35,31 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
+const accountModule = 'accountModule'
+
 export default {
     data() {
         return {
             nickname: '',
             password: '',
+            realPassword: '',
+            password_rule: [
+                v => {
+                    const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+                    return pattern.test(v) || "최소 8자, 숫자, 특수문자 최소 하나씩 필요합니다!"
+
+                }
+            ],
+            password_confirm_rule: [
+                v => !!v || "비밀번호를 확인하세요",
+                v => v === this.password || "비밀번호가 일치하지 않습니다"
+            ],
         }
     },
     methods: {
+        ...mapActions(accountModule, ['requestSpringToCheckNicknameDuplication']),
         passwordCheck() {
             const { nickname, password } = this
             this.$emit('submit', { nickname, password })
@@ -43,7 +69,10 @@ export default {
         },
         created() {
             this.nickname = localStorage.getItem("nickname")
-        }
+        },
+        async checkDuplicateNickName() {
+            this.nicknamePass = await this.requestSpringToCheckNicknameDuplication(this.nickname)
+        },
     }
 }
 </script>

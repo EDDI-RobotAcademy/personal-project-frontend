@@ -81,7 +81,6 @@ export default {
     },
     methods: {
         ...mapActions(accountModule, ['requestSpringToCheckEmailDuplication',
-            'requestAuthentifyEmailToFastApi',
             'requestSpringToCheckNicknameDuplication']),
         registAccount() {
             const { email, nickname, password } = this
