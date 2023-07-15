@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import PlaylistReadPage from '@/views/playlist/PlaylistReadPage'
 import PlaylistRegisterPage from '@/views/playlist/PlaylistRegisterPage'
-import PlaylistModifyPage from '@/views/playlist/PlaylistModifyPage'
+import PlaylistModifyManagePage from '@/views/playlist/PlaylistModifyManagePage'
 import PlaylistListManagePage from '@/views/playlist/PlaylistListManagePage'
 import PlaylistReadManagePage from '@/views/playlist/PlaylistReadManagePage'
 PlaylistReadManagePage
@@ -26,10 +26,10 @@ const playlistRoutes = [
     component: PlaylistRegisterPage
   },
   {
-    path: '/playlist-modify-page/:id',
-    name: 'PlaylistModifyPage',
+    path: '/playlist-modify-manage-page/:id',
+    name: 'PlaylistModifyManagePage',
     components: {
-      default: PlaylistModifyPage
+      default: PlaylistModifyManagePage
     },
     props: {
       default: true

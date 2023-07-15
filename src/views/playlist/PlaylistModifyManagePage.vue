@@ -1,17 +1,17 @@
 <template>
     <div>
         <h2>플레이리스트 수정</h2>
-        <playlist-modify-form v-if="playlist" :playlist="playlist.playlist" @submit="onSubmit" />
+        <playlist-modify-manage-form v-if="playlist" :playlist="playlist.playlist" @submit="onSubmit" />
     </div>
 </template>
 
 <script>
-import PlaylistModifyForm from '@/components/playlist/manage/PlaylistModifyForm.vue';
+import PlaylistModifyManageForm from '@/components/playlist/manage/PlaylistModifyManageForm.vue';
 import { mapActions, mapState } from 'vuex';
 const playlistModule = 'playlistModule'
 export default {
     components: {
-        PlaylistModifyForm
+        PlaylistModifyManageForm
     },
     props: {
         playlistId: {
