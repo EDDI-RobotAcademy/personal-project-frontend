@@ -5,6 +5,7 @@ import AccountRegisterPage from '@/views/account/AccountRegisterPage.vue'
 import AccountLoginPage from '@/views/account/AccountLoginPage.vue'
 import AccountMyPage from '@/views/account/AccountMyPage.vue'
 import AccountPasswordCheckPage from '@/views/account/AccountPasswordCheckPage.vue'
+import AccountModifyPage from '@/views/account/AccountModifyPage.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const accountRoutes = [
     path: '/account-password-check-page',
     name: 'AccountPasswordCheckPage',
     component: AccountPasswordCheckPage
+  },
+  {
+    path: '/account-modify-page',
+    name: 'AccountModifyPage',
+    component: AccountModifyPage
   },
 ]
 

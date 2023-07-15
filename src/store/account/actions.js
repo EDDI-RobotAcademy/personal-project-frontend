@@ -78,4 +78,17 @@ export default {
                 }
             });
     },
+    requestAccountModifyToSpring({ }, payload) {
+        const { nickname, password } = payload;
+        return axiosInst.springAxiosInst.post("/account/modify", { nickname, password })
+            .then((res) => {
+                if (res.data != null) {
+                    alert("수정 성공!");
+                    return true
+                } else {
+                    alert("수정 실패!");
+                    return false
+                }
+            });
+    },
 }
