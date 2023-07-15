@@ -25,12 +25,20 @@
                     <input type="text" :value="song.link" readonly/>
                 </td>
             </tr>
+            <iframe v-if="loaded" id="ytplayer" type="text/html" width="720" height="405" :src='youtubeLink'
+            frameborder="0" allowfullscreen/>
             <v-btn @click="goBack"> 돌아가기 </v-btn>
         </table>
     </div>
 </template>
 <script>
 export default {
+    data() {
+        return {
+            loaded: false,
+            youtubeLink: '',
+        }
+    },
     props: {
         song: {
             type: Object,
@@ -55,7 +63,19 @@ export default {
                 params: { id: this.playlistId.toString() }
             })
         },
+        loadingYoutube() {
+            this.youtubeLink = 'https://www.youtube.com/embed/' + this.song.link.substring(this.song.link.lastIndexOf('=') + 1)
+            this.loaded = true;
+        }
     },
+    watch: {
+        song: {
+            immediate: true,
+            handler() {
+                this.loadingYoutube();
+            }
+        }
+    }
 }
 </script>
 <style lang="">
