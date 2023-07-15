@@ -5,7 +5,7 @@
                 <v-card width="400"
                     style="background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px;">
                     <v-card-text class="text-center px-12 py-16">
-                        <v-form @submit.prevent="passwordCheck" ref="form">
+                        <v-form @submit.prevent="accountModify" ref="form">
                             <div style="margin-bottom: 30px; font-size: 38px; color: #000000;">회원 정보 수정
                                 <v-divider style="margin-top: 16px; border: 2px solid #000000;"></v-divider>
                             </div>
@@ -45,6 +45,7 @@ export default {
             nickname: '',
             password: '',
             realPassword: '',
+            nicknamePass: false,
             password_rule: [
                 v => {
                     const pattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -60,9 +61,17 @@ export default {
     },
     methods: {
         ...mapActions(accountModule, ['requestSpringToCheckNicknameDuplication']),
-        passwordCheck() {
+        async checkDuplicateNickName() {
+            this.nicknamePass = await this.requestSpringToCheckNicknameDuplication(this.nickname)
+        },
+        accountModify() {
             const { nickname, password } = this
+            if (nickname != '' && !this.nicknamePass) {
+                alert("중복 확인")
+                return
+            }
             this.$emit('submit', { nickname, password })
+
         },
         async goBack() {
             this.$router.go(-1)
