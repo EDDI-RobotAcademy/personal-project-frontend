@@ -6,17 +6,14 @@
 </template>
 <script>
 import SongReadForm from '@/components/song/user/SongReadForm.vue'
-import { mapActions, mapState } from 'vuex'
-
-const songModule = 'songModule'
 
 export default {
     components: {
         SongReadForm,
     },
     props: {
-        id: {
-            type: String,
+        song: {
+            type: Object,
             required: true,
         },
         playlistId: {
@@ -24,15 +21,6 @@ export default {
             required: true,
         },
     },
-    computed: {
-        ...mapState(songModule, ['song'])
-    },
-    methods: {
-        ...mapActions(songModule, ['requestSongToSpring'])
-    },
-    created() {
-        this.requestSongToSpring(this.id)
-    }
 }
 </script>
 <style lang="">

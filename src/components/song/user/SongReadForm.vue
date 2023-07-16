@@ -27,6 +27,7 @@
             </tr>
             <iframe v-if="loaded" id="ytplayer" type="text/html" width="720" height="405" :src='youtubeLink'
             frameborder="0" allowfullscreen/>
+            <br>
             <v-btn @click="goBack"> 돌아가기 </v-btn>
         </table>
     </div>
@@ -66,6 +67,9 @@ export default {
         loadingYoutube() {
             this.youtubeLink = 'https://www.youtube.com/embed/' + this.song.link.substring(this.song.link.lastIndexOf('=') + 1)
             this.loaded = true;
+        },
+        mounted() {
+            console.log(song)
         }
     },
     watch: {

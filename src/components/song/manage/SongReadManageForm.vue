@@ -68,7 +68,7 @@ export default {
             })
         },
         async onDelete() {
-            this.deletePass = this.requestDeleteSongToSpring(Number(this.song.id))
+            this.deletePass = await this.requestDeleteSongToSpring(Number(this.song.id))
             console.log(this.song.id)
             if (this.deletePass) {
                 await this.$router.push({

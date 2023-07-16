@@ -89,7 +89,7 @@ export default {
             })
         },
         async onDelete() {
-            this.deletePass = this.requestDeletePlaylistToSpring(this.playlist.playlist.id)
+            this.deletePass = await this.requestDeletePlaylistToSpring(this.playlist.playlist.id)
             console.log(this.playlist.playlist.id)
             if (this.deletePass) {
                 await this.$router.push({
