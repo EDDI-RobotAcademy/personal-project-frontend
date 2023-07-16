@@ -16,7 +16,7 @@
                 </template>
             </v-data-table>
         </v-container>
-        <v-btn outlined color="green" to="/">돌아가기</v-btn>
+        <v-btn outlined color="black" to="/">홈으로</v-btn>
     </div>
 </template>
 <script>
@@ -38,7 +38,6 @@ export default {
                 { text: "userType", value: 'userType' },
                 { text: 'DELETE', value: 'accountDelete' }
             ]
-
             // isPressedButton: false,
         }
     },
@@ -53,7 +52,6 @@ export default {
 
     methods: {
         ...mapActions(accountModule, ['requestDelete']),
-
         // readyToAccountList() {
         //     this.isPressedButton = true
         //     alert("계정 목록을 보여드릴게요.")

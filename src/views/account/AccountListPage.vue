@@ -1,7 +1,6 @@
 <template lang="">
     <div>
-        <br>
-        <h2 align="center">Account List Page</h2>
+        <h2 text-align="center">Account List Page</h2>
         <account-list-form :accounts="accounts"/>
         <br>
     </div>
@@ -27,10 +26,6 @@ export default {
             accountModule, ['requestAccountListToSpring']
         )
     },
-
-
-
-
 }
 </script>
 <style lang="">

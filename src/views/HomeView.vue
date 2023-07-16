@@ -3,7 +3,7 @@
     <nav>
       <router-link class="complete" to="/account-regist-page">회원 계정 등록</router-link> |
       <router-link to="/account-find-password-page">비밀번호 찾기 page</router-link> |
-      <router-link to="/login-page">로그인 page</router-link> |
+      <router-link class="complete" to="/login-page">로그인 page</router-link> |
       <router-link to="/account-notice-page">회원 공지사항 page</router-link> |
       <router-link to="/account-event-page">회원 이벤트 page</router-link> |
       <router-link to="/account-shop-page">상점 page</router-link> |

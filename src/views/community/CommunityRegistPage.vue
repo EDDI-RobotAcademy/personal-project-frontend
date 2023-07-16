@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <br>
-        <h2 align="center">Account Regist Page</h2>
+        <h2 style="text-align: center;">Community Regist Page</h2>
         <community-regist-form @submit="onSubmit"/>
         
     </div>

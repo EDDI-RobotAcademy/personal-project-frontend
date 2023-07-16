@@ -18,12 +18,6 @@ import noticeBoardModule from '@/store/notice/noticeModule';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    props: {
-        noticeBoards: {
-            type: Array
-        }
-    },
-
     data() {
         return {
             noticeHeaders: [

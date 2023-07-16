@@ -2,20 +2,18 @@
     <div>
         <v-form @submit.prevent="onSubmit" ref="form">
             <v-container>
-                <table>
-                    <tr>
-                        <v-text-field clearable label="Title" v-model="title" placeholder="제목을 입력하세요." style="width:500px;"/>
-                    </tr>
-                    <tr>
-                        <v-textarea label="Content" variant="outlined" v-model="content" placeholder="내용을 입력하세요." outlined style="width:800px"/>
-                    </tr>
-                     <td>
-                        <v-btn class="communityButton" style="float:right; margin-right: 10px;" type="submit">글 등록</v-btn>
-                    </td>
-                    <td>
-                        <v-btn class="communityButton" style="float:right; " to="/community-page">돌아가기</v-btn>
-                    </td>
-                </table>
+                  <div>
+                    <label>Title</label>
+                    <v-text-field clearable v-model="title" placeholder="제목을 입력하세요." style="width:500px;"></v-text-field>
+                </div>
+                <div>
+                    <label>Content</label>
+                    <v-textarea variant="outlined" v-model="content" placeholder="내용을 입력하세요." outlined style="width:800px;"></v-textarea>
+                </div>
+                <div>
+                    <v-btn class="communityButton" style="float:right" type="submit">글 등록</v-btn>
+                    <v-btn class="communityButton" @click="goBack">돌아가기</v-btn>
+                </div>
             </v-container>
         </v-form>
     </div>
@@ -30,10 +28,13 @@ export default {
         }
     },
     methods: {
-        onsubmit() {
+        onSubmit() {
             const { title, content } = this
             this.$emit('submit', { title, content })
-        }
+        },
+        goBack() {
+            this.$router.push('/community-page')
+        },
     }
 }
 </script>
