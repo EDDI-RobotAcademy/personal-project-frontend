@@ -25,6 +25,13 @@
                     <input type="text" :value="song.link" readonly/>
                 </td>
             </tr>
+            <tr></tr>
+            <tr>
+                <td>가사</td>
+                <td>
+                    <textarea v-html="song.lyrics" style="width: 30vw; height: 50vh;" readonly></textarea>
+                </td>
+            </tr>
             <iframe v-if="loaded" id="ytplayer" type="text/html" width="720" height="405" :src='youtubeLink'
             frameborder="0" allowfullscreen/>
             <br>
