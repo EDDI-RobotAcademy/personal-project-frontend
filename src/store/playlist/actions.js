@@ -64,4 +64,15 @@ export default {
                 console.log(res.data)
             })
     },
+    // 플레이리스트 삭제 요청
+    requestDeletePlaylistToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.delete(`/playlist/${payload}`)
+            .then((res) => {
+                alert('삭제 성공!')
+                return true
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    },
 }

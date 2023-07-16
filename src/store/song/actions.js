@@ -59,4 +59,15 @@ export default {
                 alert('문제 발생!')
             })
     },
+    // 노래 삭제 요청
+    requestDeleteSongToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.delete(`/song/${payload}`)
+            .then((res) => {
+                alert('삭제 성공!')
+                return true
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    },
 }

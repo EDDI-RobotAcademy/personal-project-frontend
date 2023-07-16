@@ -26,12 +26,22 @@
                 </td>
             </tr>
             <v-btn @click="onModify"> 수정 </v-btn>
+            <v-btn @click="onDelete"> 삭제 </v-btn>
             <v-btn @click="goBack"> 돌아가기 </v-btn>
         </table>
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+
+const songModule = 'songModule'
+
 export default {
+    data() {
+        return {
+            deletePass: false,
+        }
+    },
     props: {
         song: {
             type: Object,
@@ -43,6 +53,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(songModule, ['requestDeleteSongToSpring']),
         async onModify() {
             const songId = this.song.id
             await this.$router.push({
@@ -55,6 +66,16 @@ export default {
                 name: 'PlaylistReadManagePage',
                 params: { id: this.playlistId.toString() }
             })
+        },
+        async onDelete() {
+            this.deletePass = this.requestDeleteSongToSpring(Number(this.song.id))
+            console.log(this.song.id)
+            if (this.deletePass) {
+                await this.$router.push({
+                    name: 'PlaylistReadManagePage',
+                    params: { id: this.playlistId.toString() }
+                })
+            }
         },
     },
 }

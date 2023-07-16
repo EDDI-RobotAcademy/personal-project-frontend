@@ -47,6 +47,7 @@
                                     </v-btn>
                                 </router-link>
                                 <v-btn @click="onModify"> 수정 </v-btn>
+                                <v-btn @click="onDelete"> 삭제 </v-btn>
                                 <v-btn @click="goBack"> 돌아가기 </v-btn>
                             </div>
                         </v-card-text>
@@ -58,7 +59,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+const playlistModule = 'playlistModule'
+
 export default {
+    data() {
+        return {
+            deletePass: false,
+        }
+    },
     props: {
         playlist: {
             type: Object,
@@ -66,6 +76,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(playlistModule, ['requestDeletePlaylistToSpring']),
         async onModify() {
             await this.$router.push({
                 name: 'PlaylistModifyManagePage',
@@ -76,6 +87,15 @@ export default {
             await this.$router.push({
                 name: 'PlaylistListManagePage',
             })
+        },
+        async onDelete() {
+            this.deletePass = this.requestDeletePlaylistToSpring(this.playlist.playlist.id)
+            console.log(this.playlist.playlist.id)
+            if (this.deletePass) {
+                await this.$router.push({
+                    name: 'PlaylistListManagePage',
+                })
+            }
         },
     },
 }
