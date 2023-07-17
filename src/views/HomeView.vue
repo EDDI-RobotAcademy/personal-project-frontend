@@ -2,9 +2,11 @@
   <v-container fluid style="position: relative; text-align: center; padding-top: 0;">
     <v-row>
       <v-img :src="require('../assets/main/main.jpg')"
-          width="100vw" height="400" ratio="1"> 
-            <p class="invite"> 우리들의 <br> 추천 카페</p>
-          <v-btn class="mylocation" style="border-radius: 16px;"><v-icon> mdi-crosshairs-gps</v-icon> 내 위치중심</v-btn></v-img>
+          width="100vw" height="400" ratio="1">
+          <div> 
+            <p class="invite"> 당신을 위한 <br><span style="font-size: 1.5em">{{ your_location }}</span> 추천 카페</p>
+          </div>
+          <v-btn @click="getLocation" class="mylocation" style="border-radius: 16px;"><v-icon> mdi-crosshairs-gps</v-icon> 내 위치중심</v-btn></v-img>
     </v-row>
     <v-col>
       
@@ -75,13 +77,15 @@
 </template>
 
 <script>
-  import {VueperSlides, VueperSlide } from 'vueperslides'
-  import 'vueperslides/dist/vueperslides.css'
+import axios from 'axios'
+import {VueperSlides, VueperSlide } from 'vueperslides'
+import 'vueperslides/dist/vueperslides.css'
   
   export default {
     name: 'Home',
     data(){
       return{
+        your_location: '',
         slides: [
                     {
                         title: 'El Teide Volcano, Spain',
@@ -116,19 +120,48 @@
                     ]           
       }
     },
+    methods:{
+      async getLocation(){
+        let pos = {}
+        await navigator.geolocation.getCurrentPosition((position)=>{
+          pos.lat = position.coords.latitude
+          pos.lng = position.coords.longitude
+          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${process.env.VUE_APP_GOOGLE_MAP}&language=ko`)
+        .then((res)=>{
+          console.log(res)
+          console.log(res.data.results[4].address_components[0].long_name)
+        })
+        }, ()=>{}, {enableHighAccuracy:true, maximumAge: 300000, timeout:27000})
+        
+      }
+    },
     components: 
       { VueperSlides, VueperSlide },
+    mounted(){
+      let pos = {}
+        navigator.geolocation.getCurrentPosition((position)=>{
+          pos.lat = position.coords.latitude
+          pos.lng = position.coords.longitude
+          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${process.env.VUE_APP_GOOGLE_MAP}&language=ko`)
+          .then((res)=>{
+          let address = res.data.results[4].address_components[0].long_name
+          this.your_location=address
+        })
+        }, ()=>{}, {enableHighAccuracy:true, maximumAge: 300000, timeout:27000})
+    }
   }
 </script>
 <style>
 .invite{
   position: absolute; 
-  top: 50%; 
+  top: 45%; 
   left: 50%; 
   transform: translate(-50%, -50%); 
-  color: white;
+  color: rgb(246, 255, 250);
   font-size: 30px;
   font-weight: bold;
+  /* background-color: rgba(54, 53, 53, 0.5); */
+  padding: 20px;
 }
 
 .mylocation{
