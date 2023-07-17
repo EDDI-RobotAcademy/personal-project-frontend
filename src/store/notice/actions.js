@@ -1,5 +1,5 @@
 import axiosInst from "@/utility/axiosInst";
-import { NOTICE_LIST } from "./mutation-types";
+import { NOTICE_INFO, NOTICE_LIST } from "./mutation-types";
 
 export default {
   async createNoticeBoard({}, payload) {
@@ -14,13 +14,40 @@ export default {
       console.log(response);
       return response;
     } catch (error) {
-      console.error("게시물 등록 요청 중 오류 발생:", error);
+      console.error("게시물 등록 요청 중 오류 발생 : ", error);
       throw error;
     }
   },
+
   noticeListBoard({ commit }) {
     axiosInst.get("/notice/list").then((res) => {
       commit(NOTICE_LIST, res.data);
     });
+  },
+
+  noticeBoardInfo({ commit }, noticeId) {
+    return axiosInst
+      .get(`/notice/${noticeId}`)
+      .then((res) => {
+        commit(NOTICE_INFO, res.data);
+      })
+      .catch((error) => {
+        console.error("게시물 정보 요청 중 오류 발생 : ", error);
+      });
+  },
+
+  noticeBoardModify({}, payload) {
+    const { noticeId, title, content } = payload;
+    console.log(
+      "title: " + title + ", content: " + content + ", noticeId: " + noticeId
+    );
+    return axiosInst
+      .put(`/notice/${noticeId}`, { title, content })
+      .then((res) => {
+        console.log("수정 완료 : " + res.data);
+      })
+      .catch((error) => {
+        console.error("게시물 수정 요청 중 오류 발생 : ", error);
+      });
   },
 };

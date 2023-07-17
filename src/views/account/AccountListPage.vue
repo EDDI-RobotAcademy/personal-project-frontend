@@ -14,7 +14,6 @@ const accountModule = 'accountModule'
 
 export default {
     components: { AccountListForm },
-
     computed: {
         ...mapState(accountModule, ['accounts']),
     },

@@ -6,8 +6,11 @@
                 {{ item.noticeId }}
             </template>
             <template #item.title="{ item }">
-            <a :href="readNoticeLink(item.title)">{{ item.title }}</a>
+             <router-link :to="{ name: 'NoticeReadPage', params: { noticeId: item.noticeId } }">
+                {{ item.title }}
+             </router-link>
             </template>
+
             </v-data-table>
         </v-container>
     </div>
@@ -17,7 +20,7 @@ import noticeModule from '@/store/notice/noticeModule';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: "NoticeForm",
+    name: "NoticeRegistForm",
     data() {
         return {
             noticeHeaders: [
@@ -36,9 +39,7 @@ export default {
         ...mapState(noticeModule, ['noticeBoard'])
     },
     methods: {
-        readNoticeLink(title) {
-            return `/notice/${title}`;
-        },
+
     }
 }
 </script>

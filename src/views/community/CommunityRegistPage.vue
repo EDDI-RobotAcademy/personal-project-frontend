@@ -3,7 +3,6 @@
         <br>
         <h2 style="text-align: center;">Community Regist Page</h2>
         <community-regist-form @submit="onSubmit"/>
-        
     </div>
 </template>
 <script>
