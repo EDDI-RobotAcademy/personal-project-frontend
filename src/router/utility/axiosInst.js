@@ -5,4 +5,10 @@ const axiosInst = axios.create({
     timeout: 2500
 })
 
-export default axiosInst
+
+const fastApiAxiosInst = axios.create({
+    baseURL: process.env.VUE_APP_FAST_API,
+    timeout: 2500
+})
+
+export default { axiosInst, fastApiAxiosInst }

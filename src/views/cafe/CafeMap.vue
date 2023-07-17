@@ -10,13 +10,29 @@
         </button>
       </div>
   </div>
-  <div>
+    <div>
         <div id="map"></div>
-      </div>
+    </div>
+    <div>
+      <v-card style="width: 850px; margin: 0 auto; padding: 10px;">
+        <ul>
+          <li v-for="article in articles" :key="article.title" @click="goLink(article.link)">
+            제목 {{ article.title }} <br>
+            링크 {{ article.link }} <br>
+            이름 {{ article.bloggername }} <br>
+            블링 {{ article.bloggerlink }} <br>
+            날짜 {{ article.postdate }} <br>
+            내용 {{ article.description }} <br>
+          </li>
+      </ul>
+    </v-card>
+    </div>
 </v-container>
 </template>
 
 <script>
+const cafeCrawlingModule='cafeCrawlingModule'
+import { mapActions } from 'vuex';
 
 (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:"):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
     key: process.env.VUE_APP_GOOGLE_MAP,
@@ -33,7 +49,8 @@ export default {
       infoWindow: null,
       markers: [],
       radius: 500,
-      center: null
+      center: null,
+      articles: [],
     }
   },
   mounted() {
@@ -130,6 +147,7 @@ export default {
 
           marker.addListener("click", () => {
             this.showInfoWindow(place, marker);
+            this.getCafeInfo(place.name)
           });
         }
         const bounds = new google.maps.LatLngBounds();
@@ -155,7 +173,6 @@ export default {
           <p>${place.vicinity}</p>
         </div>
       `;
-
       const infoWindow = new google.maps.InfoWindow({
         content: content,
       });
@@ -163,6 +180,27 @@ export default {
     },
     selectDistance(index){
       this.selectedIndex = index
+    },
+    ...mapActions(
+      cafeCrawlingModule, ['sendPlaceName']
+    ),
+    async getCafeInfo(placeName){
+      const receivedData = await this.sendPlaceName(placeName)
+      // console.log(Object.keys(a.title))
+
+      for(let i=0; i<Object.keys(receivedData.title).length; i++){
+        this.articles.push({
+          title: receivedData.title[i],
+          link: receivedData.link[i],
+          description: receivedData.description[i],
+          bloggername: receivedData.bloggername[i],
+          bloggerlink: receivedData.bloggerlink[i],
+          postdate: receivedData.postdate[i]
+        })
+      }
+    },
+    goLink(link){
+      window.open(link)
     }
   }
 };
