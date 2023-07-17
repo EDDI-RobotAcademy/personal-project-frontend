@@ -35,11 +35,30 @@ export default {
                 commit(REQUEST_BOARD_TO_SPRING, res.data)
             })
     },
-    requestSearchTextToSpring({}, payload){
-        const {searchs}=payload
-        return axiosInst.post('/memberboard/search', searchs)
-        .then((res)=>{
-            return res
+    requestSearchTextToSpring({commit}, payload){
+        console.log(payload)
+        return axiosInst.get('/member-board/search', payload)
+        .then((res) => {
+            commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
         })
-    }
+    },
+    // requestDeleteBoardToSpring ({}, boardId) {
+    //     axiosInst.delete(`/member-board/${boardId}`)
+    //         .then((res) => {
+    //             alert('삭제 성공!')
+    //         })
+    //         .catch(() => {
+    //             alert('문제 발생!')
+    //         })
+    // },
+    // requestBoardModifyToSpring ({}, payload) {
+    //     const { title, content, boardId, writer } = payload 
+    //     return axiosInst.put(`/member-board/${boardId}`, { title, content, writer })
+    //         .then((res) => {
+    //             alert("수정 성공!")
+    //         })
+    //         .catch(() => {
+    //             alert('문제 발생!')
+    //         })
+    // }
 }
