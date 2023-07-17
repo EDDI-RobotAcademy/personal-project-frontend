@@ -3,7 +3,6 @@
         <br>
         <h2 align="center">Notice List Page</h2>
         <manager-notice-list-form :noticeBoards="noticeBoards"/>
-             
     </div>
 </template>
 <script>
