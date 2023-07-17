@@ -7,7 +7,7 @@ import axiosInst from '@/router/utility/axiosInst'
 
 export default {
     requestBoardListToSpring ({ commit }) {
-        return axiosInst.get('/member-board/list')
+        return axiosInst.axiosInst.get('/member-board/list')
             .then((res) => {
                 commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
             })
@@ -16,7 +16,7 @@ export default {
 
         // const { title, content, nickName, filePaths } = payload
 
-        return axiosInst.post('/member-board/register',
+        return axiosInst.axiosInst.post('/member-board/register',
         //  { title, content, nickName, filePaths }
         payload
          )
@@ -30,35 +30,34 @@ export default {
             })
     },
     requestBoardToSpring ({commit}, boardId) {
-        return axiosInst.get(`/member-board/${boardId}`)
+        return axiosInst.axiosInst.get(`/member-board/${boardId}`)
             .then((res) => {
                 commit(REQUEST_BOARD_TO_SPRING, res.data)
             })
     },
     requestSearchTextToSpring({commit}, payload){
-        console.log(payload)
-        return axiosInst.get('/member-board/search', payload)
+        return axiosInst.axiosInst.get('/member-board/search', payload)
         .then((res) => {
             commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
         })
     },
-    // requestDeleteBoardToSpring ({}, boardId) {
-    //     axiosInst.delete(`/member-board/${boardId}`)
-    //         .then((res) => {
-    //             alert('삭제 성공!')
-    //         })
-    //         .catch(() => {
-    //             alert('문제 발생!')
-    //         })
-    // },
-    // requestBoardModifyToSpring ({}, payload) {
-    //     const { title, content, boardId, writer } = payload 
-    //     return axiosInst.put(`/member-board/${boardId}`, { title, content, writer })
-    //         .then((res) => {
-    //             alert("수정 성공!")
-    //         })
-    //         .catch(() => {
-    //             alert('문제 발생!')
-    //         })
-    // }
+    requestDeleteBoardToSpring ({}, boardId) {
+        axiosInst.axiosInst.delete(`/member-board/${boardId}`)
+            .then((res) => {
+                alert('삭제 성공!')
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    },
+    requestBoardModifyToSpring ({}, payload) {
+        const { title, content, boardId, writer } = payload 
+        return axiosInst.axiosInst.put(`/member-board/${boardId}`, { title, content, writer })
+            .then((res) => {
+                alert("수정 성공!")
+            })
+            .catch(() => {
+                alert('문제 발생!')
+            })
+    }
 }

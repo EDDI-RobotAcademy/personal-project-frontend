@@ -6,7 +6,7 @@ import { LOGIN_COMPLETE, SET_NICKNAME } from "./mutation-types"
 export default {
     requestSpringToCheckNickNameDuplication ({ }, payload) {
         const { nickName } = payload
-        return axiosInst.get(`/member/check-nickName/${nickName}`)
+        return axiosInst.axiosInst.get(`/member/check-nickName/${nickName}`)
             .then((res) => {
                 if (res.data) {
                     alert('사용 가능한 닉네임입니다!')
@@ -23,7 +23,7 @@ export default {
     requestRegisterMemberToSpring ({ }, payload) {
 
         const { email, nickName, password,roleType } = payload
-        return axiosInst.post('/member/sign-up', { email, nickName, password, roleType })
+        return axiosInst.axiosInst.post('/member/sign-up', { email, nickName, password, roleType })
             .then((res) => {
                 return res.data
             })
@@ -33,7 +33,7 @@ export default {
     },
     requestSpringToLogin(context, payload){
         const { email, password,roleType,nickName } = payload
-        return axiosInst.post('/member/login', { email, password, roleType, nickName })
+        return axiosInst.axiosInst.post('/member/login', { email, password, roleType, nickName })
             .then((res) => {
                 localStorage.setItem("userToken", res.data.userToken)
                 localStorage.setItem("roleType", res.data.roleType)
