@@ -20,5 +20,5 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-@import '../css/ServiceHeader.scss';
+@import '../scss/ServiceHeader.scss';
 </style>

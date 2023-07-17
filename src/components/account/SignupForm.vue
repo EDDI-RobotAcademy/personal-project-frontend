@@ -1,44 +1,82 @@
 <template>
-  <form class="signup-form" @submit.prevent="submitSignupForm">
-    <h1 class="signup-form__title">회원정보 입력</h1>
-    <h2 class="signup-form__desc">
-      Room Story 서비스 이용을 위해 정보를 입력해주세요.
-    </h2>
+	<div class="signup-form">
+		<h1 class="signup-form__title">회원정보 입력</h1>
+		<h2 class="signup-form__desc">
+			Room Story 서비스 이용을 위해 정보를 입력해주세요.
+		</h2>
+		<div class="signup-form__input">
+			<label for="signup-user-email-input">아이디</label>
+			<div class="signup-form__input__main">
+				<input
+					type="text"
+					id="signup-user-email-input"
+					placeholder="이메일 주소 입력"
+					v-model="email"
+				/>
+				<button class="user-email-auth-btn" @click="checkEmail">
+					중복 확인
+				</button>
+			</div>
+		</div>
 
-    <div class="signup-form__role">
-      <div class="role__type">회원 종류</div>
-      <select name="roleType" id="signup-roleType-select" v-model="roleType">
-        <option value="">선택</option>
-        <option value="일반문의">일반 회원</option>
-        <option value="허위매물 신고">사업자 회원(공인중개사 전용)</option>
-      </select>
-    </div>
+		<div class="signup-form__input">
+			<label for="signup-ussignup-form__inputer-name-input">이름</label>
+			<input
+				type="text"
+				id="signup-user-name-input"
+				placeholder="이름 입력"
+				v-model="userName"
+			/>
+		</div>
 
-    <div class="signup-form__input">
-      <label for="signup-user-email-input">아이디</label>
-      <div class="signup-form__input__main">
-        <input type="text" id="signup-user-email-input" placeholder="이메일 주소 입력" v-model="userEmail" />
-        <button class="user-email-auth-btn">인증</button>
-      </div>
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-user-name-input">이름</label>
-      <input type="text" id="signup-user-name-input" placeholder="이름 입력" v-model="userName" />
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-nickname-input">닉네임</label>
-      <div class="signup-form__input__main">
-        <input type="text" id="signup-nickname-input" placeholder="한글 또는 영문만 가능" v-model="nickname" />
-        <button class="duplication-check-btn">중복 검사</button>
-      </div>
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-password-input">비밀번호</label>
-      <input type="text" id="signup-password-input" placeholder="8자리 이상 영문, 숫자, 특수문자 포함" v-model="password" />
-      <input type="text" id="signup-password-input--check" placeholder="비밀번호 확인" v-model="passwordConfirm" />
-    </div>
-    <button type="submit" class="signup-form__submit-btn">확인</button>
-  </form>
+		<div class="signup-form__input">
+			<label for="signup-nickname-input">닉네임</label>
+			<div class="signup-form__input__main">
+				<input
+					type="text"
+					id="signup-nickname-input"
+					placeholder="한글 또는 영문만 가능"
+					v-model="nickname"
+				/>
+			</div>
+		</div>
+
+		<div class="signup-form__input">
+			<label for="signup-password-input">비밀번호</label>
+			<input
+				type="password"
+				id="signup-password-input"
+				placeholder="8자리 이상 영문, 숫자, 특수문자 포함"
+				v-model="password"
+			/>
+			<input
+				type="password"
+				id="signup-password-input--check"
+				placeholder="비밀번호 확인"
+				v-model="passwordCheck"
+			/>
+			<span v-if="comparePassword" class="warning">
+				비밀번호가 일치하지 않습니다.
+			</span>
+		</div>
+
+		<div class="signup-form__input">
+	    <label for="signup-roleType">회원유형</label>
+	      <select type="radio" id="signup-roleType-select" v-model="roleType">
+	        <option value="">선택</option>
+	        <option value="NORMAL">NORMAL</option>
+	        <option value="BUSINESS">BUSINESS</option>
+				</select>
+	    </div>
+			
+		<button
+			type="submit"
+			class="signup-form__submit-btn"
+			@click.prevent="onSubmit"
+		>
+			확인
+		</button>
+	</div>
 </template>
 
 <script>
@@ -46,44 +84,46 @@
 export default {
   data() {
     return {
-      userType: '',
-      userEmail: '',
+      email: '', 
       userName: '',
       nickname: '',
       password: '',
-      passwordConfirm: '',
-    };
+      passwordCheck: '',
+      roleType: '',
+
+      checkEmailValid: false,
+      checkPasswordValid: false
+    }
   },
   methods: {
-    async submitSignupForm() {
-      try {
-        const signupUserData = {
-          userEmail: this.userEmail,
-          userName: this.userName,
-          nickname: this.nickname,
-          password: this.password,
-        };
-        const response = await registerUser(signupUserData);
-
-        console.log('[회원가입 성공]', response);
-        this.$router.push('/login');
-      } catch (error) {
-        console.log('[회원가입 실패]', error);
-      } finally {
-        this.initForm();
+    onSubmit() {
+      this.checkEmail()
+      this.checkPassword()
+      if (this.checkEmailValid == true && this.checkPasswordValid == true) {
+        const { email, userName, nickname, password, roleType } = this
+        this.$emit('submit', { email, userName, nickname, password, roleType })
       }
     },
-    initForm() {
-      this.userEmail = '';
-      this.userName = '';
-      this.nickname = '';
-      this.password = '';
-      this.passwordConfirm = '';
+    checkEmail() {
+      if (this.email.includes('@')) {
+        this.checkEmailValid = true
+      } else {
+        this.checkEmailValid = false
+        alert('이메일 형식을 확인해주세요.')
+      }
     },
+    checkPassword() {
+      if (this.password === this.passwordCheck) {
+        this.checkPasswordValid = true
+      } else {
+        this.checkPasswordValid = false
+        alert('비밀번호를 확인해주세요.')
+      }
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../css/SignupForm.scss';
+@import '../scss/SignupForm.scss';
 </style>

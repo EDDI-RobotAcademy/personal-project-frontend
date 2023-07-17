@@ -45,7 +45,7 @@ export default {
           password: this.password,
         };
 
-        await this.$store.dispatch('LOGIN', loginUserData);
+        await this.$store.dispatch('LOGIN', loginUserData); //부모 컴포넌트에서 자식 컴포넌트로 이벤트를 보내는 역할
         this.$router.push('/');
       } catch (error) {
         console.log(error);
@@ -62,5 +62,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../css/LoginForm.scss';
+@import '../scss/LoginForm.scss';
 </style>
