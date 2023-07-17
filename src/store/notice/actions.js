@@ -1,19 +1,53 @@
 import axiosInst from "@/utility/axiosInst";
-import { MANAGER_NOTICE_LIST } from "./mutation-types";
+import { NOTICE_INFO, NOTICE_LIST } from "./mutation-types";
 
 export default {
-    createNoticeBoard({ }, payload) {
-        const { title, content } = payload;
-        return axiosInst.post("/notice/regist", { title, content }).then((res) => {
-            alert("게시물이 등록 되었습니다.");
-            return res;
-        }).catch(() => {
-            alert("게시물 등록 실패");
-        })
-    },
-    noticeListBoard({ commit }) {
-        axiosInst.get("/notice/list").then((res) => {
-            commit(MANAGER_NOTICE_LIST, res.data);
-        });
-    },
-}
+  async createNoticeBoard({}, payload) {
+    const { title, content } = payload;
+    console.log(payload);
+    try {
+      const response = await axiosInst.post("/notice/regist", {
+        title,
+        content,
+      });
+      alert("게시물이 등록 되었습니다.");
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.error("게시물 등록 요청 중 오류 발생 : ", error);
+      throw error;
+    }
+  },
+
+  noticeListBoard({ commit }) {
+    axiosInst.get("/notice/list").then((res) => {
+      commit(NOTICE_LIST, res.data);
+    });
+  },
+
+  noticeBoardInfo({ commit }, noticeId) {
+    return axiosInst
+      .get(`/notice/${noticeId}`)
+      .then((res) => {
+        commit(NOTICE_INFO, res.data);
+      })
+      .catch((error) => {
+        console.error("게시물 정보 요청 중 오류 발생 : ", error);
+      });
+  },
+
+  noticeBoardModify({}, payload) {
+    const { noticeId, title, content } = payload;
+    console.log(
+      "title: " + title + ", content: " + content + ", noticeId: " + noticeId
+    );
+    return axiosInst
+      .put(`/notice/${noticeId}`, { title, content })
+      .then((res) => {
+        console.log("수정 완료 : " + res.data);
+      })
+      .catch((error) => {
+        console.error("게시물 수정 요청 중 오류 발생 : ", error);
+      });
+  },
+};

@@ -3,7 +3,6 @@
         <br>
         <h2 style="text-align: center;">Community Regist Page</h2>
         <community-regist-form @submit="onSubmit"/>
-        
     </div>
 </template>
 <script>
@@ -25,7 +24,7 @@ export default {
             const board = await this.createCommunityBoard(payload)
             console.log('typeof(board): ' + typeof (board))
             console.log('board: ' + JSON.stringify(board))
-            await this.$router.push({ name: 'CommunityPage' })
+            await this.$router.push({ name: 'Home' })
         }
     }
 }

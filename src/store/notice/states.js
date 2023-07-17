@@ -1,3 +1,4 @@
 export default {
-    noticeBoards: [],
-}
+  noticeBoards: [],
+  noticeBoard: {},
+};

@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        <h2 text-align="center">Account List Page</h2>
+        <h2 style="text-align: center">Account List Page</h2>
         <account-list-form :accounts="accounts"/>
         <br>
     </div>
@@ -14,7 +14,6 @@ const accountModule = 'accountModule'
 
 export default {
     components: { AccountListForm },
-
     computed: {
         ...mapState(accountModule, ['accounts']),
     },

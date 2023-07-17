@@ -1,8 +1,8 @@
 <template lang="">
     <div>
-        <h2 style="text-align: center">Community Page</h2>
-        <community-form :communityBoards="communityBoards"/>
         <br>
+        <h2 style="text-align: center">Community Page</h2>
+        <community-form :communityBoards="communityBoards"/
     </div>
 </template>
 <script>
@@ -23,7 +23,7 @@ export default {
     methods: {
         ...mapActions(
             communityModule, ['requestCommunityBoardList']
-        )
+        ),
     },
 }
 </script>

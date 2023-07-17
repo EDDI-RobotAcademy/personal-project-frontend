@@ -4,7 +4,6 @@
         <h2 align="center">Account Regist Page</h2>
         <account-regist-form align="center" @submit="onSubmit" />
         <br>
-
     </div>
 </template>
 <script>
@@ -21,7 +20,6 @@ export default {
         return {
         }
     },
-
     methods: {
         ...mapActions(
             accountModule, ['requestCreateAccountToSpring']

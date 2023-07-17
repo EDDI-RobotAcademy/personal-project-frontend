@@ -1,7 +1,11 @@
-import { MANAGER_NOTICE_LIST } from "./mutation-types";
+import { NOTICE_LIST } from "./mutation-types";
+import { NOTICE_INFO } from "./mutation-types";
 
 export default {
-    [MANAGER_NOTICE_LIST](state, receiveData) {
-        state.noticeBoards = receiveData;
-    }
-}
+  [NOTICE_LIST](state, receivedData) {
+    state.noticeBoards = receivedData;
+  },
+  [NOTICE_INFO](state, receivedData) {
+    state.noticeBoard = receivedData;
+  },
+};

@@ -22,7 +22,7 @@ const communityRoutes = [
   {
     path: "/community-page",
     name: "CommunityPage",
-    components: CommunityPage,
+    component: CommunityPage,
   },
 ];
 export default communityRoutes;
