@@ -8,6 +8,7 @@
 <script>
 import ServiceHeader from '@/components/service/ServiceHeader.vue';
 import InquiryForm from '@/components/service/InquiryForm.vue';
+
 export default {
   components: {
     ServiceHeader,
@@ -17,7 +18,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.service-container {
-  margin-top: 180px;
-}
+@import '../views/scss/serviceInquiryPage.scss';
 </style>

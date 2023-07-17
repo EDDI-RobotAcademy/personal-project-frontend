@@ -56,6 +56,28 @@ $lignt-gray: #f5f5f5;
       }
     }
 
+    select {
+      max-width: 460px;
+      height: 44px;
+      padding: 10px 16px;
+      border: 1px solid rgb(237, 237, 237);
+      border-radius: 3px;
+      background-color: rgb(255, 255, 255);
+      color: rgb(34, 34, 34);
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 24px;
+      transition: all 150ms ease-out 0s;
+
+      &:hover {
+        outline: 1px solid rgba(50, 108, 249, 0.6);
+      }
+
+      &:focus {
+        outline: 1.5px solid rgba(50, 108, 249, 0.9);
+      }
+    }
+
     .signup-form__input__main {
       display: flex;
       justify-content: space-between;
@@ -80,7 +102,7 @@ $lignt-gray: #f5f5f5;
       }
 
       .user-email-auth-btn {
-        width: 65px;
+        width: 100px;
       }
 
       .duplication-check-btn {

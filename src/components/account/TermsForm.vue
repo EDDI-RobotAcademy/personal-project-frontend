@@ -92,5 +92,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../css/TermsForm.scss';
+@import '../scss/TermsForm.scss';
 </style>
