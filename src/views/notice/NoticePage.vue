@@ -2,33 +2,32 @@
     <div>
         <br>
         <h2 align="center">Notice List Page</h2>
-        <manager-notice-list-form :noticeBoards="noticeBoards"/>
+        <notice-list-form :noticeBoards="noticeBoards"/>
              
     </div>
 </template>
 <script>
 
 import { mapActions, mapState } from 'vuex';
-import ManagerNoticeListForm from '@/components/notice/ManagerNoticeListForm.vue';
+import NoticeForm from '@/components/notice/NoticeForm.vue';
 
-const noticeBoardModule = 'noticeBoardModule'
+const noticeModule = 'noticeModule'
 
 export default {
     data() {
         return {
-
         }
     },
-    components: { ManagerNoticeListForm },
+    components: { NoticeForm },
     computed: {
-        ...mapState(noticeBoardModule, ['noticeBoards']),
+        ...mapState(noticeModule, ['noticeBoards']),
     },
     mounted() {
         this.noticeListBoard()
     },
     methods: {
         ...mapActions(
-            noticeBoardModule, ['noticeListBoard']
+            noticeModule, ['noticeListBoard']
         )
     },
 }

@@ -23,7 +23,7 @@ export default {
     methods: {
         ...mapActions(
             communityModule, ['requestCommunityBoardList']
-        )
+        ),
     },
 }
 </script>

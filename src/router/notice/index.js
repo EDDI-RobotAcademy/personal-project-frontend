@@ -1,21 +1,21 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import ManagerNoticeRegistPage from "@/views/notice/ManagerNoticeRegistPage.vue";
-import ManagerNoticeListPage from "@/views/notice/ManagerNoticeListPage.vue";
+import NoticeRegistPage from "@/views/notice/NoticeRegistPage.vue";
+import NoticePage from "@/views/notice/NoticePage.vue";
 
 Vue.use(VueRouter);
 
 const noticeRoutes = [
   {
-    path: "/manager-notice-regist-page",
-    name: "ManagerNoticeRegistPage",
-    component: ManagerNoticeRegistPage,
+    path: "/notice-regist-page",
+    name: "NoticeRegistPage",
+    component: NoticeRegistPage,
   },
   {
-    path: "/manager-notice-list-page",
-    name: "ManagerNoticeListPage",
-    component: ManagerNoticeListPage,
+    path: "/notice-page",
+    name: "NoticePage",
+    component: NoticePage,
   },
 ];
 export default noticeRoutes;
