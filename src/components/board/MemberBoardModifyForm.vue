@@ -145,6 +145,10 @@ export default {
             })
         },
         async uploadAwsS3(){
+                if (!this.$refs.files) {
+                    console.log("File input not found.");
+                    return;
+                }
                 this.awsFileList.push(...(this.board.filePathList.map((file)=>file.imagePath)))
                 console.log("수정전 이미지", this.awsFileList)
                 this.awsS3Config()
@@ -164,7 +168,6 @@ export default {
                         return alert('업로드 중 문제 발생(사진파일에 문제가 있음)' + err.message)
                     }
                     // alert('업로드 성공')
-                    
                 })}
             },
         async fileDeleteButton(e) {
