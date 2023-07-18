@@ -1,0 +1,54 @@
+.review_space{
+    padding: 20px 0px;
+    }
+    
+    .review{
+      font-weight: bold;
+      font-size: 25px;
+    }
+    .articles_card{
+     padding: 20px 0px;
+     width: 850px; 
+     margin: 0 auto; 
+     padding: 10px;
+    }
+    .articles_ul{
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+    
+    .articles_li{
+      list-style-type: none;
+      border-top: 1px solid #e6e6eb;
+      padding: 20px 0px;
+    }
+    .naverblogImg{
+      max-height: 20px; 
+      max-width: 20px; 
+      aspect-ratio: 1;
+    }
+    .articles_title{
+      font-weight: bold;
+    }
+    .articles_description{
+      font-size: 15px;
+        color: #505050;
+        margin-bottom: 10px;
+        display: block;
+    }
+    .articles_name{
+      display: flex;
+      flex-direction: row;
+      margin-top: 5px;
+      margin-bottom: 0px;
+    }
+    .articles_bloggername{
+    margin-right: 5px;
+    
+    }
+    .articles_postdate{
+    color: grey;
+    font-size: 15px;
+    
+    }
+    

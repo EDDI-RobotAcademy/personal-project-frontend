@@ -13,16 +13,21 @@
     <div>
         <div id="map"></div>
     </div>
-    <div>
-      <v-card style="width: 850px; margin: 0 auto; padding: 10px;">
-        <ul>
-          <li v-for="article in articles" :key="article.title" @click="goLink(article.link)">
-            제목 {{ article.title }} <br>
-            링크 {{ article.link }} <br>
-            이름 {{ article.bloggername }} <br>
-            블링 {{ article.bloggerlink }} <br>
-            날짜 {{ article.postdate }} <br>
-            내용 {{ article.description }} <br>
+    <div v-if="articles.length" style="padding-top: 20px;">
+      <v-card class="articles_card">
+        <ul class="articles_ul">
+          <div class="review_space">
+            <span class="review">블로그 후기</span>
+          </div>  
+        <li class="articles_li" v-for="article in articles" :key="article.title" @click="goLink(article.link)">
+            <span class="articles_title">[ {{ article.title }} ] <br> </span>
+            <span class="articles_description">{{ article.description }} <br></span>
+            <p class="articles_name">
+              <v-img class="naverblogImg" src="@/assets/icon/naverblog.png" />
+
+              <span class="articles_bloggername">{{ article.bloggername }} <br></span>
+            <span class="articles_postdate">{{ article.postdate }} <br></span>
+            </p>
           </li>
       </ul>
     </v-card>
@@ -207,4 +212,5 @@ export default {
 </script>
 <style scoped>
 @import '../../components/css/CafeMap.scss';
+@import '../../components/css/CafeMapBlogCrawl.scss';
 </style>
