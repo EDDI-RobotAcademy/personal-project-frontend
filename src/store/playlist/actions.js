@@ -75,4 +75,36 @@ export default {
                 alert('문제 발생!')
             })
     },
+
+    requestIncreaseLikeCountToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.post(`/playlist/like-playlist/${payload}`)
+            .then((res) => {
+                console.log(res.data)
+                return res.data
+            })
+    },
+
+    requestDecreaseLikeCountToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.post(`/playlist/unlike-playlist/${payload}`)
+            .then((res) => {
+                console.log(res.data)
+                return res.data
+            })
+            .catch(e => {
+                if (e.response.status === 403) {
+                    alert("로그인 후 이용 가능")
+                    localStorage.removeItem("isLogin")
+                    router.push('/')
+                }
+            })
+    },
+
+    requestIsPlaylistLikedToSpring({ }, payload) {
+        console.log(payload)
+        return axiosInst.springAxiosInst.post(`/playlist/check-liked/${payload}`)
+            .then((res) => {
+                console.log(res.data)
+                return res.data
+            })
+    },
 }

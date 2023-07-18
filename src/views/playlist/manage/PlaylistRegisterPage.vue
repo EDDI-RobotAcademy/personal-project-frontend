@@ -21,8 +21,7 @@ export default {
             const playlist = await this.requestRegisterPlaylistToSpring(payload)
             console.log('playlist: ' + JSON.stringify(playlist))
             await this.$router.push({
-                name: 'PlaylistReadPage',
-                params: { id: playlist.id.toString() }
+                name: 'home',
             })
         }
     }
