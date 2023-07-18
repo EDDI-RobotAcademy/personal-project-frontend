@@ -11,6 +11,7 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
+    "vue-daum-map": "^1.1.0",
     "vue-naver-maps": "^0.14.6",
     "vue-router": "^3.5.1",
     "vuetify": "^2.6.0",
@@ -30,7 +31,8 @@
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "eslintConfig": {
     "root": true,

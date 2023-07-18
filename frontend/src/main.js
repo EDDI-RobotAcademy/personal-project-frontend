@@ -5,7 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import naver from 'vue-naver-maps'
 Vue.config.productionTip = false
-const ID= process.env.VUE_APP_MY_ID
+const ID = process.env.VUE_APP_MY_ID
 
 Vue.use(naver, {
   clientID: ID,

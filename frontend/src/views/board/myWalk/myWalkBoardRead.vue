@@ -2,6 +2,8 @@
   <div>
     <my-board-read-form v-if="board" :board="board" />
     <p v-else>로딩중 ...</p>
+
+   
   </div>
 </template>
 <script>
@@ -24,6 +26,7 @@ export default {
   },
   methods: {
     ...mapActions(BoardModule,['requestBoardToSpring']),
+   
 
   },
   created(){

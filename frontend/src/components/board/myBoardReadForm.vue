@@ -25,16 +25,21 @@
           color="#f18893" readonly/>
         </td>
       </tr>
+      <v-btn @click="deleteBoard">삭제</v-btn>
       </table>
+      
   </form>
 </v-card-text>
+
 </div>
 </v-card>
-
 </v-container>
 
 </template>
 <script>
+import BoardModule from '@/store/board/BoardModule';
+import { mapActions } from 'vuex';
+
 const ID=process.env.VUE_APP_KAKAO_ID
 
 export default {
@@ -61,11 +66,10 @@ export default {
       this.loadMap();
     },
     methods: {
+      ...mapActions("BoardModule", ["requestBoardDeleteToSpring"]),
         onLoad(vue) {
             this.map = vue;
         },
-
-
     loadMap() {
       if (!this.kakao) {
         const script = document.createElement('script');
@@ -95,8 +99,12 @@ export default {
       const latLng= new this.kakao.maps.LatLng(this.board.coordLat, this.board.coordLng)
     let currentMarker = new this.kakao.maps.Marker({position:latLng});
       currentMarker.setMap(this.map)
-      }
+      },
+      deleteBoard(){
+      this.requestBoardDeleteToSpring(this.board.id)
+    }
     },
+    
   }
 </script>
 <style lang="">
