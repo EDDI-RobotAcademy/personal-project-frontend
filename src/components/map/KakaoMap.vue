@@ -5,8 +5,11 @@
 <script>
 export default {
   props: ["options"],
-  methods: {
+  data() {
+    return {
+    }
   },
+  methods: {},
   mounted() {
     let kakao = window.kakao;
     console.log(this.$refs.map);
@@ -22,8 +25,9 @@ export default {
     console.log(mapInstance);
 
     this.$emit('send-message', mapInstance)
+    
   }
-};
+}
 </script>
 <style>
 .kmap {

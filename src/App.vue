@@ -5,7 +5,8 @@
       <router-link to="/about">About</router-link>
       <br />
 
-      <router-link to="/mapTestPage">MapTestPage</router-link>
+      <router-link to="/mapTestPage">MapTestPage</router-link> |
+      <router-link to="/mapMarkerTestPage">MapMarkerTestPage</router-link>
     </nav>
     <router-view />
   </div>
