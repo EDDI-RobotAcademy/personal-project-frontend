@@ -2,17 +2,16 @@
     <div>
         <div class="btn_router_div">
             <v-container class="btn_container">
-                <router-link style="float: right" :to="{ name: 'MemberBoardModifyPage', params: { boardId }} ">
+                <router-link style="float: right" :to="{ name: 'MemberBoardReadPage', params: { boardId }} ">
                     <v-btn
                         outlined
-                        color="black">게시글 수정
+                        color="black">수정 완료
                     </v-btn>
                 </router-link>
-                    <v-btn @click="onDelete" outlined color="black">삭제</v-btn>
             </v-container>
         </div>
         <!-- <MemberBoardReadForm v-if="board" :board="board"    :filePathList="filePathList"/> -->
-        <MemberBoardReadForm v-if="board" :board="board"/>
+        <MemberBoardModifyForm v-if="board" :board="board" @submit="onSubmit"/>
         <p v-else>로딩중 .......</p>
     </div>
 </template>
@@ -20,13 +19,13 @@
 <script>
 
 import { mapActions, mapState } from 'vuex';
-import MemberBoardReadForm from '@/components/board/MemberBoardReadForm.vue'
+import MemberBoardModifyForm from '@/components/board/MemberBoardModifyForm.vue'
 const boardModule = 'boardModule'
 
 export default {
-    name: 'MemberBoardReadPage',
+    name: 'MemberBoardModifyPage',
     components: {
-        MemberBoardReadForm,
+        MemberBoardModifyForm,
     },
     props: {
         boardId: {
@@ -41,9 +40,13 @@ export default {
         ...mapActions(
             boardModule, ['requestBoardToSpring']
         ),
-        async onDelete () {
-            await this.requestDeleteBoardToSpring(this.boardId)
-            await this.$router.push({ name: 'BoardListPage' })
+        async onSubmit (payload) {
+            const boardId = this.boardId
+            await this.requestBoardModifyToSpring(payload)
+            await this.$router.push({
+                name: 'MemberBoardReadPage',
+                params: { boardId: this.boardId }
+            })
         }
     },
     async created () {
