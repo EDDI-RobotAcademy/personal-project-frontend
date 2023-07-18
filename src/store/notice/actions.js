@@ -39,12 +39,12 @@ export default {
   noticeBoardModify({}, payload) {
     const { noticeId, title, content } = payload;
     console.log(
-      "title: " + title + ", content: " + content + ", noticeId: " + noticeId
+      "noticeId : " + noticeId + ", title: " + title + ", content: " + content
     );
     return axiosInst
-      .put(`/notice/${noticeId}`, { title, content })
+      .put(`/notice/${noticeId}`, { noticeId, title, content })
       .then((res) => {
-        console.log("수정 완료 : " + res.data);
+        console.log("수정 완료 : " + res);
       })
       .catch((error) => {
         console.error("게시물 수정 요청 중 오류 발생 : ", error);

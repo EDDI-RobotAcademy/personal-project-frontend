@@ -31,6 +31,7 @@ export default {
         ),
         async onSubmit(payload) {
             const { title, content } = payload
+            const noticeId = this.noticeId;
             await this.noticeBoardModify({ noticeId, title, content })
             await this.$router.push({ name: 'NoticeReadPage', params: { noticeId: this.noticeId } })
         }

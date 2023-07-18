@@ -8,7 +8,7 @@
             </div>
             <div>
                 <label>Title</label>
-                <v-text-field label="Title" :value="noticeBoard.title" style="width:500px;"/>
+                <v-text-field label="Title" v-model="title" style="width:500px;"/>
             </div>
             <div>
                 <label>Writer</label>
@@ -20,7 +20,7 @@
             </div>
             <div>
                 <label>Content</label>
-                <v-textarea label="Content" variant="outlined" :value="noticeBoard.content" outlined style="width:800px"/>
+                <v-textarea label="Content" variant="outlined" v-model="content" outlined style="width:800px"/>
             </div>
             <div>
                 <v-btn class="noticeButton" style="float:right;" type="submit">수정 완료</v-btn>
