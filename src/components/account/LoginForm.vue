@@ -1,5 +1,5 @@
 <template>
-  <form class="login-form" @submit.prevent="submitLoginForm">
+  <form class="login-form" @submit.prevent="onSubmit">
     <h1 class="login-form__title">로그인</h1>
     <h2 class="login-form__desc">
       Room Story 서비스 이용을 위해 로그인해주세요.
@@ -10,11 +10,11 @@
     </div>
     <div class="login-form__input">
       <label for="login-password-input">비밀번호</label>
-      <input type="text" id="login-password-input" placeholder="비밀번호 입력" v-model="password" />
+      <input type="password" id="login-password-input" placeholder="비밀번호 입력" v-model="password" />
     </div>
     <div class="login-form__btn-group">
       <div class="btn-group__save-id">
-        <input type="checkbox" id="save-id-check" />
+        <input type="checkbox" id="save-id-check" v-model="saveIdStatus" />
         <label for="save-id-check">아이디 저장</label>
       </div>
       <div class="btn-group__nav">
@@ -38,25 +38,10 @@ export default {
     };
   },
   methods: {
-    async submitLoginForm() {
-      try {
-        const loginUserData = {
-          userEmail: this.userEmail,
-          password: this.password,
-        };
-
-        await this.$store.dispatch('LOGIN', loginUserData); //부모 컴포넌트에서 자식 컴포넌트로 이벤트를 보내는 역할
-        this.$router.push('/');
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.initForm();
-      }
-    },
-    initForm() {
-      this.userEmail = '';
-      this.password = '';
-    },
+    onSubmit () {
+            const { userEmail, password } = this
+            this.$emit('submit', { userEmail, password })
+        }
   },
 };
 </script>

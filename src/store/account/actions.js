@@ -27,19 +27,19 @@ export default {
     //                 }
     //             })
     // },
-    // requestLoginAccountToSpring ({ }, payload) {
+    requestLoginAccountToSpring ({ }, payload) {
 
-    //     return axiosInst.post('/account/login', payload)
-    //             .then((resLogin) => {
-    //                 if(resLogin.data != '') {
-    //                     alert('로그인 성공!')
-    //                     localStorage.setItem("userToken", resLogin.data)
-    //                     router.push('/productListPage')
-    //                 } else {
-    //                     alert('이메일과 비밀번호를 다시 확인해주세요!')
-    //                 }
-    //             })
-    // },
+        return axiosInst.post('/account/login', payload)
+                .then((resLogin) => {
+                    if(resLogin.data != '') {
+                        alert('로그인 성공!')
+                        localStorage.setItem("userToken", resLogin.data)
+                        router.push('/')
+                    } else {
+                        alert('이메일과 비밀번호를 다시 확인해주세요!')
+                    }
+                })
+    },
     // requestAccountEmailToSpring ({}, payload) {
     //     return axiosInst.post('/account/getAccountInfo', payload)
     //         .then((resGetInfo) => {
