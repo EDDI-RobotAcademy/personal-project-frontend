@@ -1,6 +1,11 @@
 <template>
   <div v-if="isLoading">
-    <h2>Loading...</h2>
+    <v-progress-circular
+        indeterminate
+        color="grey lighten-2"
+        size="64"
+        class="loading-icon"
+      ></v-progress-circular>
   </div>
     <!-- Chart controls -->
     <div v-else="!isLoading">    
@@ -37,8 +42,8 @@
       type="candlestick"
       :options="chartOptions"
       :series="series"
-    ></apexchart>
-  </div>
+      ></apexchart>
+    </div>
 </template>
 
 <script>
@@ -185,3 +190,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.loading-icon {
+  margin: auto;
+  margin-top: 350px;
+}
+</style>

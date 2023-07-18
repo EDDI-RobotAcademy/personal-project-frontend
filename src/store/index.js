@@ -1,3 +1,4 @@
+import articleModule from '@/domain/article/store/articleModule'
 import boardModule from '@/domain/board/store/boardModule'
 import stockModule from '@/domain/stock/store/stockModule'
 import accountModule from '@/domain/user/account/store/AccountModule'
@@ -10,6 +11,7 @@ export default new Vuex.Store({
   modules: {
     accountModule: accountModule,
     boardModule: boardModule,
-    stockModule: stockModule
+    stockModule: stockModule,
+    articleModule: articleModule,
   },
 })

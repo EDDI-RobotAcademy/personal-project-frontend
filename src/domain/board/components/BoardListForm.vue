@@ -1,57 +1,58 @@
-<template lang="">
+<template>
     <div>
-        <div  class="stockname-title">{{ stockName }}</div>        
-        <h3>게시물 목록</h3>
-        <table style="margin: 10px;">
-            <tr>
-                <th align="center" width="6%">번호</th>
-                <th align="center" width="70%">제목</th>
-                <th align="center" width="10%">작성자</th>
-                <th align="center" width="14%">등록일자</th>
-            </tr>
-            <tr v-if="!boards || (Array.isArray(boards) && boards.length === 0)">
-                <td colspan="4">
-                    현재 등록된 게시물이 없습니다!
-                </td>
-            </tr>
-            <tr v-else v-for="board in boards" :key="board.id">
-                <td align="center">
-                    {{ board.id }}
-                </td>
-                <td align="center">
-                    <router-link :to="{ 
-                        name: 'BoardReadPage', 
-                        params: { id: board.id.toString() }}">
-                            {{ board.title }}
-                    </router-link>
-                </td>
-                <td align="center">
-                    {{ board.writer }}
-                </td>
-                <td align="center">
-                    {{ board.updateDate }}
-                </td>
-            </tr>
-        </table>
+      <h3>게시물 목록</h3>
+      <v-list>
+        <v-list-item-group>
+          <v-list-item v-if="!boards || (Array.isArray(boards) && boards.length === 0)" align="center">
+            <v-list-item-content>
+              <v-list-item-title>현재 등록된 게시물이 없습니다!</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>  
+          <v-list-item v-else v-for="board in boards" 
+                                    :key="board.id" 
+                                    @click="$router.push({name: 'BoardReadPage', 
+                                    params: {id: board.id.toString()}})">
+            <v-list-item-content>
+              <v-list-item-title class="text-start">{{ board.id }}. {{ board.title }}</v-list-item-title>
+              <v-list-item-subtitle class="text-start">작성자: {{ board.writer }} | 등록일자: {{ board.updateDate }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>    
+      <div class="router-link-button" style="padding: 10px;">
+        <v-btn @click="$router.push({ name: 'BoardRegisterPage', params: { ticker: ticker.toString() } })">
+            <v-icon left> mdi-pencil </v-icon>
+            게시물 작성
+        </v-btn>
+        </div>
     </div>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  export default {
     props: {
-        boards: {
-            type: Array
-        },
-        stockName: {
-            type: String
-        }
+      boards: {
+        type: Array
+      },
+      ticker: {
+        type: String,
+        required: true,
+      },
     }
-}
-</script>
-
-<style>
-.stockname-title {
+  };
+  </script>
+  
+  <style>
+  .stockname-title {
     font-size: 24px;
     font-weight: bold;
-    }
-</style>
+  }
+  
+  .router-link-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: 15px;
+  }
+  </style>
+  

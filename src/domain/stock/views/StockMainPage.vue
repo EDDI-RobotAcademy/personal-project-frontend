@@ -1,38 +1,42 @@
 <template>
   <div>
-    <div>
-      <h1>{{ stockName }}</h1>
-    </div>
-    <div style="border: 2px solid skyblue;">
-      <chart-display-form :ticker="ticker" />
-    </div>
-    <div>
-      <div style="border: 2px solid skyblue;">
-        <board-list-form :boards="boards" :ticker="ticker" />
+    <h1>{{ stockName }}</h1> 
+    <div style="display: flex; justify-content: center;">
+      <div>
+      <div style="display: flex; justify-content: center; padding: 10px;">
+        <v-card elevation="3" height="850" width="1200" rounded>
+          <chart-display-form :ticker="ticker" />
+        </v-card>
+      </div>
+      <div style="display: flex; justify-content: center;">
         <div>
-          <router-link
-            :to="{
-              name: 'BoardRegisterPage',
-              params: { ticker: ticker.toString() }
-            }"
-          >
-            게시물 작성
-          </router-link>
+          <v-container>
+            <v-card elevation="3" height="700" width="590" rounded>
+              <article-display-form :articles="articles" />
+            </v-card>
+          </v-container>
+        </div>
+        <div>
+          <v-container>
+            <v-card elevation="3" height="700" width="590" rounded>
+              <board-list-form :boards="boards" :ticker="ticker" />
+            </v-card>
+          </v-container>
         </div>
       </div>
-      <div style="border: 2px solid skyblue;">
-        <v-container>
+    </div>  
+    <div>
+      <v-container>
+        <v-card elevation="3" height="600" width="600" rounded>
           <chat-form :ticker="ticker" />
-        </v-container>
-      </div>
-      <div>
-        <v-container>
-          <article-display-form :articles="articles" />
-        </v-container>
-      </div>
+        </v-card>
+      </v-container>
     </div>
+    </div>    
   </div>
 </template>
+
+
 
 <script>
 import { mapActions, mapState } from 'vuex';
@@ -81,6 +85,6 @@ export default {
 }
 </script>
 
-<style lang="">
-    
+<style>
+ 
 </style>

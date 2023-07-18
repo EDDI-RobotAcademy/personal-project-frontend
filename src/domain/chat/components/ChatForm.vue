@@ -1,42 +1,52 @@
 <template>
-    <div>
-      <h1>Chat</h1>
-      <div class="messages" style="max-height: 300px; overflow-y: scroll;">
-       <div v-for="(message, index) in messages" :key="index">
-          {{ message }}
-        </div>
-      </div>
-    </div>
-  </template>
+  <div>    
+    <p v-for="(log, i) in logs" :key="i">{{ log }}</p>
+    <button v-if="!isConnected" @click="connect">connect</button>
+    <button v-if="isConnected" @click="disconnect">disconnect</button>
+    <input type="text" v-model="message"/>
+    <button  v-if="isConnected" @click="sendMessage">send</button>
+    <p v-if="isConnected">connected!</p>
+    <p v-else>not connected</p>
+  </div>
+</template>
+
   
   <script>
+  import {defineComponent} from 'vue'
+  let ws
   export default {
     data() {
       return {
-        messages: [
-          "Message 1",
-          "Message 2",
-          "Message 3",
-          "Message 4",
-          "Message 5",
-          "Message 6",
-          "Message 7",
-          "Message 8",
-          "Message 9",
-          "Message 10",
-          "Message 11",
-          "Message 12",
-          "Message 13",
-          "Message 14",
-          "Message 15",
-          "Message 16",
-          "Message 17",
-          "Message 18",
-          "Message 19",
-          "Message 20",
-        ],
-      };
+        isConnected: false,
+        message: "",
+        logs: []
+      }
     },
+    methods: {
+      connect() {
+        ws = new WebSocket("ws://" + "localhost:7777" + "/chat")
+        ws.onopen = () => {
+          this.isConnected = true;
+
+          ws.onmessage = ({data}) => {
+            this.logs.push({event: '메세지 수신', data});
+            console.log(data)
+          }
+        }
+      },
+      disconnect() {
+        ws.close();
+        this.isConnected = false;
+      },
+      sendMessage() {
+        ws.send(this.message)
+        this.message = ''
+      }
+    },
+    beforeDestroy() {
+      ws.close();
+    }
+    
   };
   </script>
   

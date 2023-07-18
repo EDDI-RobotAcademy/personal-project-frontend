@@ -1,16 +1,16 @@
 <template>
-  <div style="height: 100vh;">
+  <div style="height: 100vh; padding: 20px;">
     <div style="display: flex; flex-direction: row; justify-content: center; position: sticky; top: 64px;">
-      <div class="table" style="width: 700px;">
+      <v-card class="table" style="width: 700px;">
         <v-container>
           <stock-list-form :stocks="stocks" />
         </v-container>
-      </div>
-      <div class="chat-table" style="width: 500px; position: sticky; top: 64px; right: 0; height: calc(60vh - 64px);">
+      </v-card>
+      <v-card class="chat-table" style="width: 500px; position: sticky; top: 64px; right: 0; height: calc(60vh - 64px);">
         <v-container>
           <chat-form />
         </v-container>
-      </div>
+      </v-card>
     </div>
   </div>
 </template>
