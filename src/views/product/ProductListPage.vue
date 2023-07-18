@@ -5,7 +5,6 @@
       <router-link :to="{ name: 'ProductRegisterPage' }"> 상품 등록 </router-link>
     </div>
     <product-list-form :products="products" />
-    <p>{{ output }}</p>
   </div>
 </template>
 
@@ -21,9 +20,6 @@ export default {
   },
   computed: {
     ...mapState(productModule, ["products"]),
-    output() {
-      console.log("이런식으로 활용도 가능");
-    },
   },
   mounted() {
     this.requestProductListToSpring();

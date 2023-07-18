@@ -1,3 +1,4 @@
 export default {
-  isSignIn: "",
+  isSignIn: false,
+  email: "",
 };

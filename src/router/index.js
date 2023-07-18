@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import accountRoutes from "./account";
 import productRoutes from "./product";
+import awsSdkRoutes from "./aws";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,7 @@ const routes = [
   },
   ...accountRoutes,
   ...productRoutes,
+  ...awsSdkRoutes,
 ];
 
 const router = new VueRouter({

@@ -8,7 +8,7 @@
     </div>
     <input id="file-selector" ref="file" type="file" @change="handleFileUpload()" />
     <v-btn @click="uploadAwsS3" color="primary" text>업로드</v-btn><br />
-    <v-btn @click="giveMeAwsS3Next" color="purple" text>다음 정보</v-btn>
+    <!-- <v-btn @click="giveMeAwsS3Next" color="purple" text>다음 정보</v-btn> -->
   </v-container>
 </template>
 
@@ -87,26 +87,26 @@ export default {
         }
       );
     },
-    giveMeAwsS3Next() {
-      this.awsS3Config();
+    // giveMeAwsS3Next() {
+    //   this.awsS3Config();
 
-      this.s3.listObjects(
-        {
-          Delimiter: "/",
-          MaxKeys: 1,
-          Marker: this.startAfterAwsS3Bucket || undefined,
-        },
-        (err, data) => {
-          if (err) {
-            return alert("AWS 버킷 내에 문제가 있습니다: " + err.message);
-          } else {
-            this.awsFileList = data.Contents;
-            console.log("s3 리스트: ", data);
-            this.startAfterAwsS3Bucket = data.NextMarker;
-          }
-        }
-      );
-    },
+    //   this.s3.listObjects(
+    //     {
+    //       Delimiter: "/",
+    //       MaxKeys: 1,
+    //       Marker: this.startAfterAwsS3Bucket || undefined,
+    //     },
+    //     (err, data) => {
+    //       if (err) {
+    //         return alert("AWS 버킷 내에 문제가 있습니다: " + err.message);
+    //       } else {
+    //         this.awsFileList = data.Contents;
+    //         console.log("s3 리스트: ", data);
+    //         this.startAfterAwsS3Bucket = data.NextMarker;
+    //       }
+    //     }
+    //   );
+    // },
     deleteAwsS3File(key) {
       this.awsS3Config();
 

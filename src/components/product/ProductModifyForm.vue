@@ -3,13 +3,12 @@
     <v-row justify="center">
       <v-col>
         <v-card class="mx-auto pa-12 pb-8" elevation="8" width="auto" rounded="lg">
-          <h2 class="text-center mb-3">상품 등록</h2>
+          <h2 class="text-center mb-3">상품 정보 수정</h2>
 
           <div class="text-subtitle-1 text-medium-emphasis">
             상품 이미지
             <div id="imagePreview">
-              <img v-if="!productImage" src="@/assets/preview.png" />
-              <img v-else class="image-preview" id="img" :src="productImage" />
+              <img class="image-preview" id="img" :src="receivedImage" />
             </div>
             <div align="center">
               <label for="file-selector">
@@ -79,7 +78,7 @@
               stacked
               @click="productInsert"
             >
-              등록
+              수정 완료
             </v-btn>
 
             <v-btn class="flex-grow-1" height="48" variant="tonal" @click="goToList"> 취소 </v-btn>
@@ -115,14 +114,29 @@ export default {
       productDescription: "",
       productTags: "",
       productImageName: "",
+      receivedEmail: "",
+      receivedImage: "",
     };
+  },
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+    productId: {
+      type: String,
+      required: true,
+    },
+  },
+  created() {
+    this.productName = this.product.productName;
+    this.productPrice = this.product.productPrice;
+    this.productDescription = this.product.productDescription;
+    this.productTags = this.product.productTags;
+    this.receivedEmail = this.product.userEmail;
   },
   computed: {
     ...mapState(accountModule, ["email"]),
-    receivedEmail() {
-      console.log(this.email);
-      return this.email;
-    },
   },
   mounted() {
     this.userToken = localStorage.getItem("userToken");
@@ -131,15 +145,24 @@ export default {
       alert("로그인을 해야 이용할 수 있습니다.");
       this.$router.push("/").catch(() => {});
     }
+    const imageName = this.product.productImageName;
+    this.receivedImage = this.getImageToS3(imageName);
   },
   methods: {
-    ...mapActions(productModule, ["requestRegisterProductInfoToSpring"]),
-    handleFileUpload() {
+    ...mapActions(productModule, ["requestProductModifyToSpring"]),
+    getImageToS3(imageName) {
+      return `https://vue-s3-3737.s3.ap-northeast-2.amazonaws.com/${imageName}`;
+    },
+    async handleFileUpload() {
       this.images = this.$refs.images.files[0];
     },
     async getProductImage(event) {
       const file = event.target.files[0];
-      this.productImage = await this.base64(file);
+      if (file) {
+        this.productImage = await this.base64(file);
+      } else {
+        this.productImage = this.receivedImage;
+      }
     },
     base64(file) {
       return new Promise((resolve) => {
@@ -203,9 +226,9 @@ export default {
       this.$router.push("/").catch(() => {});
     },
     productInsert() {
-      if (this.productImage == "") {
-        return this.$swal("상품 이미지를 등록해주세요!");
-      }
+      //   if (this.productImage == "") {
+      //     return this.$swal("상품 이미지를 등록해주세요!");
+      //   }
       if (this.productName == "") {
         return this.$swal("상품명을 입력해주세요!");
       }
@@ -217,15 +240,15 @@ export default {
       }
       this.$swal
         .fire({
-          title: "상품을 등록하시겠습니까?",
+          title: "변경 내용을 저장하시겠습니까?",
           icon: "question",
           showCancelButton: true,
-          confirmButtonText: "등록",
+          confirmButtonText: "저장",
           cancelButtonText: "취소",
         })
         .then(async (result) => {
           if (result.isConfirmed) {
-            this.$swal.fire("상품이 등록되었습니다!", "", "success");
+            this.$swal.fire("저장되었습니다!", "", "success");
 
             const product = {
               productName: this.productName,
@@ -233,10 +256,11 @@ export default {
               productDescription: this.productDescription,
               productTags: this.productTags,
               receivedEmail: this.userEmail,
-              productImageName: this.images.name,
+              productImageName: this.imageName,
+              productId: this.productId,
             };
             console.log(product);
-            const getProductId = await this.requestRegisterProductInfoToSpring(product);
+            const getProductId = await this.requestProductModifyToSpring(product);
 
             this.uploadAwsS3();
             console.log(this.productImageName);
