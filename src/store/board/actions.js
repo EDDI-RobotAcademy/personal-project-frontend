@@ -3,7 +3,9 @@ import {
     REQUEST_CATEGORY_LIST_TO_SPRING,
     CLEAR_BOARDS,
     REQUEST_BOARD_TO_SPRING,
-    REQUEST_SEARCH_BOARD_TO_SPRING
+    REQUEST_SEARCH_BOARD_TO_SPRING,
+    REQUEST_RELATED_BOARD_LIST_TO_SPRING,
+    REQUEST_RECENT_BOARD_LIST_TO_SPRING,
   } from './mutation-types'
 
 import axiosInst from '@/utility/axiosInst'
@@ -44,5 +46,39 @@ export default {
       .then((res) => {
         commit(REQUEST_SEARCH_BOARD_TO_SPRING, res.data)
       })
+  },
+  requestRelatedBoardListToSpring({ commit }, boardId) {
+    return axiosInst.springAxiosInst.get(`board/list/related-board/${boardId}`)
+      .then((res) => {
+        commit(REQUEST_RELATED_BOARD_LIST_TO_SPRING, res.data)
+      })
+  },
+  requestRecentBoardsToSpring({ commit }) {
+    return axiosInst.springAxiosInst.get('board/list/recent')
+      .then((res) => {
+        commit(REQUEST_RECENT_BOARD_LIST_TO_SPRING, res.data)
+      })
+  },
+  requestIsBoardLikedToSpring({}, payload) {
+    const { boardId, userToken } = payload
+    return axiosInst.springAxiosInst.get('board/checkBoardLiked', {
+      params: {
+        boardId: boardId,
+        userToken: userToken
+      }
+    })
+      .then((res) => {
+        return res.data
+      })
+  },
+  requestLikeBoardToSpring({}, payload) {
+    const { boardId, userToken } = payload
+    return axiosInst.springAxiosInst.post('board/likeBoard', { boardId, userToken })
+      .then((res) => {})
+  },
+  requestUnlikeBoardToSpring({}, payload) {
+    const { boardId, userToken } = payload
+    return axiosInst.springAxiosInst.post('board/unLikeBoard', { boardId, userToken })
+      .then((res) => {})
   }
 }

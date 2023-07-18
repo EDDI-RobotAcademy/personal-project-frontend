@@ -1,7 +1,10 @@
 <template>
   <div>
     <div>
-      <BoardReadForm :board="board"/>
+      <BoardReadForm :board="board" 
+                     :relatedBoardList="relatedBoardList" 
+                     :boardId="boardId"
+                     :comments="comments"/>
     </div>
   </div>
 </template>
@@ -11,6 +14,7 @@ import BoardReadForm from "@/components/board/BoardReadForm.vue"
 import { mapActions, mapState } from "vuex";
 
 const boardModule = 'boardModule'
+const commentModule = 'commentModule'
 
 export default {
   components: {
@@ -23,13 +27,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(boardModule, ['board']),
+    ...mapState(boardModule, ['board', 'relatedBoardList']),
+    ...mapState(commentModule, ['comments'])
   },
   methods: {
-    ...mapActions(boardModule, ['requestReadBoardToSpring'])
+    ...mapActions(boardModule, ['requestReadBoardToSpring', 'requestRelatedBoardListToSpring']),
+    ...mapActions(commentModule, ['requestCommentListToSpring'])
   },
   mounted() {
     this.requestReadBoardToSpring(this.boardId)
+    this.requestRelatedBoardListToSpring(this.boardId)
+    this.requestCommentListToSpring(this.boardId)
   }
 }
 

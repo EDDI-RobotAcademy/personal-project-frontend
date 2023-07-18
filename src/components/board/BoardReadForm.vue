@@ -23,8 +23,9 @@
             </div>
             <div class="similar_posts">
               <h4 style="line-height: 3;">Similar Posts</h4>
-              test <br>
-              test 
+              <button class="similar_posts_button" v-for="board in relatedBoardList" :key="board.boardId" @click="toRelatedBoard(board.boardId)">
+                {{ board.title }}
+              </button>
             </div>
           </div>
           <div class="board_left">
@@ -37,8 +38,11 @@
             </div>
             <div class="board_content" v-html="board.content">
             </div>
-            <div class="board_like">
-              <button><v-icon>mdi-thumb-up-outline</v-icon> Like</button>
+            <div class="board_like" v-if="!isBoardLiked" >
+              <button @click="likeBoard"><v-icon>mdi-thumb-up-outline</v-icon> Like</button>
+            </div>
+            <div class="board_like" v-if="isBoardLiked" >
+              <button @click="unlikeBoard"><v-icon style="color: blue">mdi-thumb-up</v-icon> Like</button>
             </div>
             <v-divider class="board_divider"></v-divider>
             <div class="board_comments">
@@ -54,7 +58,26 @@
               </v-textarea>
             </div>
             <div class="buttons_for_comment">
-              <v-btn style="text-transform: none;">댓글 달기</v-btn>
+              <v-btn style="text-transform: none;" @click="addComment">댓글 달기</v-btn>
+            </div>
+            <v-divider class="board_divider"></v-divider>
+            <div class="board_current_comments">
+              <v-data-table
+                :headers="commentHeaders"
+                :items="comments"
+                hide-default-header
+                hide-default-footer
+                item-key="commentId">
+                <template #item="{ item }">
+                  <td colspan="3" class="comment-container">
+                    <div class="comment-content" v-html="item.content"></div>
+                    <div class="comment-meta">
+                      <div class="comment-nickname">{{ item.nickname }}</div>
+                      <div class="comment-created">{{ new Date(item.createDate).toLocaleDateString('en-US') }}</div>
+                    </div>
+                  </td>
+                </template>
+              </v-data-table>
             </div>
           </div>
         </div>
@@ -62,17 +85,43 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+
+const boardModule = 'boardModule'
+const commentModule = 'commentModule'
+
+
 export default {
   data() {
     return {
       backgroundImage: '',
       comment: '',
+      userToken: localStorage.getItem('userToken'),
+      isBoardLiked: false,
+      commentHeaders: [
+        {
+          align: 'start',
+          value: 'content',
+          class: '*'
+        },
+      ]
     }
   },
   props: {
     board: {
       type: Object,
       required: true
+    },
+    relatedBoardList: {
+      type: Array,
+      required: true
+    },
+    boardId: {
+      type: String,
+      required: true
+    },
+    comments: {
+      type: Array
     }
   },
   beforeUpdate() {
@@ -94,7 +143,50 @@ export default {
     else if (this.board.boardCategory == "Australia") {
       this.backgroundImage = require("@/assets/images/australia_banner.jpg")
     }
+
+    this.checkIsBoardLiked()
   },
+  methods: {
+    ...mapActions(boardModule, ['requestIsBoardLikedToSpring', 'requestLikeBoardToSpring', 'requestUnlikeBoardToSpring', 'requestReadBoardToSpring']),
+    ...mapActions(commentModule, ['requestAddCommentToSpring', 'requestCommentListToSpring']),
+    async checkIsBoardLiked() {
+      if (this.userToken) {
+        const { boardId, userToken } = this
+        this.isBoardLiked = await this.requestIsBoardLikedToSpring({boardId, userToken})
+      }
+      else return false
+    },
+    toRelatedBoard(boardId) {
+      this.$router.push({
+        name: 'BoardReadPage', 
+        params: {boardId: boardId.toString()}
+      })
+      location.reload()
+    },
+    async likeBoard() {
+      if (this.userToken) {
+        const { boardId, userToken } = this
+        await this.requestLikeBoardToSpring({boardId, userToken})
+        this.isBoardLiked = await this.requestIsBoardLikedToSpring({boardId, userToken})
+        this.requestReadBoardToSpring(boardId)
+      } 
+      else alert("로그인 후 이용 가능합니다")
+    },
+    async unlikeBoard() {
+      const { boardId, userToken } = this
+      await this.requestUnlikeBoardToSpring({boardId, userToken})
+      this.isBoardLiked = await this.requestIsBoardLikedToSpring({boardId, userToken})
+      this.requestReadBoardToSpring(boardId)
+    },
+    async addComment() {
+      if (this.userToken) {
+        const { boardId, comment, userToken } = this
+        await this.requestAddCommentToSpring({ boardId, comment, userToken })
+        await this.requestCommentListToSpring(this.boardId)
+      }
+      else alert("로그인 후 이용 가능합니다")
+    }
+  }
 }
 </script>
 
@@ -193,6 +285,10 @@ export default {
 }
 .buttons_for_comment{
   text-align: end;
+  margin-bottom: 20px;
+}
+.board_current_comments{
+  margin-top: 20px;
 }
 
 .comment_button{
@@ -212,10 +308,37 @@ export default {
   border: black solid 1px;
   margin-top: 18px
 }
+.similar_posts_button {
+  font-size: 14px;
+  text-align: start;
+  margin-bottom: 8px;
+}
 .board_divider{
   margin-left: 18px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  border-bottom: 1px solid black;
+}
+
+.comment-content {
+  font-size: 1.5rem;
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.comment-nickname,
+.comment-created {
+  color: #888;
 }
 
 </style>
