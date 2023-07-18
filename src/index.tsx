@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import RefreshToken from 'refreshToken/RefreshToken';
 
 const queryClient = new QueryClient();
 

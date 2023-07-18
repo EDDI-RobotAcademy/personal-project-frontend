@@ -10,3 +10,11 @@
   margin: 8px;
   text-decoration: none;
 }
+
+.Menu-logout {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}

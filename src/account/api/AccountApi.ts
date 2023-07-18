@@ -1,6 +1,8 @@
+import { UseQueryResult, useQuery } from "react-query";
 import axiosInstance from "../../utility/axiosInstance";
 import { Account } from "../entity/Account";
 
+// 회원 가입
 export const signupAccount = async (
   data: { email: string; password: string; name: string; phoneNumber: string; roleType?: string }
   ): Promise<Account> => {
@@ -13,6 +15,23 @@ export const signupAccount = async (
     return response.data;
   };
 
+// 마이 페이지
+export const fetchAccount = async (accountId: string, accessToken: string, email: string): Promise<Account | null> => {
+  const response = await axiosInstance.springAxiosInst.post('/account/myPage', { accountId: accountId, emmil: email }, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+  console.log('이메일 정보:', email, "Id정보", accountId)
+
+  return response.data;
+};
+
+
+export const useAccountQuery = (accountId: string, accessToken: string, data: any): UseQueryResult<Account | null, unknown> => {
+  return useQuery(['account', accountId], () => fetchAccount(accountId, accessToken, data));
+};
+
 export const checkEmailDuplicate = async (email: string) => {
   try {
     const response = await axiosInstance.springAxiosInst.get(`/account/check-email/${email}`);
@@ -23,12 +42,14 @@ export const checkEmailDuplicate = async (email: string) => {
   }
 };
 
+// 로그인 
 export const loginAccount = async (
-  data: { email: string; password: string; accessToken: string; }
+  data: { email: string; password: string; }
 ): Promise<Account> => {
   try {
     const response = await axiosInstance.springAxiosInst.post<Account>('/account/log-in', data);
     console.log('로그인 정보:', data);
+    console.log('이메일', data.email)
     return response.data;
   } catch (error) {
     // 오류 처리
@@ -37,12 +58,13 @@ export const loginAccount = async (
   }
 };
 
+// 관리자 회원 가입 
 export const accessSignupAccount = async (
   data: { email: string; password: string; roleType?: string; accessNumber: string; }
   ): Promise<Account> => {
     const setData = {
       ...data,
-      roleType: data.roleType || 'ADMIN' // roleType이 없을 경우 기본값으로 'NORMAL' 설정
+      roleType: data.roleType || 'ADMIN'
     };
     const response = await axiosInstance.springAxiosInst.post<Account>('/account/admin-sign-up', setData);
     console.log('관리자 회원 가입 정보:', setData);
