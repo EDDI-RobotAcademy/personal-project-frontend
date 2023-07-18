@@ -1,6 +1,7 @@
 import axiosInst from '@/utility/axiosInst'
 
 export default {
+    // 회원 가입 요청
     requestRegistAccountToSpring({ }, payload) {
         const { email, nickname, password } = payload;
         return axiosInst.springAxiosInst.post("/account/register", { email, nickname, password })
@@ -12,6 +13,7 @@ export default {
                 }
             });
     },
+    // 이메일 중복 요청
     requestSpringToCheckEmailDuplication({ }, email) {
         return axiosInst.springAxiosInst.get(`/account/email-check`, { params: { email: email } })
             .then((res) => {
@@ -27,6 +29,7 @@ export default {
                 alert("문제 발생!")
             })
     },
+    // 닉네임 중복 확인 요청
     requestSpringToCheckNicknameDuplication({ }, nickname) {
         return axiosInst.springAxiosInst.get(`/account/nickname-check`, { params: { nickname: nickname } })
             .then((res) => {
@@ -42,6 +45,7 @@ export default {
                 alert("문제 발생!")
             })
     },
+    // 로그인 요청
     requestLoginToSpring({ }, payload) {
         const { email, password } = payload;
         return axiosInst.springAxiosInst.post("/account/login", { email, password })
@@ -49,6 +53,7 @@ export default {
                 if (res.data != null) {
                     alert("로그인 성공!");
                     localStorage.setItem("nickname", res.data)
+                    localStorage.setItem("isLogin", true)
                     return true
                 } else {
                     alert("로그인 실패!");
@@ -56,6 +61,7 @@ export default {
                 }
             });
     },
+    // 로그아웃 요청
     requestLogoutToSpring({ }) {
         return axiosInst.springAxiosInst.post("/account/logout")
             .then((res) => {
@@ -64,5 +70,45 @@ export default {
             .catch(() => {
                 alert("실패")
             })
-    }
+    },
+    // 비밀번호 확인 요청
+    requestPasswordCheckToSpring({ }, payload) {
+        const { password } = payload;
+        return axiosInst.springAxiosInst.post("/account/password-check", { password })
+            .then((res) => {
+                if (res.data != null) {
+                    return true
+                } else {
+                    alert("확인 실패!");
+                    return false
+                }
+            });
+    },
+    // 정보 수정 요청
+    requestAccountModifyToSpring({ }, payload) {
+        const { nickname, password } = payload;
+        return axiosInst.springAxiosInst.post("/account/modify", { nickname, password })
+            .then((res) => {
+                if (res.data) {
+                    alert("수정 성공!");
+                    return true
+                } else {
+                    alert("수정 실패!");
+                    return false
+                }
+            });
+    },
+    // 회원 탈퇴 요청
+    requestAccountWithdrawToSpring({ }) {
+        return axiosInst.springAxiosInst.delete("/account/withdraw")
+            .then((res) => {
+                if (res.data) {
+                    alert("탈퇴 성공!");
+                    return true
+                } else {
+                    alert("탈퇴 실패!");
+                    return false
+                }
+            });
+    },
 }

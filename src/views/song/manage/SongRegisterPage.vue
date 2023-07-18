@@ -1,15 +1,23 @@
 <template lang="">
     <div>
-        <song-register-form @submit="registerSong"/>
+        <song-register-form @submit="registerSong" :playlistId="playlistId"/>
+        {{playlistId}}
     </div>
+    
 </template>
 <script>
-import SongRegisterForm from '@/components/song/SongRegisterForm.vue'
+import SongRegisterForm from '@/components/song/manage/SongRegisterForm.vue'
 import { mapActions } from 'vuex';
 
 const songModule = 'songModule'
 
 export default {
+    props: {
+        playlistId: {
+            type: String,
+            required: true,
+        }
+    },
     components: {
         SongRegisterForm,
     },
@@ -17,18 +25,17 @@ export default {
         ...mapActions(songModule, ['requestRegisterSongToSpring']),
 
         async registerSong(payload) {
-            const playlistId = this.$route.params.playlistId;
-            // payload.playlistId = playlistId;
-            // console.log(payload)
+            const playlistId = this.playlistId
+            console.log(payload)
+            console.log(playlistId)
             const song = await this.requestRegisterSongToSpring({ payload, playlistId });
             console.log('song: ' + JSON.stringify(song))
             await this.$router.push({
-                name: 'SongReadPage',
-                params: { id: song.id.toString() }
+                name: 'SongReadManagePage',
+                params: { id: song.toString() }
             })
         },
     },
-    props: ['playlistId'],
 }
 </script>
 <style lang="">

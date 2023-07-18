@@ -1,24 +1,28 @@
 <template lang="">
     <div>
-        <song-read-form v-if="song" :song="song"/>
+        <song-read-manage-form v-if="song" :song="song" :playlistId="playlistId"/>
         <p v-else>로딩중 .......</p>
     </div>
 </template>
 <script>
-import SongReadForm from '../../components/song/SongReadForm.vue'
+import SongReadManageForm from '@/components/song/manage/SongReadManageForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 const songModule = 'songModule'
 
 export default {
     components: {
-        SongReadForm,
+        SongReadManageForm,
     },
     props: {
         id: {
             type: String,
             required: true,
         },
+        playlistId: {
+            type: String,
+            required: true,
+        }
     },
     computed: {
         ...mapState(songModule, ['song'])
