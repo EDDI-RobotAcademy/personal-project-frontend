@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <table 
-        style="margin: 50px auto; width: 1000px;">
+        style="margin: 0 auto; width: 1000px;">
             <tbody>
                 <tr>
                     <td class="table_title" >제목</td>
@@ -12,7 +12,7 @@
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <p style=" margin-bottom: 0; " readonly> {{ nickName }} </p>
+                        <input type="text" :value="board.memberBoard?.nickName" readonly/>
                     </td>
                 </tr>
                 <tr>
