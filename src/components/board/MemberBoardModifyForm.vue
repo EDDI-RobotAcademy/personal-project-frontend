@@ -1,12 +1,13 @@
 <template lang="">
     <div>
+        <form @submit.prevent="onSubmit">
         <table 
         style="margin: 0 auto; width: 1000px;">
             <tbody>
                 <tr>
                     <td class="table_title" >제목</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.title"/>
+                        <input type="text"  v-if="board && board.memberBoard" v-model="board.memberBoard.title"/>
                     </td>
                 </tr>
                 <tr>
@@ -30,7 +31,7 @@
                                     </div>
                                     <img :src="getImageUrl(filePath.imagePath)" style="width:20vw; aspect-ratio: auto" />
                                 </div>
-                        <textarea cols="20" rows="30" :value="board.memberBoard?.content"/>
+                        <textarea cols="20" rows="30"  v-if="board && board.memberBoard" v-model="board.memberBoard.content"/>
                     </td>
                 </tr>
                 <tr>
@@ -75,6 +76,7 @@
                 </tr>
             </tbody>
         </table>
+        </form>
     </div>
 </template>
 
@@ -100,12 +102,13 @@ export default {
             content: '',
             nickName: '',
             createDate: '',
-
+            awsFileList: [],
 
             randomFileName: [],
             files: [], 
             filesPreview: [],
             uploadImageIndex: 0 ,
+            deleteFileList: []
 
         }
     },
@@ -115,15 +118,15 @@ export default {
         },
         async onSubmit () {
             await this.uploadAwsS3()
+            await this.s3fileDelete()
             
             let boardInfo = {
-                title: this.title,
-                nickName: this.nickName,
-                content: this.content,
+                title: this.board.memberBoard.title,
+                nickName: this.board.memberBoard.nickName,
+                content: this.board.memberBoard.content,
                 awsFileList: this.awsFileList
             }
-            console.log(boardInfo.awsFileList)
-            await this.$emit('submit', boardInfo)
+            this.$emit('submit', boardInfo)
 
         },
         awsS3Config(){
@@ -142,15 +145,18 @@ export default {
             })
         },
         async uploadAwsS3(){
+                this.awsFileList.push(...(this.board.filePathList.map((file)=>file.imagePath)))
+                console.log("수정전 이미지", this.awsFileList)
                 this.awsS3Config()
                 for(var i=0 ; i< this.$refs.files.files.length; i++ ){
-                let f = this.$refs.files.files[i]
-                const n = this.newFileName()+this.nickName+f.name   
-                this.awsFileList.push(n)
-
+                let newfileList = this.$refs.files.files[i]
+                const newImgName = this.newFileName()+this.board.memberBoard.nickName+newfileList.name
+                // console.log("합치기전",Object.values(f))
+                this.awsFileList.push(newImgName)
+                console.log("이미지 추가", this.awsFileList)
                 await this.s3.upload({
-                    Key: n, 
-                    Body: f, 
+                    Key: newImgName, 
+                    Body: newfileList, 
                     ACL: 'public-read'
                 }, (err, data)=>{
                     if(err){
@@ -161,9 +167,12 @@ export default {
                     
                 })}
             },
-        fileDeleteButton(e) {
+        async fileDeleteButton(e) {
             const a = e.target.getAttribute("name")
-            this.board.filePathList = this.board.filePathList.filter(filePath => filePath.fileId !== Number(a));
+            this.deleteFileList = await this.board.filePathList.filter(filePath=>filePath.fileId === Number(a))
+            //기존 이미지에서 지울 사진
+            this.board.filePathList = await this.board.filePathList.filter(filePath => filePath.fileId !== Number(a));
+            //기존 이미지에서 남은 사진
         },
 
         imageUpload() {
@@ -180,54 +189,54 @@ export default {
                     num = i;
                 }
                 this.uploadImageIndex = num + 1; 
-                console.log(this.files);
             },
-            newFileName(){
-            return Math.random().toString().slice(2)
-            },
-            imageAddUpload() {
-                let num = -1;
-                for (let i = 0; i < this.$refs.files.files.length; i++) {
-                    console.log(this.uploadImageIndex);
-                    this.files = [
-                        ...this.files,
-                        {
-                            file: this.$refs.files.files[i],
-                            preview: URL.createObjectURL(this.$refs.files.files[i]),
-                            number: i + this.uploadImageIndex
-                        }
-                    ];
-                    num = i;
-                }
-                this.uploadImageIndex = this.uploadImageIndex + num + 1;
-
-                console.log(this.files);
-            },
-            fileDeleteButton2(e) {
-                const name = e.target.getAttribute('name');
-                console.log(e.target.getAttribute('name'))
-                this.files = this.files.filter(data => data.number !== Number(name));
-            },
+        newFileName(){
+        return Math.random().toString().slice(2)
+        },
+        imageAddUpload() {
+            let num = -1;
+            for (let i = 0; i < this.$refs.files.files.length; i++) {
+                console.log(this.uploadImageIndex);
+                this.files = [
+                    ...this.files,
+                    {
+                        file: this.$refs.files.files[i],
+                        preview: URL.createObjectURL(this.$refs.files.files[i]),
+                        number: i + this.uploadImageIndex
+                    }
+                ];
+                num = i;
+            }
+            this.uploadImageIndex = this.uploadImageIndex + num + 1;
+        },
+        fileDeleteButton2(e) {
+            const name = e.target.getAttribute('name');
+            this.files = this.files.filter(data => data.number !== Number(name));
+        },
         s3fileDelete(){
             this.awsS3Config()
-
+            for(let i=0 ; i< this.deleteFileList.length; i++ ){
+                console.log("aws3에서 사진 지우기", this.deleteFileList[i].imagePath)
             this.s3.deleteObject({
-                Key: key
+                Key: this.deleteFileList[i].imagePath
             }, (err, data) => {
                 if(err){
                     return alert('AWS 버킷 데이터 삭제에 문제가 발생했습니다.: ' + err.message)
                 }
                 alert('AWS 버킷 데이터 삭제가 성공적으로 완료되었습니다')
-                this.getAwsS3Files()
             })
         }
+    }
     },
     created(){
-        this.filePathList=this.board.filePathList
-        this.nickName = this.board.nickName
-        this.title = this.board.title
-        this.content = this.board.content
-        this.createDate = this.board.createDate
+        this.filePathList=this.board.memberBoard?.filePathList
+        this.nickName = this.board.memberBoard?.nickName
+        this.title = this.board.memberBoard?.title
+        this.content = this.board.memberBoard?.content
+        this.createDate = this.board.memberBoard?.createDate
+        this.$EventBus.$on('fetchData', () => {
+        this.onSubmit();
+    })
     },
 }
 </script>

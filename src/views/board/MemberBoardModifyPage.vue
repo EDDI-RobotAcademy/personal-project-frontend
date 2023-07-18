@@ -2,15 +2,14 @@
     <div>
         <div class="btn_router_div">
             <v-container class="btn_container">
-                <router-link style="float: right" :to="{ name: 'MemberBoardReadPage', params: { boardId }} ">
                     <v-btn
                         outlined
-                        color="black">수정 완료
+                        color="black"
+                        @click="onClick"
+                        >수정 완료
                     </v-btn>
-                </router-link>
             </v-container>
         </div>
-        <!-- <MemberBoardReadForm v-if="board" :board="board"    :filePathList="filePathList"/> -->
         <MemberBoardModifyForm v-if="board" :board="board" @submit="onSubmit"/>
         <p v-else>로딩중 .......</p>
     </div>
@@ -38,15 +37,19 @@ export default {
     },
     methods: {
         ...mapActions(
-            boardModule, ['requestBoardToSpring']
+            boardModule, ['requestBoardToSpring','requestBoardModifyToSpring']
         ),
         async onSubmit (payload) {
+            // const {title, nickName, content, awsFileList} = payload
             const boardId = this.boardId
-            await this.requestBoardModifyToSpring(payload)
+            await this.requestBoardModifyToSpring({...payload, boardId})
             await this.$router.push({
                 name: 'MemberBoardReadPage',
                 params: { boardId: this.boardId }
             })
+        },
+        onClick(){
+        	this.$EventBus.$emit('fetchData')
         }
     },
     async created () {

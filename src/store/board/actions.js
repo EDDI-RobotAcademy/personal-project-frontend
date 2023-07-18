@@ -51,7 +51,7 @@ export default {
             })
     },
     requestBoardModifyToSpring ({}, payload) {
-        return axiosInst.axiosInst.put(`/member-board/${boardId}`,payload)
+        return axiosInst.axiosInst.put(`/member-board/${payload.boardId}`,payload)
             .then((res) => {
                 alert("수정 성공!")
             })
