@@ -4,6 +4,11 @@
         <h2 style="text-align: center">Notice List Page</h2>
         <notice-form v-if="noticeBoards" :noticeBoards="noticeBoards"/>
         <p v-else> 잠시만 기다려 주세요 </p>
+
+    <div>
+        <v-btn class="noticeButton" style="float:right;" @click='goregist'>글쓰기</v-btn>
+    </div>
+
     </div>
 </template>
 <script>
@@ -25,10 +30,16 @@ export default {
     methods: {
         ...mapActions(
             noticeModule, ['noticeListBoard']
-        )
+        ),
+        goregist() {
+            this.$router.push({ name: 'NoticeRegistPage' });
+        }
     },
 }
 </script>
-<style lang="">
-    
+<style scoped>
+.noticeButton {
+    background-color: black !important;
+    color: white;
+}
 </style>

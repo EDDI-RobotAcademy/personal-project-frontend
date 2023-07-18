@@ -17,7 +17,7 @@
 </template>
 <script>
 import noticeModule from '@/store/notice/noticeModule';
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: "NoticeRegistForm",
@@ -43,6 +43,9 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style scoped>
+.noticeButton {
+    background-color: black !important;
+    color: white;
+}
 </style>

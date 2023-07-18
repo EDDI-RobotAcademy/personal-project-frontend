@@ -50,4 +50,16 @@ export default {
         console.error("게시물 수정 요청 중 오류 발생 : ", error);
       });
   },
+
+  noticeBoardDelete({}, noticeId) {
+    return axiosInst
+      .delete(`/notice/${noticeId}`, { params: { noticeId } })
+      .then((res) => {
+        console.log("삭제 성공");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("게시물 삭제 요청 중 오류 발생 : ", error);
+      });
+  },
 };
