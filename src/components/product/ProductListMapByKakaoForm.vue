@@ -1,58 +1,67 @@
 <template>
     <div id="app">
         <div id="map" style="width:100%; height:640px;"></div>
+        <input type="date" v-model="checkInDate">체크인 날짜
+        <input type="date" v-model="checkOutDate">체크아웃 날짜
+        <v-btn @click="() => checkVacancies(checkInDate, checkOutDate)">빈자리 찾기</v-btn>
     </div>
 </template>
   
 <script>
 import { mapActions } from 'vuex';
-import env from '@/env'
 
 const productModule = 'productModule'
 
 export default {
-    head() {
-        return {
-            script: [
-                { type: 'text/javascript', 
-                  src: `//dapi.kakao.com/v2/maps/sdk.js?appkey=${env.api.MAIN_KAKAO_MAP_API_KEY}&libraries=services`},
-            ]}
-    },
     data() {
         return {
-            // 일단 날짜를 입력받지 않고 정해진 기간 안에서 테스트
-            checkInDate: '2023-07-15',
-            checkOutDate: '2023-07-17',
+            checkInDate: '',
+            checkOutDate: '',
             campsiteVacancy: [],
         }
     },
     methods: {
         ...mapActions(productModule, ['requestStockByMapToSpring']),
-    },
-    async mounted() {
-        const mapContainer = document.getElementById('map');
-        const mapOption = {
-            center: new kakao.maps.LatLng(37.54699, 127.09598),
-            level: 4
-        }
+        async checkVacancies(checkInDate, checkOutDate) {
+            this.checkInDate = checkInDate;
+            this.checkOutDate = checkOutDate;
+            this.campsiteVacancy = 
+                await this.requestStockByMapToSpring({ checkInDate: this.checkInDate, checkOutDate: this.checkOutDate })
+            console.log("campsiteVacancy: " + JSON.stringify(this.campsiteVacancy))
+            await this.drawMarkers()
+        },
+        async drawMarkers() {
+            const map = this.initializeMap();
+            const markerImage = this.createMarkerImage();
 
-        const map = new kakao.maps.Map(mapContainer, mapOption);
-
-        const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-        const imageSize = new kakao.maps.Size(25, 25);
-        const imageOption = { offset: new kakao.maps.Point(27, 69) };
-        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-        const createMarkerAndOverlay = async (address, vacancy) => {
+            this.campsiteVacancy.forEach(campsite => {
+                this.createMarkerAndOverlay(map, markerImage, campsite.address, campsite.vacancy, campsite.id);
+            });
+        },
+        initializeMap() {
+            const mapContainer = document.getElementById('map');
+                const mapOption = {
+                center: new kakao.maps.LatLng(37.54699, 127.09598),
+                level: 4
+            }
+            return new kakao.maps.Map(mapContainer, mapOption);
+        },
+        createMarkerImage() {
+            const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+            const imageSize = new kakao.maps.Size(25, 25);
+            const imageOption = { offset: new kakao.maps.Point(27, 69) };
+            return new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+        },
+        async createMarkerAndOverlay(map, markerImage, address, vacancy, id) {
             try {
                 const geocoder = new kakao.maps.services.Geocoder();
                 const result = await new Promise((resolve, reject) => {
                     geocoder.addressSearch(address, (result, status) => {
-                    if (status === kakao.maps.services.Status.OK) {
-                        resolve(result);
-                    } else {
-                        reject(new Error('Failed to geocode address.'));
-                    }
+                        if (status === kakao.maps.services.Status.OK) {
+                            resolve(result);
+                        } else {
+                            reject(new Error('Failed to geocode address.'));
+                        }
                     });
                 });
 
@@ -63,44 +72,47 @@ export default {
                     position: coords,
                     image: markerImage,
                 });
+                
                 marker.setMap(map);
 
-                    // 커스텀 오버레이 생성
-                    const content = `
-                            <div class="customoverlay">
-                                <a href="/product/1" target="_blank">
-                                    <span class="title">${vacancy} vacancies</span>
-                                </a>
-                            </div>
-                        `;
-                    const customOverlay = new kakao.maps.CustomOverlay({
-                        map,
-                        position: coords,
-                        content,
-                        yAnchor: 1,
-                    });
+                // 커스텀 오버레이 생성
+                const content = `
+                        <div class="customoverlay">
+                            <a href="/product/${id}" target="_blank">
+                                <span class="title">${vacancy} vacancy</span>
+                            </a>
+                        </div>
+                    `;
+
+                const customOverlay = new kakao.maps.CustomOverlay({
+                    map,
+                    position: coords,
+                    content,
+                    yAnchor: 1,
+                });
             } catch (error) {
                 console.error('Failed to load Kakao Maps SDK:', error);
             }
-        };
+        },
+        formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
 
-        try {
-            await this.requestStockByMapToSpring({
-                checkInDate: this.checkInDate,
-                checkOutDate: this.checkOutDate,
-            });
-
-            this.campsiteVacancy.forEach((campsite) => {
-            createMarkerAndOverlay(campsite.address, campsite.vacancy);
-            });
-        } catch (error) {
-            console.error('Failed to fetch campsite vacancy:', error);
-        }
+            return `${year}-${month}-${day}`;
+        },
     },
-    async created(){
-        const { checkInDate, checkOutDate } = this
-        this.campsiteVacancy = await this.requestStockByMapToSpring({ checkInDate, checkOutDate })
-        console.log("campsiteVacancy의 값이 궁금하다 " + JSON.stringify(this.campsiteVacancy))
+    async mounted () {
+        const checkInDate = new Date();
+        const formattedCheckInDate = this.formatDate(checkInDate);
+
+        const checkOutDate = new Date();
+        checkOutDate.setDate(checkOutDate.getDate() + 1);
+        const formattedCheckOutDate = this.formatDate(checkOutDate);
+
+        this.checkInDate = formattedCheckInDate;
+        this.checkOutDate = formattedCheckOutDate;
+        await this.checkVacancies(this.checkInDate, this.checkOutDate);
     }
 }
 </script>
@@ -152,5 +164,8 @@ export default {
     width: 22px;
     height: 12px;
     background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png');
+}
+#map {
+    padding-top: 200px;
 }
 </style>

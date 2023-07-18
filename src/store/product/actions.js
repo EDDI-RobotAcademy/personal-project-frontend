@@ -29,6 +29,13 @@ export default {
                 console.log("res.data: " + JSON.stringify(res.data))
             });
     },
+    requestMyProductToSpring({ }) {
+        return axiosInst.get('/product/myList')
+            .then((res) => {
+                console.log("res.data: " + JSON.stringify(res.data))
+                return res.data
+            });
+    },
     requestProductListByCategoryToSpring({ commit }, category) {
         return axiosInst.get(`/product/category/${category}`)
             .then((res) => {
@@ -58,6 +65,13 @@ export default {
         .then((res) => {
             console.log("서버 응답: " + JSON.stringify(res.data))
             return res.data
+        })
+    },
+    requestDeleteProductToSpring({ }, id) {
+        console.log("delete 진행!")
+        return axiosInst.delete(`/product/${id}`)
+        .then((res) => {
+            alert("삭제가 완료되었습니다.")
         })
     }
 }
