@@ -10,18 +10,19 @@
           <v-menu v-for="button in buttons" :key="button.id" :open-on-hover="true" offset-y>
             <template v-slot:activator="{ on }">
               <v-btn v-on="on">
-                <v-icon class="font">{{ button.text }}</v-icon>
+                <v-icon class="font" style="font-style: normal;">{{ button.text }}</v-icon>
               </v-btn>
             </template>
 
             <v-card class="menu-card">
-              <transition-group>
-                <v-img v-for="(image, index) in button.images" :key="image.id" :src="require(`@/assets/${image.src}`)"
-                  contain class="menu-image" :style="{
+              <router-link v-for="(image, index) in button.images" :key="image.id" :to="image.link">
+                <transition-group>
+                  <v-img :src="require(`@/assets/${image.src}`)" :key="image.id" contain class="menu-image" :style="{
                     animationDelay: `${index * 0.2}s`,
                     animationDuration: '2s'
                   }" />
-              </transition-group>
+                </transition-group>
+              </router-link>
             </v-card>
           </v-menu>
         </div>
@@ -29,9 +30,15 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-        <span class="font">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn to="/account-regist-page" text>
+        SIGNUP
+        <v-icon>person_add_alt</v-icon>
+      </v-btn>
+
+
+      <v-btn to="/login-page" text>
+        LOGIN
+        <v-icon>login</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -51,18 +58,18 @@ export default {
         id: 1,
         text: "NOTICE",
         images: [
-          { id: 1, src: "exampleImage.jpg" },
-          { id: 2, src: "exampleImage.jpg" },
-          { id: 3, src: "exampleImage.jpg" },
+          { id: 1, src: "exampleImage.jpg", link: "/notice-page", },
+          { id: 2, src: "exampleImage.jpg", link: "/", },
+          { id: 3, src: "exampleImage.jpg", link: "/", },
         ],
       },
       {
         id: 2,
         text: "SHOP",
         images: [
-          { id: 4, src: "exampleImage.jpg" },
-          { id: 5, src: "exampleImage.jpg" },
-          { id: 6, src: "exampleImage.jpg" },
+          { id: 4, src: "exampleImage.jpg", link: "/", },
+          { id: 5, src: "exampleImage.jpg", link: "/", },
+          { id: 6, src: "exampleImage.jpg", link: "/", },
         ],
       },
       {
