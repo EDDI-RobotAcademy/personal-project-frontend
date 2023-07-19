@@ -80,5 +80,26 @@ export default {
     const { boardId, userToken } = payload
     return axiosInst.springAxiosInst.post('board/unLikeBoard', { boardId, userToken })
       .then((res) => {})
-  }
+  },
+  requestMyPostListToSpring({ commit }, userToken) {
+    return axiosInst.springAxiosInst.get(`board/${userToken}/my-boards`)
+      .then((res) => {
+        commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
+      })
+  },
+  requestModifyBoardToSpring({}, payload) {
+    const { boardId, title, content } = payload
+    return axiosInst.springAxiosInst.put(`board/${boardId}/modify-board`, { title, content })
+    .then((res) => {})
+  },
+  requestDeleteBoardToSpring({}, boardId) {
+    return axiosInst.springAxiosInst.delete(`board/${boardId}/delete`)
+    .then((res) => {})
+  },
+  requestMyLikedPostListToSpring({ commit }, userToken) {
+    return axiosInst.springAxiosInst.get(`board/${userToken}/my-liked-boards`)
+      .then((res) => {
+        commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
+      })
+  },
 }

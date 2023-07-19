@@ -9,7 +9,9 @@ export default {
         if (res.data.userToken != null) {
           alert("로그인 성공!");
           let userToken = res.data.userToken;
+          let nickname = res.data.nickname;
           localStorage.setItem("userToken", userToken);
+          localStorage.setItem("nickname", nickname)
           return true
         } else {
           alert("로그인 실패!");
@@ -75,7 +77,41 @@ export default {
       })
       .catch((res) => {
         alert('로그아웃 실패')
+      })    
+  },
+  requestAccountInfoToSpring({}, userToken) {
+    return axiosInst.springAxiosInst.get(`/account/${userToken}/account-info`)
+      .then((res) => {
+        return res.data
       })
-      
+  },
+  requestCheckPasswordToSpring({}, payload) {
+    const { userToken, password } = payload
+    return axiosInst.springAxiosInst.get(`account/${userToken}/check-password`, { params: {password: password} })
+      .then((res) => {
+        return res.data
+      })
+  },
+  requestChangeNicknameToSpring({}, payload) {
+    const { userToken, newNickname } = payload
+    return axiosInst.springAxiosInst.put(`account/${userToken}/change-nickname`, {newNickname})
+      .then((res) => {})
+  },
+  requestChangePasswordToSpring({}, payload) {
+    const { userToken, password, newPassword } = payload
+    return axiosInst.springAxiosInst.put(`account/${userToken}/change-password`, { password, newPassword })
+      .then((res) => {
+        if (res.data) {
+          alert("변경이 완료 됐습니다")
+        } else {
+          alert("비밀번호 변경에 실패했습니다")
+        }
+      })
+  },
+  requestSignoutToSpring({}, userToken) {
+    return axiosInst.springAxiosInst.delete(`account/${userToken}/delete-account`)
+      .then((res) => {
+        localStorage.removeItem("userToken")
+      })
   }
 }

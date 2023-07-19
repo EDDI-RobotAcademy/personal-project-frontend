@@ -34,7 +34,30 @@
         
       </v-app-bar>
   
-      <v-navigation-drawer app v-model="navigation_drawer">
+      <v-navigation-drawer app v-model="navigation_drawer" class="navigation-drawer">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-h6">Traveler's Guide</v-list-item-title>
+            <v-list-item-subtitle>Easy Ways for Things You Need</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <!-- router :to="link.route" -->
+        <v-list nav dense>
+          <v-list-item v-for="(link, index) in links" :key="link.index" @click="handleClick(index)" class="nav-drawer-items">
+            <v-list-item-action>
+              <v-icon>
+                {{ link.icon }}
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="nav-drawer-item-title">
+                {{ link.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
     </nav>
   </template>
@@ -49,7 +72,12 @@ export default {
   data() {
     return {
     navigation_drawer: false,
-    userToken: localStorage.getItem("userToken")
+    userToken: localStorage.getItem('userToken'),
+    links: [
+      { icon: "mdi-account-arrow-left", text: "My Page", method: "toMyPage"},
+      { icon: "mdi-account-box-multiple-outline", text: "My Posts", method: "toMyPosts"},
+      { icon: "mdi-account-star-outline", text: "Liked Posts", method: "toLikedPosts"}
+    ]
     };
   },
   methods: {
@@ -71,7 +99,28 @@ export default {
           location.reload()
         )
     },
-
+    handleClick(index) {
+      const method = this.links[index].method;
+      this[method]();
+    },
+    toMyPage() {
+      if (this.userToken !== null) {
+        this.$router.push({name: 'MyPage'})
+      }
+      else alert("로그인 해야 이용 할 수 있습니다")
+    },
+    toMyPosts() {
+      if (this.userToken !== null) {
+        this.$router.push({name: 'MyPostsPage'})
+      }
+      else alert("로그인 해야 이용 할 수 있습니다")
+    },
+    toLikedPosts() {
+      if (this.userToken !== null) {
+        this.$router.push({name: 'MyLikedPostsPage'})
+      }
+      else alert("로그인 해야 이용 할 수 있습니다")
+    }
   }
 
 };
@@ -91,6 +140,16 @@ export default {
   .nav-button {
     margin-right: 5rem;
     text-transform: none;
+  }
+
+  .navigation-drawer{
+    background-color: #c5c5c5;
+  }
+  .nav-drawer-items{
+    margin-top: 9px;
+  }
+  .nav-drawer-item-title{
+    text-align: center;
   }
 
 
