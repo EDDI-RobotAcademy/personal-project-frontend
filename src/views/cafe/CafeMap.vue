@@ -181,6 +181,18 @@ export default {
       const infoWindow = new google.maps.InfoWindow({
         content: content,
       });
+      
+      if (this.infoWindow) {
+        this.infoWindow.close();
+      }
+
+      this.infoWindow = infoWindow;
+
+      infoWindow.addListener("closeclick", () => {
+        this.infoWindow = null; 
+        this.articles = []; 
+      });
+
       infoWindow.open(this.map, marker);
     },
     selectDistance(index){
