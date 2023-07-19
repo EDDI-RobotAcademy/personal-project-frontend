@@ -1,41 +1,39 @@
 <template lang="">
-  <v-container>
-      <div class="homeImg">
-          <v-carousel :cycle="cycle" :interval="interval" :height="height" v-model="model">
-              <v-carousel-item v-for="(picture, idx) in bannerPictures" :key="idx">
-                  <v-sheet :height="height" tile>
-                      <v-row class="fill-height" align="center" justify="center">
-                          <v-img :src="picture.img" :height="height" contain/>
-                      </v-row>
-                  </v-sheet>
-              </v-carousel-item>
-          </v-carousel>
-      </div>
+    <v-container>
+    <home-carousel-model />
+    <div class="HomeBtn">
+      <v-btn>이용</br>안내</v-btn>
+      <v-btn>회원</br>혜택</v-btn>
+      <v-btn>도서관</br>행사</v-btn>
+      <v-btn>도서관</br>소식</v-btn>
+      <v-btn>new</br>서점</v-btn>
+    </div>
+    <home-book-recommend />
   </v-container>
 </template>
 
 <script>
-  export default {
-    data() {
-        return {
-            carouselModel: false,
-            bannerPictures: [
-                { img: require("@/assets/downloadImg/book.png") },
-                { img: require("@/assets/downloadImg/books.png") },
-                { img: require("@/assets/downloadImg/book.png") },
-                { img: require("@/assets/downloadImg/books.png") },
-            ],
-            cycle: true,
-            interval: 3000,
-            height: 400,
-            model: ''
-        }
-    }
-  }
+import HomeBookRecommend from "@/views/Home/HomeBookRecommend.vue"
+import HomeCarouselModel from "@/views/Home/HomeCarouselModel.vue"
+
+export default {
+  data() {
+    return {
+    };
+  },
+  components: {
+    HomeBookRecommend,
+    HomeCarouselModel
+  },
+  methods: {
+  },
+};
 </script>
 
 <style>
-.homeImg {
-  margin-top: 30px;
+.HomeBtn {
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 </style>
