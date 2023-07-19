@@ -1,12 +1,8 @@
 <template>
   <div>    
     <p v-for="(log, i) in logs" :key="i">{{ log }}</p>
-    <button v-if="!isConnected" @click="connect">connect</button>
-    <button v-if="isConnected" @click="disconnect">disconnect</button>
-    <input type="text" v-model="message"/>
-    <button  v-if="isConnected" @click="sendMessage">send</button>
-    <p v-if="isConnected">connected!</p>
-    <p v-else>not connected</p>
+    <input type="text" v-model="message" @keyup.enter="sendMessage"/>
+    <button @click="sendMessage">send</button>
   </div>
 </template>
 
@@ -15,6 +11,12 @@
   import {defineComponent} from 'vue'
   let ws
   export default {
+    props: {
+        ticker: {
+          type: String,
+          required: true,
+        },
+      },
     data() {
       return {
         isConnected: false,
@@ -24,10 +26,8 @@
     },
     methods: {
       connect() {
-        ws = new WebSocket("ws://" + "localhost:7777" + "/chat")
+        ws = new WebSocket("ws://" + "localhost:7777" + "/chat/" + this.ticker)
         ws.onopen = () => {
-          this.isConnected = true;
-
           ws.onmessage = ({data}) => {
             this.logs.push({event: '메세지 수신', data});
             console.log(data)
@@ -36,7 +36,6 @@
       },
       disconnect() {
         ws.close();
-        this.isConnected = false;
       },
       sendMessage() {
         ws.send(this.message)
@@ -45,7 +44,13 @@
     },
     beforeDestroy() {
       ws.close();
-    }
+    },
+    mounted() {
+      this.connect()
+    },
+    beforeUnmount() {
+      this.disconnect()
+    },
     
   };
   </script>

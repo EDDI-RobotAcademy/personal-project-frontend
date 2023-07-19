@@ -8,7 +8,7 @@
       </v-card>
       <v-card class="chat-table" style="width: 500px; position: sticky; top: 64px; right: 0; height: calc(60vh - 64px);">
         <v-container>
-          <chat-form />
+          <chat-form :ticker="ticker"/>
         </v-container>
       </v-card>
     </div>
@@ -23,7 +23,11 @@ import { mapActions, mapState } from 'vuex';
 const stockModule = 'stockModule'
 
 export default {
-
+  data() {
+    return {
+      ticker: "1",
+    }
+  },
   components: {
     StockListForm,
     ChatForm,
