@@ -1,9 +1,16 @@
 <template>
     <div id="app">
         <div id="map" style="width:100%; height:640px;"></div>
-        <input type="date" v-model="checkInDate">체크인 날짜
-        <input type="date" v-model="checkOutDate">체크아웃 날짜
-        <v-btn @click="() => checkVacancies(checkInDate, checkOutDate)">빈자리 찾기</v-btn>
+        <v-row no-gutters class="checkDate">
+            <v-col cols="auto" id="selectDate">
+                <p id="date">CHECK IN</p>
+                <input type="date" v-model="checkInDate">
+                <p id="middleLine"> | </p>
+                <p id="date">CHECK OUT</p>
+                <input type="date" v-model="checkOutDate">
+                <v-btn @click="() => checkVacancies(checkInDate, checkOutDate)" id="checkStockBtn">빈자리 찾기</v-btn>
+            </v-col>
+        </v-row>
     </div>
 </template>
   
@@ -18,6 +25,9 @@ export default {
             checkInDate: '',
             checkOutDate: '',
             campsiteVacancy: [],
+            // 우선 학원을 시작점으로 설정해둠
+            currentLatitude: 37.498993,
+            currentLongitude: 127.032909,
         }
     },
     methods: {
@@ -41,7 +51,7 @@ export default {
         initializeMap() {
             const mapContainer = document.getElementById('map');
                 const mapOption = {
-                center: new kakao.maps.LatLng(37.54699, 127.09598),
+                center: new kakao.maps.LatLng(this.currentLatitude, this.currentLongitude),
                 level: 4
             }
             return new kakao.maps.Map(mapContainer, mapOption);
@@ -113,7 +123,20 @@ export default {
         this.checkInDate = formattedCheckInDate;
         this.checkOutDate = formattedCheckOutDate;
         await this.checkVacancies(this.checkInDate, this.checkOutDate);
-    }
+    },
+    // 인스턴스에서 사용하려면 설정이 필요하므로 일단 보류
+    // async created() {
+    //     await navigator.geolocation.getCurrentPosition((position) => {
+    //         console.log("Latitude: " + position.coords.latitude)
+    //         console.log("Longitude: " + position.coords.longitude)
+    //         this.currentLatitude = position.coords.latitude
+    //         this.currentLongitude = position.coords.longitude
+    //         console.log("this.currentLatitude: " + this.currentLatitude)
+    //         console.log("this.currentLongitude: " + this.currentLongitude)
+    //     }, (error) => {
+    //         console.error(error)
+    //     })
+    // }
 }
 </script>
 
@@ -167,5 +190,45 @@ export default {
 }
 #map {
     padding-top: 200px;
+}
+#selectDate {
+    margin: auto;
+    font-family: 'SUIT-Regular';
+    font-weight: 400;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+}
+#selectDate input {
+    outline-style: none;
+    padding-left: 12px;
+}
+#date {
+    margin: auto;
+    color: black;
+    font-family: 'SUIT-Regular';
+    font-weight: 600;
+}
+#middleLine {
+    margin: auto;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.checkDate {
+    background-color: rgb(247, 247, 247);
+    border-radius: 33px;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+#checkStockBtn {
+    background-color: #73916A;
+    font-family: 'SUIT-Regular';
+    font-weight: 200;
+    font-size: 16px;
+    color: white;
+    margin-left: 100px;
 }
 </style>
