@@ -37,7 +37,7 @@
 
 <script>
 const cafeCrawlingModule='cafeCrawlingModule'
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:"):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
     key: process.env.VUE_APP_GOOGLE_MAP,
@@ -192,22 +192,26 @@ export default {
     async getCafeInfo(placeName){
       const receivedData = await this.sendPlaceName(placeName)
       // console.log(Object.keys(a.title))
-
-      for(let i=0; i<Object.keys(receivedData.title).length; i++){
+      const blogs = this.$store.state.blogs
+      for(let i=0; i<Object.keys(this.blogs.title).length; i++){
         this.articles.push({
-          title: receivedData.title[i],
-          link: receivedData.link[i],
-          description: receivedData.description[i],
-          bloggername: receivedData.bloggername[i],
-          bloggerlink: receivedData.bloggerlink[i],
-          postdate: receivedData.postdate[i]
+          title: this.blogs.title[i],
+          link: this.blogs.link[i],
+          description: this.blogs.description[i],
+          bloggername: this.blogs.bloggername[i],
+          bloggerlink: this.blogs.bloggerlink[i],
+          postdate: this.blogs.postdate[i]
         })
       }
     },
     goLink(link){
       window.open(link)
     }
-  }
+  },
+  computed: { 
+        ...mapState(cafeCrawlingModule, ['blogs']),
+    },
+  
 };
 </script>
 <style scoped>
