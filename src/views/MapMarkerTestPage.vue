@@ -1,8 +1,13 @@
 <template lang="">
     <div>
-        <div class="map_wrap">
+        <div style="position: relative; z-index:2">
+            <!-- 미니창박스 -->
+            <MiniWindow v-if="popState" @close="changePopState()" v-bind:placeData="this.placeData"></MiniWindow>
+        </div>        
+        <div class="map_wrap" style="position: relative; z-index:1">
             <!-- 지도박스 -->
-            <div id="map" ref="map" style="width: 600px; height: 500px; margin: auto; position: relative; overflow: hidden;"></div>
+            <div id="map" ref="map" style="width: 600px; height: 500px; margin: auto; overflow: hidden;"></div>
+            
             <!-- 메뉴박스 -->
             <div id="menu_wrap" class="bg_white">
                 <div class="option">
@@ -13,6 +18,8 @@
                         </form>
                     </div>
                 </div>
+                
+
                 <ul id="placesList" style="list-style: none; padding-inline-start: 0px">
                     <li style="margin: 10px;" v-for="(place, index) in places" :key="index" @mouseover="onMouseOver(index)" @mouseout="onMouseOut">
                         <!-- index+1로 클래스명 지정 -->
@@ -34,10 +41,16 @@
             </div>
 
         </div>
+
     </div>
 </template>
 <script>
+import MiniWindow from '@/components/map/MiniWindow.vue'
+
 export default {
+    components : {
+        MiniWindow
+    },   
     data() {
         return {
             map: null,
@@ -45,7 +58,11 @@ export default {
             keyword: "수영장",
             places: [],
             pagination: {},
-            infowindow: new window.kakao.maps.InfoWindow({ zIndex: 1 })
+            infowindow: new window.kakao.maps.InfoWindow({ zIndex: 1 }),
+            
+            //미니창 상태를 관리할 변수
+            popState : true,
+            placeData : []
         };
     },
     mounted() {
@@ -132,6 +149,11 @@ export default {
             window.kakao.maps.event.addListener(marker, "mouseout", () => {
                 this.infowindow.close();
             });
+            // click 했을 때는 미니윈도우를 토글
+            window.kakao.maps.event.addListener(marker, "click", () => {
+                this.changePopState();
+                this.placeData = title;
+            });
         },
         // 지도 위에 표시되고 있는 마커를 모두 제거
         removeMarker() {
@@ -139,7 +161,7 @@ export default {
             this.markers = [];
     },
     displayInfowindow(marker, title) {
-        const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+        const content = `<div style="padding:5px;">${title}</div>`;
         this.infowindow.setContent(content);
         this.infowindow.open(this.map, marker);
     },
@@ -152,8 +174,8 @@ export default {
     gotoPage(pageNum) {
         this.pagination.gotoPage(pageNum);
     },
-    gotoMiniWindo() {//마커를 클릭했을때 미니창이 뜸
-
+    changePopState() { //미니창 토글
+        this.popState = !this.popState;
     }
     }
     
