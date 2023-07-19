@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <nav>
+    <!-- <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
       <br />
 
-      <router-link to="/mapTestPage">MapTestPage</router-link>
-    </nav>
+      <router-link to="/mapTestPage">MapTestPage</router-link> |
+      <router-link to="/mapMarkerTestPage">MapMarkerTestPage</router-link>
+    </nav> -->
     <router-view />
   </div>
 </template>
@@ -21,7 +22,7 @@
 }
 
 nav {
-  padding: 30px;
+  /* padding: 30px; */
 }
 
 nav a {

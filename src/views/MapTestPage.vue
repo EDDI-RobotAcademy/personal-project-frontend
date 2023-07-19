@@ -1,10 +1,13 @@
 <template>
   <div>
     <h1>Kakao Map Test</h1>
+    <KakaoMap class="kmap" :options="mapOption" @send-message="sendMessage"></KakaoMap>
     <div class="searchbox">
-      <button>현재 지도의 좌표</button>
       <div>
-        <input type="text" value="수영장" @keyup.enter="searchPlace"/>
+        <button @click="searchPlace">수영장 찾기</button>
+      </div>
+      <div>
+        <button>마커 표시</button>
       </div>
       <div class="results">
         <div class="place" v-for="result in search.results" :key="result.id">
@@ -13,7 +16,6 @@
         </div>
       </div>
     </div>    
-    <KakaoMap class="kmap" :options="mapOption" @send-message="sendMessage"></KakaoMap>
   </div>
 </template>
 <script>
@@ -37,7 +39,6 @@ export default {
         pagination: null,
         results: []
       },
-      mapInstance: null
     }
   },
   methods: {
@@ -45,12 +46,8 @@ export default {
       console.log(data);
       this.mapInstance = data;
     },
-    searchPlace(e) {
-      console.log(e.target.value);//엔터로 검색?
-      const keyword = e.target.value.trim();//문자열 좌우에서 공백을 제거
-      if (keyword.length === 0) {
-        return;
-      } //이거 왜함..?
+    searchPlace(e) { //키워드 검색을 요청하는 함수
+      const keyword = "수영장";
       const ps = new window.kakao.maps.services.Places(); // 장소 검색 객체를 생성합니다
       //const currentMapCoordinate = new kakao.maps.LatLng(37.566535, 126.9779692);
       const currentMapCoordinate = this.mapInstance.getCenter(); // 현재 지도의 중심 좌표 가져오기

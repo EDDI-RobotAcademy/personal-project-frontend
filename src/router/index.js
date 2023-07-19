@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
 import MapTestPage from "../views/MapTestPage.vue";
+import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 
 Vue.use(VueRouter);
 
@@ -25,6 +26,11 @@ const routes = [
     path: "/mapTestPage",
     name: "MapTestPage",
     component: MapTestPage,
+  },
+  {
+    path: "/mapMarkerTestPage",
+    name: "MapMarkerTestPage",
+    component: MapMarkerTestPage,
   },
 ];
 
