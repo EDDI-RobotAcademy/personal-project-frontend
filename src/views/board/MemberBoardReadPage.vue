@@ -49,7 +49,7 @@ export default {
             boardModule, ['requestBoardToSpring', 'requestDeleteBoardToSpring']
         ),
         async onDelete () {
-            this.s3fileDelete()
+            await this.s3fileDelete()
             await this.requestDeleteBoardToSpring(this.boardId)
             await this.$router.push('/member-board-list-page')
         },
