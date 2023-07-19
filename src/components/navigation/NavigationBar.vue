@@ -1,7 +1,7 @@
 <template>
   <nav class="header__nav">
-    <RouterLink to="/search" class="nav__link">지도</RouterLink>
-    <RouterLink to="/news" class="nav__link">오늘의 뉴스</RouterLink>
+    <RouterLink to="/mapApi" class="nav__link">지도</RouterLink>
+    <RouterLink to="/news" class="nav__link">매물등록</RouterLink>
     <RouterLink to="/account/liked" v-if="isLogin" class="nav__link">
       관심목록
     </RouterLink>
