@@ -24,6 +24,13 @@ import MemberBoardReadForm from '@/components/board/MemberBoardReadForm.vue'
 const boardModule = 'boardModule'
 
 export default {
+    data(){
+        return{
+        awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
+        awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
+        awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
+        }
+    },
     name: 'MemberBoardReadPage',
     components: {
         MemberBoardReadForm,
@@ -39,16 +46,46 @@ export default {
     },
     methods: {
         ...mapActions(
-            boardModule, ['requestBoardToSpring']
+            boardModule, ['requestBoardToSpring', 'requestDeleteBoardToSpring']
         ),
         async onDelete () {
+            this.s3fileDelete()
             await this.requestDeleteBoardToSpring(this.boardId)
-            await this.$router.push({ name: 'BoardListPage' })
-        }
+            await this.$router.push('/member-board-list-page')
+        },
+        s3fileDelete(){
+                this.awsS3Config()
+                const board = this.board
+                console.log(board)
+                for(let i=0 ; i< this.board.filePathList.length; i++ ){
+                    console.log("aws3에서 사진 지우기", this.board.filePathList[i].imagePath)
+                this.s3.deleteObject({
+                    Key: this.board.filePathList[i].imagePath
+                }, (err, data) => {
+                    if(err){
+                        return alert('AWS 버킷 데이터 삭제에 문제가 발생했습니다.: ' + err.message)
+                    }
+                })
+                }
+        },
+        awsS3Config(){
+            AWS.config.update({
+                region: this.awsBucketRegion,
+                credentials: new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: this.awsIdentityPoolId
+                })
+            })
+
+            this.s3 = new AWS.S3({
+                apiVersion: '2006-03-01',
+                params: {
+                    Bucket: this.awsBucketName
+                }
+            })
+        },
     },
     async created () {
         await this.requestBoardToSpring(this.boardId)
-    
     }
 }
 </script>
