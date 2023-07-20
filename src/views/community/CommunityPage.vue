@@ -2,7 +2,13 @@
     <div>
         <br>
         <h2 style="text-align: center">Community Page</h2>
-        <community-form :communityBoards="communityBoards"/
+        <community-form v-if="communityBoards" :communityBoards="communityBoards"/>
+        <p v-else> 잠시만 기다려 주세요 </p>
+
+    <div>
+        <v-btn class="communityButton" style="float:right;" @click='goregist'>글쓰기</v-btn>
+    </div>
+
     </div>
 </template>
 <script>
@@ -13,20 +19,27 @@ import CommunityForm from '@/components/community/CommunityForm.vue';
 const communityModule = 'communityModule'
 
 export default {
+    name: 'CommunityPage',
     components: { CommunityForm },
     computed: {
         ...mapState(communityModule, ['communityBoards']),
     },
     mounted() {
-        this.requestCommunityBoardList()
+        this.communityListBoard()
     },
     methods: {
         ...mapActions(
-            communityModule, ['requestCommunityBoardList']
+            communityModule, ['communityListBoard']
         ),
+        goregist() {
+            this.$router.push({ name: 'CommunityRegistPage' });
+        }
     },
 }
 </script>
-<style lang="">
-    
+<style scoped>
+.communityButton {
+    background-color: black !important;
+    color: white;
+}
 </style>

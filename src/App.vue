@@ -27,26 +27,22 @@
           </v-menu>
         </div>
       </div>
-
       <v-spacer></v-spacer>
-
       <v-btn to="/account-regist-page" text>
         SIGNUP
         <v-icon>person_add_alt</v-icon>
       </v-btn>
-
-
       <v-btn to="/login-page" text>
         LOGIN
         <v-icon>login</v-icon>
       </v-btn>
     </v-app-bar>
-
     <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
+
 
 <script>
 
@@ -88,8 +84,6 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
 
-
-
 .font {
   /* font-family: 'Russo One', sans-serif; */
   font-family: 'Black Han Sans', sans-serif;
@@ -98,7 +92,6 @@ export default {
 .menu-container {
   display: flex;
 }
-
 
 .menu-container>*:not(:last-child) {
   margin-right: 10px;

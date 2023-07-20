@@ -1,32 +1,33 @@
 <template lang="">
-    <div align="center">
-    <br>
+    <div>
         <v-container>
             <v-data-table :headers="communityHeaders" :items="communityBoards">
-                <template #item.communityId="{ item }">
+            <template #item.communityId="{ item }">
                 {{ item.communityId }}
-                </template>
-                <template #item.title="{ item }">
-                    <a :href="readNoticeLink(item.title)">{{ item.title }}</a>
-                </template>
+            </template>
+            <template #item.title="{ item }">
+             <router-link :to="{ name: 'CommunityReadPage', params: { communityId: item.communityId } }">
+                {{ item.title }}
+             </router-link>
+            </template>
+
             </v-data-table>
         </v-container>
-        <v-btn outlined color="black" to="/">홈으로</v-btn>
     </div>
 </template>
 <script>
 
-import communityModule from '@/store/community/communityModule'
+import communityModule from '@/store/community/communityModule';
 import { mapState } from 'vuex';
 
 export default {
+    name: "CommunityRegistForm",
     data() {
         return {
             communityHeaders: [
                 { text: '게시물 번호', value: 'communityId' },
-                { text: 'Title', value: 'title', sortable: false },
-                { text: 'Date', value: 'date' },
-                { text: 'account', value: 'account' }
+                { text: '게시물 제목', value: 'title', sortable: false },
+                { text: '작성 일자', value: 'date' }
             ]
         }
     },
@@ -36,15 +37,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(communityModule, ['community'])
+        ...mapState(communityModule, ['communityBoard'])
     },
     methods: {
-        readNoticeLink(title) {
-            return `/notice/${title}`;
-        },
     }
 }
 </script>
-<style lang="">
-    
-</style>
+<style scoped></style>

@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <br>
-        <h2 style="text-align: center">Notice List Page</h2>
+        <h2 style="text-align: center">Notice Page</h2>
         <notice-form v-if="noticeBoards" :noticeBoards="noticeBoards"/>
         <p v-else> 잠시만 기다려 주세요 </p>
 
