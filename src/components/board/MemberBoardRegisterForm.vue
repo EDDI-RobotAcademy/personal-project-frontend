@@ -14,7 +14,7 @@
                 <tr>
                     <td  class="table_title">닉네임</td>
                     <td>
-                        <p style="text-align: center; margin-bottom: 0; " disabled> {{ nickName }} </p>
+                        <p style="text-align: center; margin-bottom: 0; " disabled> {{ nickname }} </p>
                     </td>
                 </tr>
                 <tr>
@@ -109,7 +109,7 @@ export default {
             
             let boardInfo = {
                 title: this.title,
-                nickName: this.nickName,
+                nickname: this.nickname,
                 content: this.content,
                 awsFileList: this.awsFileList
             }
@@ -136,7 +136,7 @@ export default {
                 this.awsS3Config()
                 for(var i=0 ; i< this.$refs.files.files.length; i++ ){
                 let f = this.$refs.files.files[i]
-                const n = this.newFileName()+this.nickName+f.name   
+                const n = this.newFileName()+this.nickname+f.name   
                 this.awsFileList.push(n)
 
                 await this.s3.upload({
@@ -195,7 +195,7 @@ export default {
             },
     },
     computed: {
-        ...mapState(memberModule, ['nickName'])
+        ...mapState(memberModule, ['nickname'])
     },
 };
 

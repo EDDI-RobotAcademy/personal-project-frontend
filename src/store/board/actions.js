@@ -14,10 +14,10 @@ export default {
     },
     requestCreateBoardToSpring ({}, payload) {
 
-        // const { title, content, nickName, filePaths } = payload
+        // const { title, content, nickname, filePaths } = payload
 
         return axiosInst.axiosInst.post('/member-board/register',
-        //  { title, content, nickName, filePaths }
+        //  { title, content, nickname, filePaths }
         payload
          )
             .then((res) => {

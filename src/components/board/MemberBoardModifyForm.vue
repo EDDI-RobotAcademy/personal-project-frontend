@@ -13,7 +13,7 @@
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.nickName" disabled/>
+                        <input type="text" :value="board.memberBoard?.nickname" disabled/>
                     </td>
                 </tr>
                 <tr>
@@ -100,7 +100,7 @@ export default {
             awsImagePath: '',
             title: '',
             content: '',
-            nickName: '',
+            nickname: '',
             createDate: '',
             awsFileList: [],
 
@@ -122,7 +122,7 @@ export default {
             
             let boardInfo = {
                 title: this.board.memberBoard.title,
-                nickName: this.board.memberBoard.nickName,
+                nickname: this.board.memberBoard.nickname,
                 content: this.board.memberBoard.content,
                 awsFileList: this.awsFileList
             }
@@ -154,7 +154,7 @@ export default {
                 this.awsS3Config()
                 for(var i=0 ; i< this.$refs.files.files.length; i++ ){
                 let newfileList = this.$refs.files.files[i]
-                const newImgName = this.newFileName()+this.board.memberBoard.nickName+newfileList.name
+                const newImgName = this.newFileName()+this.board.memberBoard.nickname+newfileList.name
                 // console.log("합치기전",Object.values(f))
                 this.awsFileList.push(newImgName)
                 console.log("이미지 추가", this.awsFileList)
@@ -233,7 +233,7 @@ export default {
     },
     created(){
         this.filePathList=this.board.memberBoard?.filePathList
-        this.nickName = this.board.memberBoard?.nickName
+        this.nickname = this.board.memberBoard?.nickname
         this.title = this.board.memberBoard?.title
         this.content = this.board.memberBoard?.content
         this.createDate = this.board.memberBoard?.createDate

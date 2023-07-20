@@ -28,7 +28,7 @@ export default {
     ...mapActions(memberModule, ['getTokenToSpring'])
   },
   computed:{
-    ...mapState(memberModule, ['nickName'])
+    ...mapState(memberModule, ['nickname'])
   }
 };
 </script>

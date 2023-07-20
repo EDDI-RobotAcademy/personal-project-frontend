@@ -12,7 +12,7 @@
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.nickName" readonly/>
+                        <input type="text" :value="board.memberBoard?.nickname" readonly/>
                     </td>
                 </tr>
                 <tr>
@@ -65,11 +65,11 @@ export default {
 }
     },
     created(){
-        this.$store.state.nickName
+        this.$store.state.nickname
     },
     
     computed: {
-        ...mapState(memberModule, ['nickName'])
+        ...mapState(memberModule, ['nickname'])
     },
 }
 </script>

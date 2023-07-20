@@ -30,7 +30,7 @@
                     </router-link>
                 </td>
                 <td align="center">
-                    {{ board.nickName }}
+                    {{ board.nickname }}
                 </td>
                 <td align="center">
                     {{ board.createDate }}

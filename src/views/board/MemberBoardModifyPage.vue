@@ -40,7 +40,7 @@ export default {
             boardModule, ['requestBoardToSpring','requestBoardModifyToSpring']
         ),
         async onSubmit (payload) {
-            // const {title, nickName, content, awsFileList} = payload
+            // const {title, nickname, content, awsFileList} = payload
             const boardId = this.boardId
             await this.requestBoardModifyToSpring({...payload, boardId})
             await this.$router.push({

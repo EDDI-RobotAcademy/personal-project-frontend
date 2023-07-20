@@ -7,6 +7,6 @@ export default {
         state.isLogin = receivedData
     },
     [SET_NICKNAME] (state, receivedData) {
-        state.nickName = receivedData
+        state.nickname = receivedData
     },
 }

@@ -4,9 +4,9 @@ import axiosInst from "@/router/utility/axiosInst"
 import { LOGIN_COMPLETE, SET_NICKNAME } from "./mutation-types"
 
 export default {
-    requestSpringToCheckNickNameDuplication ({ }, payload) {
-        const { nickName } = payload
-        return axiosInst.axiosInst.get(`/member/check-nickName/${nickName}`)
+    requestSpringToCheckNicknameDuplication ({ }, payload) {
+        const { nickname } = payload
+        return axiosInst.axiosInst.get(`/member/check-nickName/${nickname}`)
             .then((res) => {
                 if (res.data) {
                     alert('사용 가능한 닉네임입니다!')
@@ -22,8 +22,8 @@ export default {
     },
     requestRegisterMemberToSpring ({ }, payload) {
 
-        const { email, nickName, password,roleType } = payload
-        return axiosInst.axiosInst.post('/member/sign-up', { email, nickName, password, roleType })
+        const { email, nickname, password,roleType } = payload
+        return axiosInst.axiosInst.post('/member/sign-up', { email, nickname, password, roleType })
             .then((res) => {
                 return res.data
             })
@@ -32,13 +32,13 @@ export default {
             })
     },
     requestSpringToLogin(context, payload){
-        const { email, password,roleType,nickName } = payload
-        return axiosInst.axiosInst.post('/member/login', { email, password, roleType, nickName })
+        const { email, password,roleType,nickname } = payload
+        return axiosInst.axiosInst.post('/member/login', { email, password, roleType, nickname })
             .then((res) => {
                 localStorage.setItem("userToken", res.data.userToken)
                 localStorage.setItem("roleType", res.data.roleType)
                 context.commit(LOGIN_COMPLETE, true)
-                context.commit(SET_NICKNAME, res.data.nickName)
+                context.commit(SET_NICKNAME, res.data.nickname)
                 return res.data
             })
             .catch(() => {
