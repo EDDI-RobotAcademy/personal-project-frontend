@@ -41,7 +41,21 @@
                                 </tr>
                             </table>
                         </v-card-text>
+                        <div align="center">
+                            <button class="mr-3" @click="initializeVideos">재생 시키기!</button>
+                            <br>
+                            <iframe ref="ytPlayer"
+                                :src="`https://www.youtube.com/embed/${videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`"
+                                frameborder="0" allow="autoplay" width="300" height="300" @load="setupPlayer"></iframe>
+                            <br>
+                            <button class="mr-3" @click="previousVideo">이전 곡</button>
+                            <button class="mr-3" @click="togglePlay" v-if="isPlaying">일시 정지</button>
+                            <button class="mr-3" @click="togglePlay" v-else>재생</button>
+                            <button class="mr-3" @click="nextVideo">다음 곡</button>
+
+                        </div>
                     </v-card>
+
                 </v-col>
             </v-row>
         </v-container>
@@ -58,6 +72,10 @@ export default {
         return {
             likes: 0,
             playlistLiked: false,
+            videoIds: [],
+            currentIndex: 0,
+            links: [],
+            isPlaying: true,
         }
     },
     props: {
@@ -85,6 +103,62 @@ export default {
             } else {
                 return false;
             }
+        },
+        initializeVideos() {
+            const videoLinks = this.playlist.songList.map(song => song.link);
+            this.videoIds = videoLinks.map((url) => this.extractVideoId(url));
+            this.currentIndex = 0;
+            this.updatePlayerSrc();
+        },
+        extractVideoId(url) {
+            const regex = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#&?]*).*/;
+            const match = url.match(regex);
+            return match && match[1].length === 11 ? match[1] : null;
+        },
+        setupPlayer() {
+            this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
+                events: {
+                    onStateChange: this.onPlayerStateChange,
+                },
+            });
+        },
+        onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                this.currentIndex++;
+                if (this.currentIndex >= this.videoIds.length) {
+                    this.currentIndex = 0;
+                }
+                this.updatePlayerSrc();
+            }
+        },
+        updatePlayerSrc() {
+            this.ytPlayer.loadVideoById(this.videoIds[this.currentIndex])
+        },
+        nextVideo() {
+            this.currentIndex++;
+            if (this.currentIndex >= this.videoIds.length) {
+                this.currentIndex = 0;
+            }
+            this.isPlaying = true;
+            this.updatePlayerSrc();
+        },
+        previousVideo() {
+            this.currentIndex--;
+            if (this.currentIndex < 0) {
+                this.currentIndex = this.videoIds.length - 1;
+            }
+            this.isPlaying = true;
+            this.updatePlayerSrc();
+        },
+        togglePlay() {
+            if (!this.ytPlayer) return;
+
+            if (this.isPlaying) {
+                this.ytPlayer.pauseVideo();
+            } else {
+                this.ytPlayer.playVideo();
+            }
+            this.isPlaying = !this.isPlaying;
         },
     },
     watch: {

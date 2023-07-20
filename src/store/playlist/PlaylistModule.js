@@ -7,11 +7,11 @@ import state from "@/store/playlist/states"
 
 Vue.use(Vuex)
 
-const playlistodule = {
+const playlistModule = {
     namespaced: true,
     state,
     actions,
     mutations,
 }
 
-export default playlistodule
+export default playlistModule

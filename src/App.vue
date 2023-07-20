@@ -1,8 +1,11 @@
 <template>
   <v-app>
     <navigation-menu-page />
-    <v-main class="background">
-      <router-view />
+    <v-main :style="{ 'padding-top': '130px' }">
+      <div style="background-color: black; height: 4px;"></div>
+      <v-container fluid>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -18,3 +21,5 @@ export default {
   data: () => ({}),
 };
 </script>
+
+<style scoped></style>

@@ -38,17 +38,13 @@
                                 </tr>
                             </table>
                             <div v-if="playlist.playlist" class="text-center">
-                                <router-link :to="{
-                                    name: 'SongRegisterPage',
-                                    params: { playlistId: playlist.playlist.id.toString() }
-                                }">
-                                    <v-btn class="mr-2" rounded color="gray lighten-1" style="border-radius: 5px;">
-                                        노래 등록
-                                    </v-btn>
-                                </router-link>
-                                <v-btn @click="onModify"> 수정 </v-btn>
-                                <v-btn @click="onDelete"> 삭제 </v-btn>
-                                <v-btn @click="goBack"> 돌아가기 </v-btn>
+                                <button class="mr-2" rounded color="gray lighten-1" style="border-radius: 5px;"
+                                    @click="goToPlaylistRegister(playlist.playlist.id)">
+                                    노래 등록
+                                </button>
+                                <button class="mr-2" @click="onModify"> 수정 </button>
+                                <button class="mr-2" @click="onDelete"> 삭제 </button>
+                                <button class="mr-2" @click="goBack"> 돌아가기 </button>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -97,6 +93,12 @@ export default {
                 })
             }
         },
+        goToPlaylistRegister(playlistId) {
+            this.$router.push({
+                name: 'SongRegisterPage',
+                params: { playlistId: playlistId.toString() }
+            })
+        }
     },
 }
 </script>
