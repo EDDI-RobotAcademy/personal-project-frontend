@@ -46,13 +46,12 @@
                             <br>
                             <iframe ref="ytPlayer"
                                 :src="`https://www.youtube.com/embed/${videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`"
-                                frameborder="0" allow="autoplay" width="300" height="300" @load="setupPlayer"></iframe>
+                                frameborder="0" allow="autoplay" width="0" height="0" @load="setupPlayer"></iframe>
                             <br>
                             <button class="mr-3" @click="previousVideo">이전 곡</button>
                             <button class="mr-3" @click="togglePlay" v-if="isPlaying">일시 정지</button>
                             <button class="mr-3" @click="togglePlay" v-else>재생</button>
                             <button class="mr-3" @click="nextVideo">다음 곡</button>
-
                         </div>
                     </v-card>
 
@@ -76,6 +75,7 @@ export default {
             currentIndex: 0,
             links: [],
             isPlaying: true,
+            currentIframe: '',
         }
     },
     props: {
@@ -118,6 +118,7 @@ export default {
         setupPlayer() {
             this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
                 events: {
+                    onReady: this.saveTarget,
                     onStateChange: this.onPlayerStateChange,
                 },
             });
@@ -131,8 +132,12 @@ export default {
                 this.updatePlayerSrc();
             }
         },
+        saveTarget(event) {
+            this.currentIframe = event.target
+        },
         updatePlayerSrc() {
-            this.ytPlayer.loadVideoById(this.videoIds[this.currentIndex])
+            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
+            console.log(YT)
         },
         nextVideo() {
             this.currentIndex++;
@@ -154,9 +159,9 @@ export default {
             if (!this.ytPlayer) return;
 
             if (this.isPlaying) {
-                this.ytPlayer.pauseVideo();
+                this.currentIframe.pauseVideo();
             } else {
-                this.ytPlayer.playVideo();
+                this.currentIframe.playVideo();
             }
             this.isPlaying = !this.isPlaying;
         },
