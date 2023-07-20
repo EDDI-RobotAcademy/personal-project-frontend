@@ -1,1 +1,2 @@
 export const COMMUNITY_LIST = "COMMUNITY_LIST";
+export const COMMUNITY_INFO = "COMMUNITY_INFO";

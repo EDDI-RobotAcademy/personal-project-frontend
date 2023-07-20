@@ -10,7 +10,7 @@
 import CommunityRegistForm from "@/components/community/CommunityRegistForm.vue"
 import { mapActions } from "vuex";
 
-const communityBoardModule = 'communityBoardModule'
+const communityModule = 'communityModule'
 export default {
     components: {
         CommunityRegistForm
@@ -18,13 +18,12 @@ export default {
     name: "CommunityRegistPage",
     methods: {
         ...mapActions(
-            communityBoardModule, ['createCommunityBoard']
+            communityModule, ['createCommunityBoard']
         ),
         async onSubmit(payload) {
             const board = await this.createCommunityBoard(payload)
-            console.log('typeof(board): ' + typeof (board))
-            console.log('board: ' + JSON.stringify(board))
-            await this.$router.push({ name: 'Home' })
+            console.log('board: ' + JSON.stringify(board.data))
+            await this.$router.push({ name: 'CommunityPage' })
         }
     }
 }

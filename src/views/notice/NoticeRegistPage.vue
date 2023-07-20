@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <br>
-        <h2 align="center">Notice Regist Page</h2>
+        <h2 style="text-align:center;">Notice Regist Page</h2>
         <notice-regist-form @submit="onSubmit"/>
     </div>
 </template>
