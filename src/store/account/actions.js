@@ -63,17 +63,6 @@ export default {
       });
   },
 
-  // requestLogin({}, payload) {
-  //   axiosInst
-  //     .post("/account/login", payload)
-  //     .then((res) => {
-  //       alert("login success!");
-  //       localStorage.setItem("accountToken", res.data);
-  //       return res;
-  //     })
-  //     .catch(() => alert("ERROR"));
-  // },
-
   requestDelete({}, email) {
     return axiosInst
       .delete(`/account/delete/${email}`)
