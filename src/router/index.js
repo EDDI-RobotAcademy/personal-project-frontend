@@ -5,14 +5,15 @@ import memberRoutes from './member/index'
 import defaultSetRoutes from './defaultRouterSet'
 import memberBoardRoutes from './board'
 import cafeRoutes from './cafe'
-
+import oauthRoutes from './oauth'
 Vue.use(VueRouter)
 
 const routes = [
   ...memberRoutes,
   ...defaultSetRoutes,
   ...memberBoardRoutes,
-  ...cafeRoutes
+  ...cafeRoutes,
+  ...oauthRoutes
 
 ]
 

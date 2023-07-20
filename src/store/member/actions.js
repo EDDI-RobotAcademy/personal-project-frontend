@@ -44,5 +44,24 @@ export default {
             .catch(() => {
                 alert('문제 발생!')
             })  
-    }
+    }, 
+    requestSpringToAddresskakaoOauthLogin(){
+        axiosInst.axiosInst.get('kakao/oauth')
+        .then((res)=>{
+         console.log(res.data)
+         window.location.href = res.data;
+        })
+     }, 
+     getTokenToSpring(context, payload) {
+        axiosInst.axiosInst.get("http://localhost:7777/klogin?code=" + payload)
+          .then((res) => {
+            console.log(res.data)
+            localStorage.setItem("userToken", res.data.userToken)
+            localStorage.setItem("roleType", res.data.roleType)
+            context.commit(LOGIN_COMPLETE, true)
+            context.commit(SET_NICKNAME, res.data.nickname)
+            
+        });
+
+      },
 }

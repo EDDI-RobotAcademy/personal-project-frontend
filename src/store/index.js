@@ -11,7 +11,7 @@ const store = new Vuex.Store({
   modules: {
     memberModule: memberModule,
     boardModule: boardModule,
-    cafeCrawlingModule: cafeCrawlingModule    
+    cafeCrawlingModule: cafeCrawlingModule,  
 
   },
   plugins: [createPersistedState({

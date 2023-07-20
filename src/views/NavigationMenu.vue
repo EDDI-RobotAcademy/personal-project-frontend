@@ -59,7 +59,7 @@
                 <span>로그아웃</span>
               </v-btn>
             </router-link>
-          </v-col>
+            </v-col>
         </v-row>
     </v-app-bar>
     </div>
@@ -111,6 +111,7 @@ export default {
       logout(){
         localStorage.clear(),
         this.LOGIN_COMPLETE(false)
+        // this.$router.push('/')
       },
       myPage(){
 
