@@ -16,22 +16,22 @@ export const signupAccount = async (
   };
 
 // 마이 페이지
-export const fetchAccount = async (accountId: string, accessToken: string, email: string): Promise<Account | null> => {
-  const response = await axiosInstance.springAxiosInst.post('/account/myPage', { accountId: accountId, emmil: email }, {
+export const fetchAccount = async (): Promise<Account | null> => {
+  const response = await axiosInstance.springAxiosInst.post('/account/myPage', {}, {
     headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
+      Authorization: localStorage.getItem('accessToken'),
+      "Content-Type": "application/json",
+    },
   });
-  console.log('이메일 정보:', email, "Id정보", accountId)
-
   return response.data;
 };
 
-
-export const useAccountQuery = (accountId: string, accessToken: string, data: any): UseQueryResult<Account | null, unknown> => {
-  return useQuery(['account', accountId], () => fetchAccount(accountId, accessToken, data));
+export const useAccountQuery = (): UseQueryResult<Account | null, unknown> => {
+  const accessToken = localStorage.getItem('accessToken');
+  return useQuery(['account'], () => fetchAccount(), { enabled: !!accessToken });
 };
 
+// 이메일 중복 확인
 export const checkEmailDuplicate = async (email: string) => {
   try {
     const response = await axiosInstance.springAxiosInst.get(`/account/check-email/${email}`);
