@@ -101,6 +101,7 @@ export default {
             files: [], 
             filesPreview: [],
             uploadImageIndex: 0 ,
+            userToken: ''
         }
     },
     methods: {
@@ -111,7 +112,8 @@ export default {
                 title: this.title,
                 nickname: this.nickname,
                 content: this.content,
-                awsFileList: this.awsFileList
+                awsFileList: this.awsFileList,
+                userToken: this.userToken
             }
             console.log(boardInfo.awsFileList)
             await this.$emit('submit', boardInfo)
@@ -197,6 +199,9 @@ export default {
     computed: {
         ...mapState(memberModule, ['nickname'])
     },
+    created(){
+        this.userToken=localStorage.getItem("userToken")
+    }
 };
 
 </script>

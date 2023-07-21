@@ -8,12 +8,13 @@
                         v-model="keyword" 
                         @keyup.enter="searchToSpring"
                         />
-                    <router-link to="/member-board-register-page" style="float: right">
                        <v-btn
                         outlined
-                        color="black">게시글 쓰기
+                        color="black"
+                        @click="writeBoard"
+                        style="float: right"
+                        >게시글 쓰기
                         </v-btn>
-                    </router-link>
                 </v-container>
             </div>
         <div>
@@ -32,7 +33,8 @@ const boardModule = 'boardModule'
 export default {
     data(){
         return{
-            keyword:''
+            keyword:'',
+            userToken: ''
         }
     },
     components:{
@@ -43,6 +45,7 @@ export default {
     },
     mounted () {
         this.requestBoardListToSpring()
+        this.userToken = localStorage.getItem("userToken")
     },
     methods: {
         ...mapActions(
@@ -52,7 +55,16 @@ export default {
             const payload = { params: { keyword: this.keyword } };
             this.requestSearchTextToSpring(payload)
         },
-    }
+        writeBoard(){
+            if(this.userToken){
+                this.$router.push('/member-board-register-page')
+            }
+            else{
+                alert("로그인 후 이용하세요") 
+            }
+        },
+
+    },
 }
 </script>
 <style scoped>

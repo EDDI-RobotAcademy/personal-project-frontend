@@ -13,16 +13,15 @@ export default {
             })
     },
     requestCreateBoardToSpring ({}, payload) {
-
-        // const { title, content, nickname, filePaths } = payload
-
-        return axiosInst.axiosInst.post('/member-board/register',
-        //  { title, content, nickname, filePaths }
-        payload
-         )
+        return axiosInst.axiosInst.post('/member-board/register',payload)
             .then((res) => {
+                console.log(res)
+                if(res.data != ''){
                 alert('게시물 등록 성공!')
                 return res
+                } else{
+                    alert('회원이 아닙니다.')
+                }
             })
             .catch(() => {
                 alert('문제 발생!')
