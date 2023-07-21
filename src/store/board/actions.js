@@ -41,9 +41,14 @@ export default {
         })
     },
     requestDeleteBoardToSpring ({}, boardId) {
-        return axiosInst.axiosInst.delete(`/member-board/${boardId}`)
+        const userToken = localStorage.getItem("userToken") 
+        return axiosInst.axiosInst.delete(`/member-board/${boardId}`,{headers: {Authorization: userToken}})
             .then((res) => {
-                alert('삭제 성공!')
+                if(res.data){
+                    alert("삭제 성공!")
+                }else{
+                    alert("문제 발생")
+                }
             })
             .catch(() => {
                 alert('문제 발생!')
@@ -52,7 +57,12 @@ export default {
     requestBoardModifyToSpring ({}, payload) {
         return axiosInst.axiosInst.put(`/member-board/${payload.boardId}`,payload)
             .then((res) => {
-                alert("수정 성공!")
+                if(res.data != ''){
+                    console.log(res.data)
+                    alert("수정 성공!")
+                }else{
+                    alert("문제 발생")
+                }
             })
             .catch(() => {
                 alert('문제 발생!')
