@@ -1,11 +1,10 @@
 <template lang="">
-    <v-app-bar color="primary" app dark height="64" fixed>
-        <v-btn @click="goHome">
-            <v-toolbar-title class="text-uppercase text--darken-4">
-                <span>STOCK & CHAT</span>
+    <v-app-bar color="grey lighten-4">
+        <v-btn @click="goHome" color="grey">
+            <v-toolbar-title class="text-uppercase">
+                <span>stock & chat</span>
             </v-toolbar-title>
         </v-btn>
-
         <v-spacer></v-spacer>
 
         <v-btn v-if="!isLogin" text @click="toLoginAndSignUpPage">
@@ -16,14 +15,14 @@
             <span>로그아웃</span>
             <v-icon right>mdi-exit-to-app</v-icon>
         </v-btn>
-
     </v-app-bar>
 </template>
+
 
 <script>
 
 import 'vuetify/dist/vuetify.min.css'
-import { mapActions, mapState } from 'vuex';
+import { mapActions} from 'vuex';
 
 const accountModule = 'accountModule'
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 100px;">
     <h1>{{ stockName }}</h1> 
     <div style="display: flex; justify-content: center;">
       <div>

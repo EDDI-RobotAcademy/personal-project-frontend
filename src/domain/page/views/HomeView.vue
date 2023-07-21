@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100vh; padding: 20px;">
+  <div style="height: 100vh; padding: 100px;">
     <div style="display: flex; flex-direction: row; justify-content: center; position: sticky; top: 64px;">
       <v-card class="table" style="width: 700px;">
         <v-container>

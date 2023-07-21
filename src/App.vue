@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <navigation-menu-page />
-    <v-main style="padding-top: 64px;">
+    <navigation-menu-page style="min-height: 7vh;"/>
+    <v-main>
       <router-view />
     </v-main>
   </v-app>
@@ -13,7 +13,7 @@ import NavigationMenuPage from '@/domain/settings/layout/navigationbar/Navigatio
 export default {
   components: {
     NavigationMenuPage,
-  }
+  },
 }
 </script>
 
