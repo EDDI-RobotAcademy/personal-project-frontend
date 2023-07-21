@@ -5,6 +5,7 @@ import NoticeRegistPage from "@/views/notice/NoticeRegistPage.vue";
 import NoticePage from "@/views/notice/NoticePage.vue";
 import NoticeReadPage from "@/views/notice/NoticeReadPage.vue";
 import NoticeModifyPage from "@/views/notice/NoticeModifyPage.vue";
+import WayToComePage from "@/views/notice/WayToComePage.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const noticeRoutes = [
     name: "NoticeModifyPage",
     components: { default: NoticeModifyPage },
     props: { default: true },
+  },
+  {
+    path: "/way-to-come-page",
+    name: "WayToComePage",
+    component: WayToComePage,
   },
 ];
 export default noticeRoutes;

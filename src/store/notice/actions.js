@@ -20,9 +20,14 @@ export default {
   },
 
   noticeListBoard({ commit }) {
-    axiosInst.get("/notice/list").then((res) => {
-      commit(NOTICE_LIST, res.data);
-    });
+    axiosInst
+      .get("/notice/list")
+      .then((res) => {
+        commit(NOTICE_LIST, res.data);
+      })
+      .catch((error) => {
+        console.error("게시판 정보 요청 중 오류 발생 : ", error);
+      });
   },
 
   noticeBoardInfo({ commit }, noticeId) {

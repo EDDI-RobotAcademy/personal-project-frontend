@@ -9,9 +9,11 @@
         <div class="menu-container" style="transform: none;">
           <v-menu v-for="button in buttons" :key="button.id" :open-on-hover="true" offset-y>
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on">
-                <v-icon class="font" style="font-style: normal;">{{ button.text }}</v-icon>
-              </v-btn>
+              <router-link :to="button.link">
+                <v-btn v-on="on">
+                  <v-icon class="font" style="font-style: normal;">{{ button.text }}</v-icon>
+                </v-btn>
+              </router-link>
             </template>
 
             <v-card class="menu-card">
@@ -53,15 +55,17 @@ export default {
       {
         id: 1,
         text: "NOTICE",
+        link: "/",
         images: [
           { id: 1, src: "exampleImage.jpg", link: "/notice-page", },
-          { id: 2, src: "exampleImage.jpg", link: "/", },
-          { id: 3, src: "exampleImage.jpg", link: "/", },
+          { id: 2, src: "exampleImage.jpg", link: "/imsi", },
+          { id: 3, src: "exampleImage.jpg", link: "/way-to-come-page", },
         ],
       },
       {
         id: 2,
         text: "SHOP",
+        link: "/",
         images: [
           { id: 4, src: "exampleImage.jpg", link: "/", },
           { id: 5, src: "exampleImage.jpg", link: "/", },
@@ -71,10 +75,12 @@ export default {
       {
         id: 3,
         text: "COMMUNITY",
+        link: "/community-page"
       },
       {
         id: 4,
         text: "MYPAGE",
+        link: "/",
       },
     ],
   }),
