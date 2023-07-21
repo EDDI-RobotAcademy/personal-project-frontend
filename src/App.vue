@@ -34,3 +34,17 @@ export default {
   }
 };
 </script>
+<style>
+  @font-face {
+    font-family: "ChelaOne";
+    src: local("ChelaOne"), url(./assets/fonts/ChelaOne-Regular.ttf) format(truetype);
+  }
+  @font-face {
+    font-family: "Tektur";
+    src: local("Tektur"), url(./assets/fonts/Tektur-VariableFont.ttf) format(truetype);
+  }
+  @font-face {
+    font-family: "ShadowsIntoLight";
+    src: local("ShadowsIntoLight"), url(./assets/fonts/ShadowsIntoLight-Regular.ttf) format(truetype);
+  }
+</style>
