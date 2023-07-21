@@ -54,9 +54,12 @@ export default {
             boardModule, ['requestBoardToSpring', 'requestDeleteBoardToSpring']
         ),
         async onDelete () {
-            await this.s3fileDelete()
-            await this.requestDeleteBoardToSpring(this.boardId)
-            await this.$router.push('/member-board-list-page')
+            if(this.userToken){
+                await this.s3fileDelete()
+                await this.requestDeleteBoardToSpring(this.boardId)
+                await this.$router.push('/member-board-list-page')
+                
+            }
         },
         s3fileDelete(){
                 this.awsS3Config()

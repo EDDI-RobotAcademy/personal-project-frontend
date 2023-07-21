@@ -41,7 +41,7 @@ export default {
         })
     },
     requestDeleteBoardToSpring ({}, boardId) {
-        axiosInst.axiosInst.delete(`/member-board/${boardId}`)
+        return axiosInst.axiosInst.delete(`/member-board/${boardId}`)
             .then((res) => {
                 alert('삭제 성공!')
             })
