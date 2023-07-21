@@ -10,7 +10,7 @@
                     </v-btn>
             </v-container>
         </div>
-        <MemberBoardModifyForm v-if="board" :board="board" @submit="onSubmit"/>
+        <MemberBoardModifyForm v-if="board" :board="board" :userToken="userToken" @submit="onSubmit"/>
         <p v-else>로딩중 .......</p>
     </div>
 </template>
@@ -32,6 +32,11 @@ export default {
             required: true, 
     }
     },
+    data(){
+        return{
+        userToken:''
+        }
+    },
     computed: {
         ...mapState(boardModule, ['board'])
     },
@@ -49,11 +54,14 @@ export default {
             })
         },
         onClick(){
-        	this.$EventBus.$emit('fetchData')
+        	if(this.userToken){
+            this.$EventBus.$emit('fetchData')
+            }
         }
     },
     async created () {
         await this.requestBoardToSpring(this.boardId)
+        this.userToken = localStorage.getItem("userToken")
     
     }
 }

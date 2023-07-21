@@ -90,6 +90,10 @@ export default {
             type: Object,
             required: true,
         },
+        userToken:{
+            type: String,
+            required: true,
+        }
     },
     data(){
         return{
@@ -108,7 +112,8 @@ export default {
             files: [], 
             filesPreview: [],
             uploadImageIndex: 0 ,
-            deleteFileList: []
+            deleteFileList: [],
+            userToken:''
 
         }
     },
@@ -124,7 +129,8 @@ export default {
                 title: this.board.memberBoard.title,
                 nickname: this.board.memberBoard.nickname,
                 content: this.board.memberBoard.content,
-                awsFileList: this.awsFileList
+                awsFileList: this.awsFileList,
+                userToken: this.userToken
             }
             this.$emit('submit', boardInfo)
 

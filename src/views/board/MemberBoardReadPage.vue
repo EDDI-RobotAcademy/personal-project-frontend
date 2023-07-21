@@ -2,12 +2,13 @@
     <div>
         <div class="btn_router_div">
             <v-container class="btn_container">
-                <router-link style="float: right" :to="{ name: 'MemberBoardModifyPage', params: { boardId }} ">
+                <!-- <router-link style="float: right" :to="{ name: 'MemberBoardModifyPage', params: { boardId }} "> -->
                     <v-btn
                         outlined
-                        color="black">게시글 수정
+                        color="black"
+                        @click="modifyBoard">게시글 수정
                     </v-btn>
-                </router-link>
+                <!-- </router-link> -->
                     <v-btn @click="onDelete" outlined color="black">삭제</v-btn>
             </v-container>
         </div>
@@ -29,6 +30,7 @@ export default {
         awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
         awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
         awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
+        userToken: ''
         }
     },
     name: 'MemberBoardReadPage',
@@ -40,6 +42,9 @@ export default {
             type: String,
             required: true, 
     }
+    },
+    mounted(){
+        this.userToken = localStorage.getItem("userToken")
     },
     computed: {
         ...mapState(boardModule, ['board'])
@@ -83,6 +88,11 @@ export default {
                 }
             })
         },
+        modifyBoard(){
+            if(this.userToken){
+                this.$router.push({ name: 'MemberBoardModifyPage', params: { boardId: this.boardId }} )
+            }
+        }
     },
     async created () {
         await this.requestBoardToSpring(this.boardId)
