@@ -1,15 +1,19 @@
 <template lang="">
   <v-container >
     <v-card  justify-center width="100%">
-    <h2 style="text-align:center" >{{board.writer+" 님의 산책로"}}</h2>
+    <h2 style="text-align:center" >{{board.writer+" 님의 산책로 수정 페이지"}}</h2>
   <div>
+    
     <v-card-text class="mx-auto">
       <form @submit.prevent="onSubmit">
       <table class="mx-auto">
     
-      
-         <h3 style="text-align:center">{{board.boardTitle}}</h3>
-        
+        <tr> <td>산책로 이름</td>
+       <td>
+            <v-text-field type="text" class="inputValue" 
+            v-model="boardTitle" placeholder="변경할 산책로 이름을 입력하세요"/>
+          </td>
+      </tr> 
       
       <tr>
         <td style="font-weight: bold">지도</td>
@@ -20,13 +24,13 @@
       <tr>
         <td style="font-weight: bold">정보</td>
         <td>
-          <v-textarea class="inputValue" v-model="board.boardInfo" 
-          color="#f18893" readonly/>
+          <v-textarea class="inputValue" v-model="boardInfo" 
+          color="#f18893" />
         </td>
       </tr>
-      <v-btn @click="deleteBoard">삭제</v-btn><v-btn @click="modifyBoard(board.id)">수정</v-btn>
-      </table>
       
+      </table>
+      <v-btn raised type="submit">완료</v-btn><v-btn @click="cancelModify">취소</v-btn>
   </form>
 </v-card-text>
 
@@ -42,12 +46,15 @@ import { mapActions } from 'vuex';
 const ID=process.env.VUE_APP_KAKAO_ID
 
 export default {
-  name:"myBoardReadForm",
+  name:"myBoardModifyForm",
   props:{
     board: {
       type:Object,
       required: true
-    },
+    }
+  },created(){
+    this.boardInfo=this.board.boardInfo
+    this.boardTitle=this.board.boardTitle
   },
   data() {
         return {
@@ -58,7 +65,8 @@ export default {
           coord: '',
           coordLat:'',
           coordLng:'',
-          nickName:''
+          nickName:'',
+          id:0
             }
     },
     mounted() {
@@ -66,6 +74,9 @@ export default {
     },
     methods: {
       ...mapActions("BoardModule", ["requestBoardDeleteToSpring"]),
+      cancelModify(){
+        router.push("/myBoardList")
+      },
         onLoad(vue) {
             this.map = vue;
         },
@@ -99,17 +110,13 @@ export default {
     let currentMarker = new this.kakao.maps.Marker({position:latLng});
       currentMarker.setMap(this.map)
       },
-      deleteBoard(){
-      this.requestBoardDeleteToSpring(this.board.id)
+     onSubmit() {
+        const { boardTitle, boardInfo}=this
+        this.$emit('submit', {boardTitle, boardInfo})
+      }
       
-    },
-    modifyBoard(id){
-      router.push({
-        name: 'myWalkBoardModify',
-        params: {id}
-      })
     }
-    },
+  
     
   }
 </script>

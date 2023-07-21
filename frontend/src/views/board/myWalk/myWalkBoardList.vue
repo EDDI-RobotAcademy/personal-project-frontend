@@ -1,7 +1,7 @@
 <template lang="html">
     <v-container class="boardList">
         <h3 style="text-align: center;">나만의 산책로</h3>
-        <v-btn @click="goRegister">등록</v-btn>
+       
         <v-row v-if="boards && boards.length > 0">
             <v-col v-for="(item, index) in boards" :key="index" cols="3">
                 <v-card class="card-item" @click="goRead(item.id)" style="height: 250px; width: 250px;"> 
@@ -12,9 +12,12 @@
                 </v-card>
             </v-col>
         </v-row>
+        
         <div v-else>
-            데이터 로딩 중...
+           
         </div>
+        <br>
+        <v-btn @click="goRegister">글쓰기</v-btn>
     </v-container>
 </template>
 <script>

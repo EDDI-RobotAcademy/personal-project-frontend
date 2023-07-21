@@ -1,11 +1,10 @@
 <template>
-<v-app>
+<v-app display="flex" justify-content="space-between">
   <navigation-bar></navigation-bar>
   
- <v-main>
-  <router-view></router-view>
- </v-main>
-
+  <v-main style="padding-top: 0; margin-left: auto; margin-right: auto; justify-content: center;">
+    <router-view ></router-view>
+  </v-main>
 </v-app>
 </template>
 

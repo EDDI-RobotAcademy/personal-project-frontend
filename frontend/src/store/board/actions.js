@@ -35,11 +35,22 @@ export default{
     requestBoardDeleteToSpring({},id){
     return axiosInst.delete(`/board/${id}`)
        .then((res)=>{
-      router.push("{ name: 'myWalkBoardList' }")
+        router.push('/myBoardList')
     })
        .catch((res)=>{
       alert('상품 삭제가 실패하였습니다.')
     })
-   }
+   },
+   requestBoardModifyToSpring({}, payload){
+
+    const {boardTitle, boardInfo, id} = payload
+    return axiosInst.put(`/board/${id}`,{boardTitle, boardInfo, id})
+    .then((res)=>{
+      alert('게시물이 수정되었습니다.')
+    })
+    .catch(()=>{
+      alert('상품 수정 실패')
+    })
+   
   }
-  
+}
