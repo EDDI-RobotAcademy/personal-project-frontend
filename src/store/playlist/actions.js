@@ -68,6 +68,7 @@ export default {
     requestDeletePlaylistToSpring({ }, payload) {
         return axiosInst.springAxiosInst.delete(`/playlist/${payload}`)
             .then((res) => {
+                console.log(res.data)
                 alert('삭제 성공!')
                 return true
             })
@@ -75,7 +76,7 @@ export default {
                 alert('문제 발생!')
             })
     },
-
+    // 좋아요 설정 요청
     requestIncreaseLikeCountToSpring({ }, payload) {
         return axiosInst.springAxiosInst.post(`/playlist/like-playlist/${payload}`)
             .then((res) => {
@@ -83,25 +84,44 @@ export default {
                 return res.data
             })
     },
-
+    // 좋아요 설정 해제 요청
     requestDecreaseLikeCountToSpring({ }, payload) {
         return axiosInst.springAxiosInst.post(`/playlist/unlike-playlist/${payload}`)
             .then((res) => {
                 console.log(res.data)
                 return res.data
             })
-            .catch(e => {
-                if (e.response.status === 403) {
-                    alert("로그인 후 이용 가능")
-                    localStorage.removeItem("isLogin")
-                    router.push('/')
-                }
-            })
     },
-
+    // 좋아요 설정 유무 확인 요청
     requestIsPlaylistLikedToSpring({ }, payload) {
         console.log(payload)
         return axiosInst.springAxiosInst.post(`/playlist/check-liked/${payload}`)
+            .then((res) => {
+                console.log(res.data)
+                return res.data
+            })
+    },
+    // 페이징 된 플레이리스트 요청
+    requestSlicePlaylistToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/slice-list/${page}`)
+            .then((res) => {
+                console.log(res)
+                commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
+            })
+    },
+    // 좋아요 순으로 정렬 된 플레이리스트 요청
+    requestSortSlicePlaylistToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/sort-slice-list/${page}`)
+            .then((res) => {
+                console.log(res)
+                commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
+            })
+    },
+    // 전체 페이지 수 요청
+    requestCountPlaylistToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
             .then((res) => {
                 console.log(res.data)
                 return res.data
