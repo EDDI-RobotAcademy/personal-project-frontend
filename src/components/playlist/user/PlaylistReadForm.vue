@@ -10,6 +10,7 @@
                                 {{ this.playlistLiked ? '❤️' : '🤍' }}
                                 {{ this.likes }}
                             </button>
+                            <br>
                             <table v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
                                 <tr>
                                     <td style="font-weight: bold; padding-right: 70px;">플레이리스트 번호</td>
@@ -32,26 +33,29 @@
                             <table v-if="playlist.songList"
                                 style="border-collapse: separate; border-spacing: 1em; width: 100%">
                                 <tr v-for="(songList, index) in playlist?.songList" :key="songList.title">
-                                    <router-link :to="{
+                                    <!-- <router-link :to="{
                                         name: 'SongReadPage',
                                         params: { song: songList, playlistId: playlist.playlist.id.toString() }
                                     }" style="text-decoration: none; color: black;">
                                         <td>{{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}</td>
-                                    </router-link>
+                                    </router-link> -->
+                                    <td>
+                                        {{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}
+                                        <button @click="updatePlayerSrc(index)"><v-icon>mdi-play</v-icon></button>
+                                    </td>
+
                                 </tr>
                             </table>
                         </v-card-text>
                         <div align="center">
                             <button class="mr-3" @click="initializeVideos">전곡 듣기</button>
                             <br>
-                            <iframe ref="ytPlayer"
-                                :src="`https://www.youtube.com/embed/${videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`"
-                                frameborder="0" allow="autoplay" width="0" height="0" @load="setupPlayer"></iframe>
+                            <iframe ref="ytPlayer" frameborder="0" allow="autoplay" width="300" height="300"></iframe>
                             <br>
-                            <button class="mr-3" @click="previousVideo">이전 곡</button>
-                            <button class="mr-3" @click="togglePlay" v-if="isPlaying">II</button>
-                            <button class="mr-3" @click="togglePlay" v-else>▷</button>
-                            <button class="mr-3" @click="nextVideo">다음 곡</button>
+                            <button class="mr-3" @click="previousVideo"><v-icon>mdi-skip-previous"</v-icon></button>
+                            <button class="mr-3" @click="togglePlay" v-if="isPlaying"><v-icon>mdi-pause</v-icon></button>
+                            <button class="mr-3" @click="togglePlay" v-else><v-icon>mdi-play</v-icon></button>
+                            <button class="mr-3" @click="nextVideo"><v-icon>mdi-skip-next"</v-icon>⏭️</button>
                         </div>
                     </v-card>
 
@@ -84,6 +88,9 @@ export default {
             required: true,
         }
     },
+    mounted() {
+        this.checkIsPlaylistLiked()
+    },
     methods: {
         ...mapActions(playlistModule, ['requestIncreaseLikeCountToSpring', 'requestDecreaseLikeCountToSpring', 'requestIsPlaylistLikedToSpring']),
         async doLike(playlistId) {
@@ -100,6 +107,10 @@ export default {
                 this.playlistLiked = await this.requestIsPlaylistLikedToSpring(listId);
                 this.likes = this.playlist.likeCount
                 console.log(this.playlistLiked);
+
+                if (this.playlist.songList) {
+                    this.initializeVideos();
+                }
             } else {
                 return false;
             }
@@ -108,7 +119,9 @@ export default {
             const videoLinks = this.playlist.songList.map(song => song.link);
             this.videoIds = videoLinks.map((url) => this.extractVideoId(url));
             this.currentIndex = 0;
-            this.updatePlayerSrc();
+            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=0&mute=1&enablejsapi=1`;
+
+            this.setupPlayer();
         },
         extractVideoId(url) {
             const regex = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#&?]*).*/;
@@ -124,20 +137,25 @@ export default {
             });
         },
         onPlayerStateChange(event) {
+            console.log(this.currentIndex)
             if (event.data === YT.PlayerState.ENDED) {
                 this.currentIndex++;
                 if (this.currentIndex >= this.videoIds.length) {
                     this.currentIndex = 0;
                 }
-                this.updatePlayerSrc();
+                console.log(this.currentIndex)
+                this.updatePlayerSrc(this.currentIndex);
             }
         },
         saveTarget(event) {
             this.currentIframe = event.target
         },
-        updatePlayerSrc() {
-            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
-            console.log(YT)
+        updatePlayerSrc(currentIndex) {
+            this.$refs.ytPlayer.onload = () => {
+                this.isPlaying = true;
+            };
+            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
+            console.log(this.$refs.ytPlayer.src)
             this.isPlaying = true;
         },
         nextVideo() {
@@ -145,16 +163,15 @@ export default {
             if (this.currentIndex >= this.videoIds.length) {
                 this.currentIndex = 0;
             }
-            this.isPlaying = true;
-            this.updatePlayerSrc();
+            this.updatePlayerSrc(this.currentIndex);
+            console.log(this.currentIndex)
         },
         previousVideo() {
             this.currentIndex--;
             if (this.currentIndex < 0) {
                 this.currentIndex = this.videoIds.length - 1;
             }
-            this.isPlaying = true;
-            this.updatePlayerSrc();
+            this.updatePlayerSrc(this.currentIndex);
         },
         togglePlay() {
             if (!this.ytPlayer) return;
