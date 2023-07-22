@@ -7,7 +7,8 @@
                         style="background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px;">
                         <v-card-text class="text-center px-12 py-16">
 
-                            <table v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
+                            <table v-if="playlist.playlist"
+                                style="margin-bottom: 20px; width: 100%; border: 1px solid black">
                                 <tr>
                                     <td style="font-weight: bold; padding-right: 70px;">플레이리스트 번호</td>
                                     <td>

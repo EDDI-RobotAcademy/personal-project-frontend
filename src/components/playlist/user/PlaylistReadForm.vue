@@ -42,15 +42,15 @@
                             </table>
                         </v-card-text>
                         <div align="center">
-                            <button class="mr-3" @click="initializeVideos">재생 시키기!</button>
+                            <button class="mr-3" @click="initializeVideos">전곡 듣기</button>
                             <br>
                             <iframe ref="ytPlayer"
                                 :src="`https://www.youtube.com/embed/${videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`"
                                 frameborder="0" allow="autoplay" width="0" height="0" @load="setupPlayer"></iframe>
                             <br>
                             <button class="mr-3" @click="previousVideo">이전 곡</button>
-                            <button class="mr-3" @click="togglePlay" v-if="isPlaying">일시 정지</button>
-                            <button class="mr-3" @click="togglePlay" v-else>재생</button>
+                            <button class="mr-3" @click="togglePlay" v-if="isPlaying">II</button>
+                            <button class="mr-3" @click="togglePlay" v-else>▷</button>
                             <button class="mr-3" @click="nextVideo">다음 곡</button>
                         </div>
                     </v-card>
@@ -74,7 +74,7 @@ export default {
             videoIds: [],
             currentIndex: 0,
             links: [],
-            isPlaying: true,
+            isPlaying: false,
             currentIframe: '',
         }
     },
@@ -138,6 +138,7 @@ export default {
         updatePlayerSrc() {
             this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
             console.log(YT)
+            this.isPlaying = true;
         },
         nextVideo() {
             this.currentIndex++;

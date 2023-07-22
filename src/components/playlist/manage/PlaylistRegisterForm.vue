@@ -1,33 +1,25 @@
-<template lang="">
-    <div>
-        <form @submit.prevent="onSubmit">
-            <table>
-                <tr>
-                    <td>제목</td>
-                    <td>
-                        <input type="text" v-model="title"/>
-                    </td>
-                </tr>
-            </table>
-
-            <div>
-                <button type="submit">등록</button>
-                <router-link :to="{ name: 'home' }">
-                    취소
-                </router-link>
-            </div>
-        </form>
-    </div>
+<template>
+    <v-container id="form-container" class="d-flex justify-center align-center" fluid> <v-card
+            class="mx-auto pa-0 custom-card" color="white" width="500"> <v-card-title class="custom-title">제목
+                등록하기</v-card-title> <v-card-text>
+                <form @submit.prevent="onSubmit"> <v-text-field label="제목" v-model="title" />
+                    <v-row>
+                        <v-col>
+                            <v-btn color="black" text type="submit">등록</v-btn>
+                            <router-link :to="{ name: 'home' }">
+                                <v-btn color="black" text>취소</v-btn>
+                            </router-link>
+                        </v-col>
+                    </v-row>
+                </form>
+            </v-card-text>
+        </v-card>
+    </v-container>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            title: '제목 입력',
-        }
-    },
-    methods: {
+    data() { return { title: '', } }, methods: {
         onSubmit() {
             const { title } = this
             this.$emit('submit', { title })
@@ -35,7 +27,40 @@ export default {
     }
 }
 </script>
+<style scoped> body {
+     background-color: #fff;
+     color: #000;
+ }
 
-<style lang="">
-    
+ #form-container {
+     height: 100vh;
+ }
+
+ .v-text-field__slot input {
+     border-bottom: 1px solid #000 !important;
+ }
+
+ .v-text-field__slot input:focus {
+     border-bottom: 2px solid #000 !important;
+     caret-color: #000;
+ }
+
+ .v-application .primary {
+     background-color: #000 !important;
+     border-color: #000 !important;
+ }
+
+ .v-application .primary--text {
+     color: #000 !important;
+     caret-color: #000;
+ }
+
+ .v-card {
+     border: 1px solid #000 !important;
+ }
+
+ .custom-title {
+     display: flex;
+     justify-content: center !important;
+ }
 </style>
