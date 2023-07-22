@@ -137,13 +137,11 @@ export default {
             });
         },
         onPlayerStateChange(event) {
-            console.log(this.currentIndex)
             if (event.data === YT.PlayerState.ENDED) {
                 this.currentIndex++;
                 if (this.currentIndex >= this.videoIds.length) {
                     this.currentIndex = 0;
                 }
-                console.log(this.currentIndex)
                 this.updatePlayerSrc(this.currentIndex);
             }
         },
@@ -151,6 +149,7 @@ export default {
             this.currentIframe = event.target
         },
         updatePlayerSrc(currentIndex) {
+            this.currentIndex = currentIndex
             this.$refs.ytPlayer.onload = () => {
                 this.isPlaying = true;
             };
