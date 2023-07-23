@@ -3,54 +3,45 @@
         <v-container fluid>
             <v-row justify="center">
                 <v-col cols="12" lg="8" xl="6">
-                    <v-card width="100%"
-                        style="background-color: rgba(255, 255, 255, 0.95); border: 3px solid #000000; border-radius: 25px;">
+                    <v-card width="100%" class="playlist-card">
                         <v-card-text class="text-center">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <router-link to='/'>
+                            <div class="playlist-controls">
+                                <router-link to="/">
                                     <button class="back-button">
                                         <v-icon>mdi-arrow-left</v-icon>
                                     </button>
                                 </router-link>
-                                <button @click="doLike(playlist.playlist.id)" style="color: #000;">
-                                    {{ this.playlistLiked ? '❤️' : '🤍' }}
+                                <button @click="doLike(playlist.playlist.id)" class="like-button"
+                                    style="margin-right: 20px;">
+                                    {{ this.playlistLiked ? "❤️" : "🤍" }}
                                     {{ this.likes }}
                                 </button>
                                 <div></div>
                             </div>
                             <br>
-                            <div v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
-                                <h3 style="font-weight: bold;">
+                            <div v-if="playlist.playlist" class="playlist-title">
+                                <h3 class="title-weight">
                                     {{ playlist.playlist.title }}
                                 </h3>
                             </div>
                             <hr>
 
-                            <h3 v-if="playlist.songList" style="font-weight: bold; margin-bottom: 20px; margin-top: 10px;">
-                                목록</h3>
+                            <h3 v-if="playlist.songList" class="song-list-title">
+                                목록
+                            </h3>
 
-                            <table v-if="playlist.songList"
-                                style="border-collapse: separate; border-spacing: 1em; width: 100%">
+                            <table v-if="playlist.songList" class="playlist-table">
                                 <tr v-for="(songList, index) in playlist?.songList" :key="songList.title">
-                                    <!-- <router-link :to="{
-                                        name: 'SongReadPage',
-                                        params: { song: songList, playlistId: playlist.playlist.id.toString() }
-                                    }" style="text-decoration: none; color: black;">
-                                        <td>{{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}</td>
-                                    </router-link> -->
                                     <td>
                                         {{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}
                                         <button @click="updatePlayerSrc(index)"><v-icon>mdi-play</v-icon></button>
                                     </td>
-
                                 </tr>
                             </table>
                         </v-card-text>
-                        <div align="center">
-                        </div>
+                        <div align="center"></div>
                     </v-card>
                     <div class="player-container">
-
                         <iframe ref="ytPlayer" frameborder="0" allow="autoplay" width="0" height="0"></iframe>
                         <div class="bottom-player">
                             <div class="current-song-container">
@@ -60,7 +51,7 @@
                             </div>
                             <div class="progress-container">
                                 <input id="progress-bar" type="range" min="0" max="100" value="0" step="0.1"
-                                    @change="seekVideo" />
+                                    @change="seekVideo" @input="seekVideo" />
                                 <div class="duration">
                                     <span>{{ currentTimeText }}</span>
                                     <span> / </span>
@@ -97,17 +88,23 @@ export default {
         return {
             likes: 0,
             playlistLiked: false,
+
             videoIds: [],
-            currentIndex: 0,
             links: [],
+
             isPlaying: false,
+
+            currentIndex: 0,
             currentIframe: '',
             currentTitle: '',
             currentSinger: '',
+
             duration: 0,
             currentTime: 0,
             currentTimeText: '00:00',
-            totalTimeText: '00:00',
+            totalTimeText: '0000',
+
+            onReadyPlay: false,
         }
     },
     props: {
@@ -121,6 +118,7 @@ export default {
     },
     methods: {
         ...mapActions(playlistModule, ['requestIncreaseLikeCountToSpring', 'requestDecreaseLikeCountToSpring', 'requestIsPlaylistLikedToSpring']),
+
         async doLike(playlistId) {
             if (!this.playlistLiked) {
                 this.likes = await this.requestIncreaseLikeCountToSpring(playlistId)
@@ -129,6 +127,7 @@ export default {
             }
             this.playlistLiked = !this.playlistLiked
         },
+
         async checkIsPlaylistLiked() {
             if (this.playlist && this.playlist.playlist) {
                 const listId = this.playlist.playlist.id;
@@ -142,6 +141,7 @@ export default {
                 return false;
             }
         },
+
         initializeVideos() {
             const videoLinks = this.playlist.songList.map(song => song.link);
             this.videoIds = videoLinks.map((url) => this.extractVideoId(url));
@@ -150,11 +150,13 @@ export default {
 
             this.setupPlayer();
         },
+
         extractVideoId(url) {
             const regex = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#&?]*).*/;
             const match = url.match(regex);
             return match && match[1].length === 11 ? match[1] : null;
         },
+
         setupPlayer() {
             this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
                 events: {
@@ -163,6 +165,7 @@ export default {
                 },
             });
         },
+
         onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED) {
                 this.currentIndex++;
@@ -176,13 +179,16 @@ export default {
                     this.updateProgressBar();
                     this.currentTimeText = this.formatTime(this.currentTime);
                     this.totalTimeText = this.formatTime(this.duration);
-                }, 1000);
+                }, 250);
             }
         },
+
         saveTarget(event) {
             this.currentIframe = event.target
         },
+
         updatePlayerSrc(currentIndex) {
+            this.onReadyPlay = true
             this.currentIndex = currentIndex
             this.$refs.ytPlayer.onload = () => {
                 this.isPlaying = true;
@@ -192,6 +198,7 @@ export default {
             this.currentTitle = this.playlist.songList[currentIndex].title
             this.currentSinger = this.playlist.songList[currentIndex].singer
         },
+
         nextVideo() {
             this.currentIndex++;
             if (this.currentIndex >= this.videoIds.length) {
@@ -199,6 +206,7 @@ export default {
             }
             this.updatePlayerSrc(this.currentIndex);
         },
+
         previousVideo() {
             this.currentIndex--;
             if (this.currentIndex < 0) {
@@ -206,7 +214,9 @@ export default {
             }
             this.updatePlayerSrc(this.currentIndex);
         },
+
         togglePlay() {
+            if (!this.onReadyPlay) return;
             if (!this.ytPlayer) return;
 
             if (this.isPlaying) {
@@ -216,6 +226,7 @@ export default {
             }
             this.isPlaying = !this.isPlaying;
         },
+
         updateProgressBar() {
             if (!this.ytPlayer) return;
             const duration = this.ytPlayer.getDuration();
@@ -225,16 +236,18 @@ export default {
                 this.currentTime = currentTime;
                 const progressBar = document.getElementById("progress-bar");
                 if (progressBar) {
-                    progressBar.max = duration;
-                    progressBar.value = currentTime;
+                    progressBar.max = Math.round(duration * 10) / 10;
+                    progressBar.value = Math.round(currentTime * 10) / 10;
                 }
             }
         },
+
         seekVideo(event) {
             const seekBarValue = event.target.value;
-            const seekTime = (seekBarValue / 100) * this.duration;
+            const seekTime = (seekBarValue / event.target.max) * this.duration;
             this.currentIframe.seekTo(seekTime, true);
         },
+
         formatTime(time) {
             if (!time || time === 0) return '00:00';
             const minutes = Math.floor(time / 60);
@@ -252,20 +265,59 @@ export default {
     }
 }
 </script>
-<style>
-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    outline: none;
-}
-
+<style scoped>
 body {
     background-color: #f0f0f0;
 }
 
 .content-wrapper {
     padding-bottom: 100px;
+}
+
+.playlist-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 3px solid #000000;
+    border-radius: 25px;
+}
+
+.playlist-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-button,
+.like-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.playlist-title {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.title-weight {
+    font-weight: bold;
+}
+
+.song-list-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.playlist-table {
+    border-collapse: separate;
+    border-spacing: 1em;
+    width: 100%;
+}
+
+.player-container {
+    width: 100%;
+    padding-top: 0;
 }
 
 .bottom-player {
@@ -276,11 +328,6 @@ body {
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-}
-
-.player-container {
-    width: 100%;
-    padding-top: 0px;
 }
 
 .previous-video,
@@ -319,7 +366,7 @@ body {
 }
 
 #progress-bar {
-    width: 80%;
+    width: 200px;
 }
 
 .duration {
