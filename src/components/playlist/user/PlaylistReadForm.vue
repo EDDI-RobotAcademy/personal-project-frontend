@@ -90,7 +90,6 @@ export default {
             playlistLiked: false,
 
             videoIds: [],
-            links: [],
 
             isPlaying: false,
 
@@ -104,7 +103,8 @@ export default {
             currentTimeText: '00:00',
             totalTimeText: '0000',
 
-            onReadyPlay: false,
+            progressInterval: null,
+            isDataLoaded: false,
         }
     },
     props: {
@@ -113,8 +113,14 @@ export default {
             required: true,
         }
     },
-    mounted() {
-        this.checkIsPlaylistLiked()
+    beforeDestroy() {
+        clearInterval(this.progressInterval);
+        this.progressInterval = null;
+
+        if (this.ytPlayer) {
+            this.ytPlayer.destroy();
+            console.log("destroy")
+        }
     },
     methods: {
         ...mapActions(playlistModule, ['requestIncreaseLikeCountToSpring', 'requestDecreaseLikeCountToSpring', 'requestIsPlaylistLikedToSpring']),
@@ -129,6 +135,7 @@ export default {
         },
 
         async checkIsPlaylistLiked() {
+            console.log("checkIsPlaylistLiked")
             if (this.playlist && this.playlist.playlist) {
                 const listId = this.playlist.playlist.id;
                 this.playlistLiked = await this.requestIsPlaylistLikedToSpring(listId);
@@ -146,7 +153,7 @@ export default {
             const videoLinks = this.playlist.songList.map(song => song.link);
             this.videoIds = videoLinks.map((url) => this.extractVideoId(url));
             this.currentIndex = 0;
-            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=0&mute=1&enablejsapi=1`;
+            this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[this.currentIndex]}?autoplay=0&mute=0&enablejsapi=1`;
 
             this.setupPlayer();
         },
@@ -158,12 +165,33 @@ export default {
         },
 
         setupPlayer() {
-            this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
-                events: {
-                    onReady: this.saveTarget,
-                    onStateChange: this.onPlayerStateChange,
-                },
-            });
+            if (!this.isDataLoaded) {
+                console.log("setupPlayer")
+                this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
+                    events: {
+                        onReady: this.onPlayerReady,
+                        onStateChange: this.onPlayerStateChange,
+                    },
+                });
+                this.isDataLoaded = true;
+            }
+
+        },
+
+        onPlayerReady(event) {
+            this.currentIframe = event.target;
+            this.currentTitle = this.playlist.songList[this.currentIndex].title;
+            this.currentSinger = this.playlist.songList[this.currentIndex].singer;
+
+            if (this.progressInterval) {
+                clearInterval(this.progressInterval);
+            }
+
+            this.progressInterval = setInterval(() => {
+                this.updateProgressBar();
+                this.currentTimeText = this.formatTime(this.currentTime);
+                this.totalTimeText = this.formatTime(this.duration);
+            }, 1000);
         },
 
         onPlayerStateChange(event) {
@@ -174,29 +202,12 @@ export default {
                 }
                 this.updatePlayerSrc(this.currentIndex);
             }
-            if (event.data === YT.PlayerState.PLAYING) {
-                setInterval(() => {
-                    this.updateProgressBar();
-                    this.currentTimeText = this.formatTime(this.currentTime);
-                    this.totalTimeText = this.formatTime(this.duration);
-                }, 250);
-            }
-        },
-
-        saveTarget(event) {
-            this.currentIframe = event.target
         },
 
         updatePlayerSrc(currentIndex) {
-            this.onReadyPlay = true
             this.currentIndex = currentIndex
-            this.$refs.ytPlayer.onload = () => {
-                this.isPlaying = true;
-            };
             this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
             this.isPlaying = true;
-            this.currentTitle = this.playlist.songList[currentIndex].title
-            this.currentSinger = this.playlist.songList[currentIndex].singer
         },
 
         nextVideo() {
@@ -216,7 +227,6 @@ export default {
         },
 
         togglePlay() {
-            if (!this.onReadyPlay) return;
             if (!this.ytPlayer) return;
 
             if (this.isPlaying) {
@@ -228,6 +238,7 @@ export default {
         },
 
         updateProgressBar() {
+            console.log(this.ytPlayer)
             if (!this.ytPlayer) return;
             const duration = this.ytPlayer.getDuration();
             const currentTime = this.ytPlayer.getCurrentTime();
@@ -259,10 +270,12 @@ export default {
         playlist: {
             immediate: true,
             async handler() {
-                await this.checkIsPlaylistLiked();
+                if (this.playlist && this.playlist.playlist) {
+                    await this.checkIsPlaylistLiked();
+                }
             }
         }
-    }
+    },
 }
 </script>
 <style scoped>
