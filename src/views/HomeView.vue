@@ -17,11 +17,17 @@
     <v-row>
       <v-col cols="4">
         <h3>공지 사항</h3>
-        <ul>
-          <li v-for="(notice, index) in noticeBoards" :key="index">
-            {{ notice.title }}
+        <ul style="list-style-type: none;">
+          <li v-for="(notice, index) in noticeBoards" :key="index" v-if="index < 5">
+            No.{{ notice.noticeId }} -
+            <router-link :to="{ name: 'NoticeReadPage', params: { noticeId: notice.noticeId } }">
+              {{ notice.title }}
+            </router-link>
           </li>
         </ul>
+        <div>
+          <v-btn text class="button" to="/notice-page">+ 더보기</v-btn>
+        </div>
       </v-col>
 
       <v-col cols="4">
@@ -30,6 +36,8 @@
           <li>리스트 아이템 4</li>
           <li>리스트 아이템 5</li>
           <li>리스트 아이템 6</li>
+        </ul>
+        <ul>
         </ul>
       </v-col>
 
@@ -48,8 +56,9 @@
 
 <script>
 
-import noticeModule from '@/store/notice/noticeModule';
 import { mapActions, mapState } from 'vuex';
+
+const noticeModule = 'noticeModule'
 
 export default {
   name: 'Home',
@@ -75,29 +84,26 @@ export default {
       height: 500,
     }
   },
-  props: {
-    noticeBoards: {
-      type: Array
-    }
-  },
-  computed: {
-    ...mapState(noticeModule, ['noticeBoards'])
 
+  computed: {
+    ...mapState(noticeModule, ['noticeBoards']),
   },
   mounted() {
     this.noticeListBoard()
   },
   methods: {
     ...mapActions(
-      noticeModule, ['noticeListBoard']
+      noticeModule, ['noticeListBoard'],
     ),
-  }
+  },
 }
 </script>
 
 <style scoped>
-.complete {
-  color: red;
+.button {
+  margin-top: 10px;
+  color: dimgrey;
+  font-size: 20px;
 }
 </style>
 
