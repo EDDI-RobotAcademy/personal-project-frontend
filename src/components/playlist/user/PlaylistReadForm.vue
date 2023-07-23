@@ -1,34 +1,33 @@
 <template>
-    <div>
+    <div class="content-wrapper">
         <v-container fluid>
             <v-row justify="center">
                 <v-col cols="12" lg="8" xl="6">
                     <v-card width="100%"
-                        style="background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px;">
-                        <v-card-text class="text-center px-12 py-16">
-                            <button @click="doLike(playlist.playlist.id)">
-                                {{ this.playlistLiked ? '❤️' : '🤍' }}
-                                {{ this.likes }}
-                            </button>
+                        style="background-color: rgba(255, 255, 255, 0.95); border: 3px solid #000000; border-radius: 25px;">
+                        <v-card-text class="text-center">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <router-link to='/'>
+                                    <button class="back-button">
+                                        <v-icon>mdi-arrow-left</v-icon>
+                                    </button>
+                                </router-link>
+                                <button @click="doLike(playlist.playlist.id)" style="color: #000;">
+                                    {{ this.playlistLiked ? '❤️' : '🤍' }}
+                                    {{ this.likes }}
+                                </button>
+                                <div></div>
+                            </div>
                             <br>
-                            <table v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
-                                <tr>
-                                    <td style="font-weight: bold; padding-right: 70px;">플레이리스트 번호</td>
-                                    <td>
-                                        <input type="text" :value="playlist.playlist.id" readonly
-                                            style=" border: none; font-weight: bold" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold; padding-right: 70px;">이름</td>
-                                    <td>
-                                        <input type="text" :value="playlist.playlist.title" readonly
-                                            style="border: none; font-weight: bold" />
-                                    </td>
-                                </tr>
-                            </table>
+                            <div v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
+                                <h3 style="font-weight: bold;">
+                                    {{ playlist.playlist.title }}
+                                </h3>
+                            </div>
+                            <hr>
 
-                            <h3 v-if="playlist.songList" style="font-weight: bold; margin-bottom: 20px;">목록</h3>
+                            <h3 v-if="playlist.songList" style="font-weight: bold; margin-bottom: 20px; margin-top: 10px;">
+                                목록</h3>
 
                             <table v-if="playlist.songList"
                                 style="border-collapse: separate; border-spacing: 1em; width: 100%">
@@ -48,17 +47,40 @@
                             </table>
                         </v-card-text>
                         <div align="center">
-                            <button class="mr-3" @click="initializeVideos">전곡 듣기</button>
-                            <br>
-                            <iframe ref="ytPlayer" frameborder="0" allow="autoplay" width="300" height="300"></iframe>
-                            <br>
-                            <button class="mr-3" @click="previousVideo"><v-icon>mdi-skip-previous"</v-icon></button>
-                            <button class="mr-3" @click="togglePlay" v-if="isPlaying"><v-icon>mdi-pause</v-icon></button>
-                            <button class="mr-3" @click="togglePlay" v-else><v-icon>mdi-play</v-icon></button>
-                            <button class="mr-3" @click="nextVideo"><v-icon>mdi-skip-next"</v-icon>⏭️</button>
                         </div>
                     </v-card>
+                    <div class="player-container">
 
+                        <iframe ref="ytPlayer" frameborder="0" allow="autoplay" width="0" height="0"></iframe>
+                        <div class="bottom-player">
+                            <div class="current-song-container">
+                                <div class="current-song">
+                                    {{ this.currentTitle }} - {{ this.currentSinger }}
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <input id="progress-bar" type="range" min="0" max="100" value="0" step="0.1"
+                                    @change="seekVideo" />
+                                <div class="duration">
+                                    <span>{{ currentTimeText }}</span>
+                                    <span> / </span>
+                                    <span>{{ totalTimeText }}</span>
+                                </div>
+                            </div>
+                            <div class="controls-container">
+                                <button class="previous-video" @click="previousVideo">
+                                    <v-icon>mdi-skip-previous</v-icon>
+                                </button>
+                                <button class="play-btn" @click="togglePlay">
+                                    <v-icon v-if="isPlaying">mdi-pause</v-icon>
+                                    <v-icon v-else>mdi-play</v-icon>
+                                </button>
+                                <button class="next-video" @click="nextVideo">
+                                    <v-icon>mdi-skip-next</v-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </v-col>
             </v-row>
         </v-container>
@@ -80,6 +102,12 @@ export default {
             links: [],
             isPlaying: false,
             currentIframe: '',
+            currentTitle: '',
+            currentSinger: '',
+            duration: 0,
+            currentTime: 0,
+            currentTimeText: '00:00',
+            totalTimeText: '00:00',
         }
     },
     props: {
@@ -106,7 +134,6 @@ export default {
                 const listId = this.playlist.playlist.id;
                 this.playlistLiked = await this.requestIsPlaylistLikedToSpring(listId);
                 this.likes = this.playlist.likeCount
-                console.log(this.playlistLiked);
 
                 if (this.playlist.songList) {
                     this.initializeVideos();
@@ -144,6 +171,13 @@ export default {
                 }
                 this.updatePlayerSrc(this.currentIndex);
             }
+            if (event.data === YT.PlayerState.PLAYING) {
+                setInterval(() => {
+                    this.updateProgressBar();
+                    this.currentTimeText = this.formatTime(this.currentTime);
+                    this.totalTimeText = this.formatTime(this.duration);
+                }, 1000);
+            }
         },
         saveTarget(event) {
             this.currentIframe = event.target
@@ -154,8 +188,9 @@ export default {
                 this.isPlaying = true;
             };
             this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
-            console.log(this.$refs.ytPlayer.src)
             this.isPlaying = true;
+            this.currentTitle = this.playlist.songList[currentIndex].title
+            this.currentSinger = this.playlist.songList[currentIndex].singer
         },
         nextVideo() {
             this.currentIndex++;
@@ -163,7 +198,6 @@ export default {
                 this.currentIndex = 0;
             }
             this.updatePlayerSrc(this.currentIndex);
-            console.log(this.currentIndex)
         },
         previousVideo() {
             this.currentIndex--;
@@ -182,6 +216,31 @@ export default {
             }
             this.isPlaying = !this.isPlaying;
         },
+        updateProgressBar() {
+            if (!this.ytPlayer) return;
+            const duration = this.ytPlayer.getDuration();
+            const currentTime = this.ytPlayer.getCurrentTime();
+            if (!isNaN(duration)) {
+                this.duration = duration;
+                this.currentTime = currentTime;
+                const progressBar = document.getElementById("progress-bar");
+                if (progressBar) {
+                    progressBar.max = duration;
+                    progressBar.value = currentTime;
+                }
+            }
+        },
+        seekVideo(event) {
+            const seekBarValue = event.target.value;
+            const seekTime = (seekBarValue / 100) * this.duration;
+            this.currentIframe.seekTo(seekTime, true);
+        },
+        formatTime(time) {
+            if (!time || time === 0) return '00:00';
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time - minutes * 60);
+            return ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+        },
     },
     watch: {
         playlist: {
@@ -193,6 +252,78 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style>
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+.content-wrapper {
+    padding-bottom: 100px;
+}
+
+.bottom-player {
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #000;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.player-container {
+    width: 100%;
+    padding-top: 0px;
+}
+
+.previous-video,
+.next-video {
+    background-color: #fff;
+    color: #1fd05f;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 0 28px;
+}
+
+.play-btn {
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 12px;
+    width: 50px;
+    height: 50px;
+}
+
+.current-song-container {
+    margin-top: 10px;
+}
+
+.controls-container {
+    display: flex;
+    justify-content: center;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#progress-bar {
+    width: 80%;
+}
+
+.duration {
+    display: inline-flex;
+    margin-left: 15px;
+}
 </style>
