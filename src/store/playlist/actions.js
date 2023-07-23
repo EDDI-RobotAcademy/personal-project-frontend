@@ -17,7 +17,6 @@ export default {
     requestPlaylistCountToSpring({ }) {
         return axiosInst.springAxiosInst.post('/playlist/count-playlist')
             .then((res) => {
-                console.log("res.data = " + res.data)
                 return res.data
             })
     },
@@ -25,7 +24,6 @@ export default {
     requestPlaylistToSpring({ commit }, id) {
         return axiosInst.springAxiosInst.get(`/playlist/${id}`)
             .then((res) => {
-                console.log(res.data)
                 commit(REQUEST_PALYLIST_TO_SPRING, res.data)
             })
     },
@@ -61,14 +59,12 @@ export default {
         return axiosInst.springAxiosInst.post('/playlist/list-by-login-account')
             .then((res) => {
                 commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
-                console.log(res.data)
             })
     },
     // 플레이리스트 삭제 요청
     requestDeletePlaylistToSpring({ }, payload) {
         return axiosInst.springAxiosInst.delete(`/playlist/${payload}`)
             .then((res) => {
-                console.log(res.data)
                 alert('삭제 성공!')
                 return true
             })
@@ -80,7 +76,6 @@ export default {
     requestIncreaseLikeCountToSpring({ }, payload) {
         return axiosInst.springAxiosInst.post(`/playlist/like-playlist/${payload}`)
             .then((res) => {
-                console.log(res.data)
                 return res.data
             })
     },
@@ -88,16 +83,13 @@ export default {
     requestDecreaseLikeCountToSpring({ }, payload) {
         return axiosInst.springAxiosInst.post(`/playlist/unlike-playlist/${payload}`)
             .then((res) => {
-                console.log(res.data)
                 return res.data
             })
     },
     // 좋아요 설정 유무 확인 요청
     requestIsPlaylistLikedToSpring({ }, payload) {
-        console.log(payload)
         return axiosInst.springAxiosInst.post(`/playlist/check-liked/${payload}`)
             .then((res) => {
-                console.log(res.data)
                 return res.data
             })
     },
@@ -106,7 +98,6 @@ export default {
         const page = payload
         return axiosInst.springAxiosInst.post(`/playlist/slice-list/${page}`)
             .then((res) => {
-                console.log(res)
                 commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
             })
     },
@@ -115,7 +106,6 @@ export default {
         const page = payload
         return axiosInst.springAxiosInst.post(`/playlist/sort-slice-list/${page}`)
             .then((res) => {
-                console.log(res)
                 commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
             })
     },
@@ -123,7 +113,6 @@ export default {
     requestCountPlaylistToSpring({ },) {
         return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
             .then((res) => {
-                console.log(res.data)
                 return res.data
             })
     },
