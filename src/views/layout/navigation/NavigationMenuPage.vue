@@ -3,10 +3,12 @@
     <v-container class="fill-height" fluid>
       <v-row align="center" no-gutters>
         <v-col>
-          <v-avatar class="mr-5" color="black" size="50"></v-avatar>
           <router-link to="/">
-            <v-btn class="black--text custom-btn" :style="{ fontSize: '20px' }" text>
-              Home
+            <v-btn class="black--text custom-btn" text>
+              <v-icon style="font-size: 60px; display: flex; justify-content: center;" class="mr-3">
+                mdi-headphones
+              </v-icon>
+              Our Playlist
             </v-btn>
           </router-link>
         </v-col>
@@ -95,5 +97,9 @@ export default {
 
 .custom-btn {
   font-size: 20px !important;
+}
+
+.container {
+  margin-top: 20px;
 }
 </style>

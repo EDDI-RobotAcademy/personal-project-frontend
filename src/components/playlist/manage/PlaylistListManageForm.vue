@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" lg="8" xl="6">
-        <h3 class="text-center mb-8">플레이리스트 목록</h3>
+        <h3 class="text-center mb-8">내 플레이리스트 목록</h3>
         <v-row v-if="!playlists || (Array.isArray(playlists) && playlists.length === 0)" align="center" justify="center">
           <v-col>
             <p>현재 등록된 플레이리스트가 없습니다!!</p>

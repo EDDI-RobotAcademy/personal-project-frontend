@@ -1,8 +1,10 @@
 <template>
   <v-app>
-    <navigation-menu-page />
-    <v-main :style="{ 'padding-top': '130px' }">
-      <div style="background-color: black; height: 4px;"></div>
+    <v-app-bar color="white" app elevation="2" height="130">
+      <navigation-menu-page />
+    </v-app-bar>
+    <v-main :style="{ 'padding-top': '110px' }">
+      <div></div>
       <v-container fluid>
         <router-view />
       </v-container>
