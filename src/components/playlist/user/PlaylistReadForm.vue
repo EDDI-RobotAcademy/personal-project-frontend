@@ -32,9 +32,22 @@
 
                             <table v-if="playlist.songList" class="playlist-table">
                                 <tr v-for="(songList, index) in playlist?.songList" :key="songList.title">
-                                    <td>
+                                    <td class="left-align">
                                         {{ index + 1 }}. {{ songList.title }} - {{ songList.singer }}
-                                        <button @click="updatePlayerSrc(index)"><v-icon>mdi-play</v-icon></button>
+                                    </td>
+                                    <td class="right-align">
+                                        <button class="buttons mr-1"
+                                            @click="updatePlayerSrc(index)"><v-icon>mdi-play</v-icon></button>
+                                        <button class="buttons mr-1"
+                                            @click="toggleTooltip(index)"><v-icon>mdi-text-box-outline</v-icon></button>
+                                        <div v-if="showTooltip[index]" class="tooltip-container">
+                                            <div class="tooltip">
+                                                <p @click="closeTooltip(index)" class="close-icon">x</p>
+                                                <span v-html="songList.lyrics"></span>
+                                            </div>
+                                        </div>
+                                        <button class="buttons"
+                                            @click="goYoutube(index)"><v-icon>mdi-youtube</v-icon></button>
                                     </td>
                                 </tr>
                             </table>
@@ -80,6 +93,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import VTooltip from 'v-tooltip';
 
 const playlistModule = 'playlistModule'
 
@@ -105,6 +119,9 @@ export default {
 
             progressInterval: null,
             isDataLoaded: false,
+
+            showTooltip: {},
+            check: '',
         }
     },
     props: {
@@ -142,6 +159,7 @@ export default {
                 this.likes = this.playlist.likeCount
 
                 if (this.playlist.songList) {
+                    this.showTooltip = {};
                     this.initializeVideos();
                 }
             } else {
@@ -170,7 +188,6 @@ export default {
                 this.ytPlayer = new YT.Player(this.$refs.ytPlayer, {
                     events: {
                         onReady: this.onPlayerReady,
-                        onStateChange: this.onPlayerStateChange,
                     },
                 });
                 this.isDataLoaded = true;
@@ -179,6 +196,7 @@ export default {
         },
 
         onPlayerReady(event) {
+            console.log("onPlayerReady")
             this.currentIframe = event.target;
             this.currentTitle = this.playlist.songList[this.currentIndex].title;
             this.currentSinger = this.playlist.songList[this.currentIndex].singer;
@@ -194,14 +212,13 @@ export default {
             }, 1000);
         },
 
-        onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
-                this.currentIndex++;
-                if (this.currentIndex >= this.videoIds.length) {
-                    this.currentIndex = 0;
-                }
-                this.updatePlayerSrc(this.currentIndex);
+        onPlayerStateChange() {
+            console.log("onPlayerStateChange")
+            this.currentIndex++;
+            if (this.currentIndex >= this.videoIds.length) {
+                this.currentIndex = 0;
             }
+            this.updatePlayerSrc(this.currentIndex);
         },
 
         updatePlayerSrc(currentIndex) {
@@ -238,8 +255,10 @@ export default {
         },
 
         updateProgressBar() {
-            console.log(this.ytPlayer)
             if (!this.ytPlayer) return;
+            if (this.ytPlayer.getPlayerState() == 0) {
+                this.onPlayerStateChange()
+            }
             const duration = this.ytPlayer.getDuration();
             const currentTime = this.ytPlayer.getCurrentTime();
             if (!isNaN(duration)) {
@@ -265,6 +284,18 @@ export default {
             const seconds = Math.floor(time - minutes * 60);
             return ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
         },
+
+        toggleTooltip(index) {
+            console.log(index)
+            this.$set(this.showTooltip, index, !this.showTooltip[index]);
+        },
+
+        closeTooltip(index) {
+            this.$set(this.showTooltip, index, false);
+        },
+        goYoutube(index) {
+            window.open(this.playlist.songList[index].link)
+        }
     },
     watch: {
         playlist: {
@@ -275,6 +306,9 @@ export default {
                 }
             }
         }
+    },
+    directives: {
+        Tooltip: VTooltip,
     },
 }
 </script>
@@ -326,6 +360,8 @@ body {
     border-collapse: separate;
     border-spacing: 1em;
     width: 100%;
+    padding-left: 200px;
+    text-align: left;
 }
 
 .player-container {
@@ -385,5 +421,48 @@ body {
 .duration {
     display: inline-flex;
     margin-left: 15px;
+}
+
+.tooltip-container {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    left: 150px;
+    width: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.tooltip span {
+    cursor: pointer;
+}
+
+.tooltip span:last-child {
+    margin-left: 10px;
+}
+
+.close-icon {
+    cursor: pointer;
+    float: right;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+    padding-right: 200px;
 }
 </style>
