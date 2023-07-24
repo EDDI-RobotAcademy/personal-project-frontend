@@ -4,6 +4,11 @@
             <v-col cols="auto">
                 <v-card width="400"
                     style="background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px;">
+                    <router-link to="/account-my-page">
+                        <button class="back-button" style="margin-left: 15px; margin-top: 15px;">
+                            <v-icon>mdi-arrow-left</v-icon>
+                        </button>
+                    </router-link>
                     <v-card-text class="text-center px-12 py-16">
                         <v-form ref="form">
                             <div style="margin-bottom: 30px; font-size: 38px; color: #000000;">회원 탈퇴
@@ -15,7 +20,6 @@
                                 style="border-radius: 5px;">
                                 확인
                             </v-btn>
-                            <v-btn @click="goBack"> 돌아가기 </v-btn>
                         </v-form>
                     </v-card-text>
                 </v-card>
@@ -40,9 +44,6 @@ export default {
         withDraw() {
             const password = this.password;
             this.$emit("submit", { password });
-        },
-        async goBack() {
-            this.$router.go(-1)
         },
     }
 }

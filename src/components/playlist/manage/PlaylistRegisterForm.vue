@@ -4,7 +4,7 @@
                 등록하기</v-card-title> <v-card-text>
                 <form @submit.prevent="onSubmit"> <v-text-field label="제목" v-model="title" />
                     <v-row>
-                        <v-col>
+                        <v-col style="text-align:center">
                             <v-btn color="black" text type="submit">등록</v-btn>
                             <router-link :to="{ name: 'home' }">
                                 <v-btn color="black" text>취소</v-btn>
@@ -33,7 +33,7 @@ export default {
  }
 
  #form-container {
-     height: 100vh;
+     height: 70vh;
  }
 
  .v-text-field__slot input {

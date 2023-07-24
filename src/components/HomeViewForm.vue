@@ -11,11 +11,13 @@
           <v-col cols="12" sm="6" md="4" v-for="playlist in playlists" :key="playlist.playlist.id">
             <div class="playlist-padding">
               <v-card elevation="4" class="playlist-card" @click="goToPlaylist(playlist.playlist.id)">
-                ❤️{{ playlist.likeCount }}
+                <div class="likeCount">
+                  ❤️{{ playlist.likeCount }}
+                </div>
                 <v-img v-if="playlist.songList[0]" class="mx-auto" :src="getYoutubeImage(playlist.songList[0].link)"
                   height="200" width="200"></v-img>
                 <v-card-text class="text-center">
-                  {{ playlist.playlist.title }} ❤️{{ playlist.likeCount }}
+                  {{ playlist.playlist.title }}
                 </v-card-text>
               </v-card>
             </div>
@@ -62,11 +64,16 @@ export default {
 }
 
 .playlist-card {
-  padding-top: 20px;
+  padding-top: 10px;
   margin-bottom: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.likeCount {
+  text-align: center;
+  margin-bottom: 10px;
 }
 </style>
