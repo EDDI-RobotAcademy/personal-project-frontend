@@ -1,5 +1,6 @@
 import axiosInst from "@/utility/axiosInst";
 import router from "@/router";
+import { setCookie, getCookie } from "@/utility/cookieUtils";
 
 import { REQUEST_ACCOUNT_LIST_TO_SPRING } from "./mutation-types";
 
@@ -80,7 +81,25 @@ export default {
       if (res.data.loginStatus == "WRONG_ID") alert("아이디가 잘못되었습니다.");
       if (res.data.loginStatus == "WRONG_PW")
         alert("비밀번호가 잘못되었습니다..");
-      if (res.data.loginStatus == "SUCCESS_LOGIN") router.push("/");
+      if (res.data.loginStatus == "SUCCESS_LOGIN") {
+        setCookie("userToken", res.data.userToken, 7);
+        router.push("/");
+      }
     });
+  },
+  CheckPassword({}, payload) {
+    const { password } = payload;
+    const userToken = getCookie("userToken");
+    return axiosInst
+      .post("/account/gomypage", { password, userToken })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data == true) {
+          router.push("/mypage");
+        }
+        if (res.data == false) {
+          alert("비밀번호가 다릅니다.");
+        }
+      });
   },
 };

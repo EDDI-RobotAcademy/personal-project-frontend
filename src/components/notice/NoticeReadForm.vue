@@ -45,7 +45,7 @@ export default {
     },
     methods: {
         goBack() {
-            this.$router.push('/notice-page')
+            this.$router.go(-1);
         },
     },
 

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <v-carousel :cycle="cycle" :interval="interval" :height="height" v-model="carouselModel">
+      <v-carousel :cycle="cycle" :interval="interval" :height="height" v-model="carouselModel" :show-arrows="false">
         <v-carousel-item v-for="(picture, idx) in pictures" :key="idx">
           <v-sheet :height="height" tile>
             <v-row class="fill-height" align="center" justify="center">
@@ -42,12 +42,18 @@
       </v-col>
 
       <v-col cols="4">
-        <ul>
-          <h3>커뮤니티</h3>
-          <li>리스트 아이템 7</li>
-          <li>리스트 아이템 8</li>
-          <li>리스트 아이템 9</li>
+        <h3>커뮤니티</h3>
+        <ul style="list-style-type: none;">
+          <li v-for="(community, index) in communityBoards" :key="index" v-if="index < 5">
+            No.{{ community.communityId }} -
+            <router-link :to="{ name: 'CommunityReadPage', params: { communityId: community.communityId } }">
+              {{ community.title }}
+            </router-link>
+          </li>
         </ul>
+        <div>
+          <v-btn text class="button" to="/community-page">+ 더보기</v-btn>
+        </div>
       </v-col>
     </v-row>
 
@@ -59,6 +65,7 @@
 import { mapActions, mapState } from 'vuex';
 
 const noticeModule = 'noticeModule'
+const communityModule = 'communityModule'
 
 export default {
   name: 'Home',
@@ -87,14 +94,15 @@ export default {
 
   computed: {
     ...mapState(noticeModule, ['noticeBoards']),
+    ...mapState(communityModule, ['communityBoards']),
   },
   mounted() {
     this.noticeListBoard()
+    this.communityListBoard()
   },
   methods: {
-    ...mapActions(
-      noticeModule, ['noticeListBoard'],
-    ),
+    ...mapActions(noticeModule, ['noticeListBoard']),
+    ...mapActions(communityModule, ['communityListBoard']),
   },
 }
 </script>

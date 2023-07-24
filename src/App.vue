@@ -80,7 +80,7 @@ export default {
       {
         id: 4,
         text: "MYPAGE",
-        link: "/",
+        link: "/check-password",
       },
     ],
   }),
