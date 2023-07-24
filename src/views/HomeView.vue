@@ -126,10 +126,10 @@ import 'vueperslides/dist/vueperslides.css'
         await navigator.geolocation.getCurrentPosition((position)=>{
           pos.lat = position.coords.latitude
           pos.lng = position.coords.longitude
-          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${process.env.VUE_APP_GOOGLE_MAP}&language=ko`)
+          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${process.env.VUE_APP_GOOGLE_MAP}&language=ko&result_type=street_address`)
         .then((res)=>{
-          console.log(res)
-          console.log(res.data.results[4].address_components[0].long_name)
+          let address = res.data.results[0].address_components[1].long_name
+          this.your_location=address
         })
         }, ()=>{}, {enableHighAccuracy:true, maximumAge: 300000, timeout:27000})
         
@@ -138,20 +138,11 @@ import 'vueperslides/dist/vueperslides.css'
     components: 
       { VueperSlides, VueperSlide },
     mounted(){
-      let pos = {}
-        navigator.geolocation.getCurrentPosition((position)=>{
-          pos.lat = position.coords.latitude
-          pos.lng = position.coords.longitude
-          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${process.env.VUE_APP_GOOGLE_MAP}&language=ko`)
-          .then((res)=>{
-          let address = res.data.results[4].address_components[0].long_name
-          this.your_location=address
-        })
-        }, ()=>{}, {enableHighAccuracy:true, maximumAge: 300000, timeout:27000})
+      this.getLocation()
     }
   }
 </script>
-<style>
+<style scoped>
 .invite{
   position: absolute; 
   top: 45%; 
