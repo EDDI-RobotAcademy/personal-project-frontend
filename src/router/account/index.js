@@ -31,9 +31,10 @@ const accountRoutes = [
     component: CheckPasswordPage,
   },
   {
-    path: "/mypage",
+    path: "/mypage/:accountId",
     name: "Mypage",
-    component: Mypage,
+    components: { default: Mypage },
+    props: { default: true },
   },
 ];
 export default accountRoutes;

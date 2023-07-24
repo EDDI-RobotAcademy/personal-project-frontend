@@ -3,6 +3,7 @@ import router from "@/router";
 import { setCookie, getCookie } from "@/utility/cookieUtils";
 
 import { REQUEST_ACCOUNT_LIST_TO_SPRING } from "./mutation-types";
+import { REQUEST_ACCOUNT_INFO_TO_SPRING } from "./mutation-types";
 
 export default {
   requestSpringToCheckEmail({}, payload) {
@@ -93,13 +94,23 @@ export default {
     return axiosInst
       .post("/account/gomypage", { password, userToken })
       .then((res) => {
-        console.log(res.data);
-        if (res.data == true) {
-          router.push("/mypage");
-        }
-        if (res.data == false) {
+        console.log(res);
+        if (res.data) {
+          router.push({ name: "Mypage", params: { accountId: res.data } });
+        } else {
           alert("비밀번호가 다릅니다.");
         }
+      });
+  },
+  accountInfo({ commit }, accountId) {
+    return axiosInst
+      .get(`/account/${accountId}`)
+      .then((res) => {
+        console.log(res.data);
+        commit(REQUEST_ACCOUNT_INFO_TO_SPRING, res.data);
+      })
+      .catch((error) => {
+        console.error("회원 정보 요청 중 오류 발생 : ", error);
       });
   },
 };
