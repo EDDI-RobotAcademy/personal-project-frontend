@@ -7,19 +7,19 @@
                 <tr>
                     <td class="table_title" >제목</td>
                     <td class="table_title_content">
-                        <input type="text"  v-if="board && board.memberBoard" v-model="board.memberBoard.title"/>
+                        <input type="text" v-model="board.title"/>
                     </td>
                 </tr>
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.nickname" disabled/>
+                        <input type="text" :value="board.member.nickname" disabled/>
                     </td>
                 </tr>
                 <tr>
                     <td class="table_title">등록일자</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.createDate" disabled/>
+                        <input type="text" :value="board.createDate" disabled/>
                     </td>
                 </tr>
                 <tr>
@@ -31,7 +31,7 @@
                                     </div>
                                     <img :src="getImageUrl(filePath.imagePath)" style="width:20vw; aspect-ratio: auto" />
                                 </div>
-                        <textarea cols="20" rows="30"  v-if="board && board.memberBoard" v-model="board.memberBoard.content"/>
+                        <textarea cols="20" rows="30" v-model="board.content"/>
                     </td>
                 </tr>
                 <tr>
@@ -126,9 +126,9 @@ export default {
             await this.s3fileDelete()
             
             let boardInfo = {
-                title: this.board.memberBoard.title,
-                nickname: this.board.memberBoard.nickname,
-                content: this.board.memberBoard.content,
+                title: this.board.title,
+                nickname: this.board.nickname,
+                content: this.board.content,
                 awsFileList: this.awsFileList,
                 userToken: this.userToken
             }
@@ -160,7 +160,7 @@ export default {
                 this.awsS3Config()
                 for(var i=0 ; i< this.$refs.files.files.length; i++ ){
                 let newfileList = this.$refs.files.files[i]
-                const newImgName = this.newFileName()+this.board.memberBoard.nickname+newfileList.name
+                const newImgName = this.newFileName()+this.board.nickname+newfileList.name
                 // console.log("합치기전",Object.values(f))
                 this.awsFileList.push(newImgName)
                 console.log("이미지 추가", this.awsFileList)
@@ -232,17 +232,16 @@ export default {
                 if(err){
                     return alert('AWS 버킷 데이터 삭제에 문제가 발생했습니다.: ' + err.message)
                 }
-                alert('AWS 버킷 데이터 삭제가 성공적으로 완료되었습니다')
             })
         }
     }
     },
     created(){
-        this.filePathList=this.board.memberBoard?.filePathList
-        this.nickname = this.board.memberBoard?.nickname
-        this.title = this.board.memberBoard?.title
-        this.content = this.board.memberBoard?.content
-        this.createDate = this.board.memberBoard?.createDate
+        this.filePathList=this.board.filePathList
+        this.nickname = this.board.nickname
+        this.title = this.board.title
+        this.content = this.board.content
+        this.createDate = this.board.createDate
         this.$EventBus.$on('fetchData', () => {
         this.onSubmit();
     })
