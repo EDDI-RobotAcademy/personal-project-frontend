@@ -18,7 +18,8 @@
                 </v-container>
             </div>
         <div>
-            <member-board-list-form :boards="boards"/>
+            <member-board-list-form :boards="boards" :totalPage="totalPage" @sendPage="sendPage"/>
+            <!-- totalPage는 미리 beforeUpdate때 스프링에서 받아오고 page는 form에서 가져와서 스프링으로 보내 -->
         </div>
     </div>
 </template>
@@ -34,7 +35,9 @@ export default {
     data(){
         return{
             keyword:'',
-            userToken: ''
+            userToken: '',
+            page: 1,
+            totalPage: 0
         }
     },
     components:{
@@ -44,12 +47,12 @@ export default {
         ...mapState(boardModule, ['boards']),
     },
     mounted () {
-        this.requestBoardListToSpring()
+        this.requestBoardListWithPageToSpring(this.page)
         this.userToken = localStorage.getItem("userToken")
     },
     methods: {
         ...mapActions(
-            boardModule, ['requestBoardListToSpring','requestSearchTextToSpring']
+            boardModule, ['requestBoardListToSpring','requestSearchTextToSpring','requestBoardListWithPageToSpring','requestTotalPage']
         ),
         searchToSpring(){
             const payload = { params: { keyword: this.keyword } };
@@ -63,6 +66,10 @@ export default {
                 alert("로그인 후 이용하세요") 
             }
         },
+        async sendPage(page){
+            this.requestBoardListWithPageToSpring(page)
+            this.totalPage = await this.requestTotalPage()
+        }
 
     },
 }

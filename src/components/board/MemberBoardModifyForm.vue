@@ -13,7 +13,7 @@
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.member.nickname" disabled/>
+                        <input type="text" :value="board.member?.nickname" disabled/>
                     </td>
                 </tr>
                 <tr>
@@ -113,7 +113,7 @@ export default {
             filesPreview: [],
             uploadImageIndex: 0 ,
             deleteFileList: [],
-            userToken:''
+            // userToken:''
 
         }
     },
@@ -127,7 +127,7 @@ export default {
             
             let boardInfo = {
                 title: this.board.title,
-                nickname: this.board.nickname,
+                nickname: this.board.member.nickname,
                 content: this.board.content,
                 awsFileList: this.awsFileList,
                 userToken: this.userToken
@@ -160,7 +160,7 @@ export default {
                 this.awsS3Config()
                 for(var i=0 ; i< this.$refs.files.files.length; i++ ){
                 let newfileList = this.$refs.files.files[i]
-                const newImgName = this.newFileName()+this.board.nickname+newfileList.name
+                const newImgName = this.newFileName()+this.board.member.nickname+newfileList.name
                 // console.log("합치기전",Object.values(f))
                 this.awsFileList.push(newImgName)
                 console.log("이미지 추가", this.awsFileList)

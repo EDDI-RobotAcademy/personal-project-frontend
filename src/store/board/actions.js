@@ -7,7 +7,7 @@ import axiosInst from '@/router/utility/axiosInst'
 
 export default {
     requestBoardListToSpring ({ commit }) {
-        return axiosInst.axiosInst.get('/member-board/list')
+        return axiosInst.axiosInst.get('/member-board/list', page)
             .then((res) => {
                 commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
             })
@@ -67,5 +67,17 @@ export default {
             .catch(() => {
                 alert('문제 발생!')
             })
-    }
+    },
+    requestTotalPage(){
+        return axiosInst.axiosInst.get('/member-board/list/total-page')
+        .then((res)=>{
+            return res.data
+        })
+    },
+    requestBoardListWithPageToSpring ({ commit }, payload) {
+        return axiosInst.axiosInst.get('/member-board/list', {params:{page : payload}})
+            .then((res) => {
+                commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
+            })
+    },
 }

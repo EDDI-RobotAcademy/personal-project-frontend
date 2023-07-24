@@ -39,6 +39,7 @@
             </tbody>
             </template>
         </v-simple-table>
+        <v-pagination class="pagination" v-model="page" :length="totalPage" circle @btnClick="sendPage"></v-pagination>
     </div>
 </template>
 
@@ -47,6 +48,28 @@ export default {
     props: {
         boards: {
             type: Array
+        },
+        totalPage:{
+            type: Number
+        }
+    },
+    data(){
+        return{
+            page: 1
+        }
+    },
+    methods:{
+        sendPage(){
+            const page = this.page
+            this.$emit("sendPage", page)
+        }
+    },
+    watch: {
+        page: {
+            immediate: true,
+            handler(){
+                this.sendPage()
+            }
         }
     }
 }
@@ -55,5 +78,8 @@ export default {
 <style scoped>
 .list_titles{
     font-size: 15px;
+}
+.pagination{
+    margin: 10px
 }
 </style>
