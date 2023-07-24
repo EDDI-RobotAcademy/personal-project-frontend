@@ -6,19 +6,19 @@
                 <tr>
                     <td class="table_title" >제목</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.title" readonly/>
+                        <input type="text" :value="board?.title" readonly/>
                     </td>
                 </tr>
                 <tr>
                     <td class="table_title">닉네임</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.nickname" readonly/>
+                        <input type="text" :value="board.member?.nickname" readonly/>
                     </td>
                 </tr>
                 <tr>
                     <td class="table_title">등록일자</td>
                     <td class="table_title_content">
-                        <input type="text" :value="board.memberBoard?.createDate" readonly/>
+                        <input type="text" :value="board?.createDate" readonly/>
                     </td>
                 </tr>
                 <tr>
@@ -27,7 +27,7 @@
                         <div contenteditable="true">
                             <v-img v-for="filePath in board?.filePathList" :key="filePath.fileId" :src="getImageUrl(filePath.imagePath)" style="width:20vw; aspect-ratio: auto"/>
                          </div>
-                        <textarea cols="20" rows="30" :value="board.memberBoard?.content" readonly/>
+                        <textarea cols="20" rows="30" :value="board?.content" readonly/>
                     </td>
                 </tr>
             </tbody>
