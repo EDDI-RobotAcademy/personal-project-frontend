@@ -26,9 +26,6 @@ export default {
             this.loginPass = await this.requestLoginToSpring(payload)
             if (this.loginPass) {
                 this.$router.push({ name: 'home' })
-                    .catch(
-                        location.reload()
-                    )
             }
         },
     }

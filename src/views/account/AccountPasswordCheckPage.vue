@@ -21,9 +21,6 @@ export default {
             this.passwordCheckPass = await this.requestPasswordCheckToSpring(payload)
             if (this.passwordCheckPass) {
                 this.$router.push({ name: 'AccountModifyPage' })
-                    .catch(
-                        location.reload()
-                    )
             }
         },
     }

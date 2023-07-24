@@ -8,7 +8,6 @@
                     <v-text-field label="가수" v-model="singer" />
                     <v-text-field label="장르" v-model="genre" />
                     <v-text-field label="유튜브 링크" v-model="link" />
-
                     <v-row>
                         <v-col>
                             <v-btn color="black" text type="submit">수정</v-btn>

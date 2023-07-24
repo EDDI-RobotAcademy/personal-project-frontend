@@ -23,9 +23,6 @@ export default {
                 await this.requestAccountWithdrawToSpring()
                 localStorage.removeItem('isLogin')
                 this.$router.push({ name: 'home' })
-                    .catch(
-                        location.reload()
-                    )
             }
         },
     }

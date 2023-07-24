@@ -28,7 +28,6 @@ export default {
         ),
         async onSubmit(payload) {
             const playlistId = Number(this.playlistId)
-
             await this.requestModifyPlaylistToSpring({ payload, playlistId })
             await this.$router.push({
                 name: 'PlaylistReadManagePage',

@@ -17,9 +17,7 @@ export default {
         ...mapActions(playlistModule, ['requestRegisterPlaylistToSpring']),
 
         async registerPlaylist(payload) {
-            console.log(payload)
-            const playlist = await this.requestRegisterPlaylistToSpring(payload)
-            console.log('playlist: ' + JSON.stringify(playlist))
+            await this.requestRegisterPlaylistToSpring(payload)
             await this.$router.push({
                 name: 'home',
             })

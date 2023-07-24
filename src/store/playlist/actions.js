@@ -33,7 +33,6 @@ export default {
         return axiosInst.springAxiosInst.post('/playlist/register', { title })
             .then((res) => {
                 alert('등록 성공!')
-                return res.data
             })
             .catch(() => {
                 alert('문제 발생!')
@@ -48,7 +47,6 @@ export default {
         return axiosInst.springAxiosInst.post('/playlist/modify', requestData)
             .then((res) => {
                 alert('수정 성공!')
-                return res.data
             })
             .catch(() => {
                 alert('문제 발생!')
