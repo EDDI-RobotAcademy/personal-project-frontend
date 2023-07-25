@@ -1,4 +1,5 @@
 import axiosInst from '@/utility/axiosInst'
+import { LOGIN_COMPLETE } from "./mutation-types"
 
 export default {
     // 회원 가입 요청
@@ -46,7 +47,7 @@ export default {
             })
     },
     // 로그인 요청
-    requestLoginToSpring({ }, payload) {
+    requestLoginToSpring({ commit }, payload) {
         const { email, password } = payload;
         return axiosInst.springAxiosInst.post("/account/login", { email, password })
             .then((res) => {
@@ -54,6 +55,7 @@ export default {
                     alert("로그인 성공!");
                     localStorage.setItem("nickname", res.data)
                     localStorage.setItem("isLogin", true)
+                    commit(LOGIN_COMPLETE, true)
                     return true
                 } else {
                     alert("로그인 실패!");
