@@ -15,6 +15,8 @@
         <!-- <MemberBoardReadForm v-if="board" :board="board"    :filePathList="filePathList"/> -->
         <MemberBoardReadForm v-if="board" :board="board"/>
         <p v-else>로딩중 .......</p>
+        <CommentRegisterForm @registerComment="registerComment"/>
+        <CommentReadForm :board="board"/>
     </div>
 </template>
 
@@ -22,6 +24,9 @@
 
 import { mapActions, mapState } from 'vuex';
 import MemberBoardReadForm from '@/components/board/MemberBoardReadForm.vue'
+import CommentRegisterForm from '../../components/comment/CommentRegisterForm.vue'
+import CommentReadForm from '../../components/comment/CommentReadForm.vue'
+
 const boardModule = 'boardModule'
 
 export default {
@@ -36,6 +41,8 @@ export default {
     name: 'MemberBoardReadPage',
     components: {
         MemberBoardReadForm,
+        CommentRegisterForm,
+        CommentReadForm
     },
     props: {
         boardId: {
@@ -75,6 +82,9 @@ export default {
                     }
                 })
                 }
+        },
+        registerComment(){
+
         },
         awsS3Config(){
             AWS.config.update({
