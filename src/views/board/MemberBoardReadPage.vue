@@ -28,6 +28,7 @@ import CommentRegisterForm from '../../components/comment/CommentRegisterForm.vu
 import CommentReadForm from '../../components/comment/CommentReadForm.vue'
 
 const boardModule = 'boardModule'
+const commentModule = 'commentModule'
 
 export default {
     data(){
@@ -60,6 +61,9 @@ export default {
         ...mapActions(
             boardModule, ['requestBoardToSpring', 'requestDeleteBoardToSpring']
         ),
+        ...mapActions(
+            commentModule, ['requestCreateCommentToSpring']
+        ),
         async onDelete () {
             if(this.userToken){
                 await this.s3fileDelete()
@@ -83,9 +87,6 @@ export default {
                 })
                 }
         },
-        registerComment(){
-
-        },
         awsS3Config(){
             AWS.config.update({
                 region: this.awsBucketRegion,
@@ -105,11 +106,15 @@ export default {
             if(this.userToken){
                 this.$router.push({ name: 'MemberBoardModifyPage', params: { boardId: this.boardId }} )
             }
-        }
+        },
+        registerComment(payload){
+            payload.boardId = this.boardId
+        this.requestCreateCommentToSpring (payload)
+    }
     },
     async created () {
         await this.requestBoardToSpring(this.boardId)
-    }
+    },
 }
 </script>
 <style scoped>
