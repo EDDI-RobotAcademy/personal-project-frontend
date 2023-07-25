@@ -2,7 +2,7 @@
     <v-app>
         <v-container fluid>
             <v-row class="d-flex justify-center">
-                <!-- 사이드바 -->
+
                 <v-col cols="2">
                     <v-sheet class="pt-3 pb-6 pl-2 pr-2"
                         style="border-radius: 15px; margin: 20px; border: 1px solid #e0e0e0;">
@@ -18,9 +18,8 @@
                     </v-sheet>
                 </v-col>
 
-                <!-- 메인 컨텐츠 -->
                 <v-col cols="5">
-                    <v-sheet class="pt-3 pb-6 pl-2 pr-2" style="border-radius: 15px;">
+                    <v-sheet class="pt-3 pb-6 pl-2 pr-2" style="border-radius: 15px; margin-top: 10px;">
                         <v-card>
                             <v-card-title>{{ nickname }} 님</v-card-title>
                             <v-card-text>

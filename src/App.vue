@@ -20,7 +20,26 @@ export default {
     NavigationMenuPage,
   },
 
-  data: () => ({}),
+  data() {
+    return {
+      login: false
+    }
+  },
+
+  created() {
+    this.check()
+  },
+  beforeUpdate() {
+    this.check()
+  },
+  methods: {
+    check() {
+      if (localStorage.getItem("login")) {
+        this.login = true;
+        //router.go("/")
+      }
+    },
+  },
 };
 </script>
 

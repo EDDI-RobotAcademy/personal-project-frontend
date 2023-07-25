@@ -19,14 +19,16 @@
         <v-col>
           <v-row align="center" no-gutters>
             <v-col cols="auto">
-              <router-link to="/account-login-page">
-                <v-btn v-if="!isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text">로그인
-                </v-btn>
-              </router-link>
-              <router-link to="/account-register-page">
-                <v-btn v-if="!isLogin" :style="{ fontSize: '20px' }" color="black" class="white--text ml-2">회원가입
-                </v-btn>
-              </router-link>
+              <div class="notLogin">
+                <router-link to="/account-login-page">
+                  <v-btn v-if="!isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text">로그인
+                  </v-btn>
+                </router-link>
+                <router-link to="/account-register-page">
+                  <v-btn v-if="!isLogin" :style="{ fontSize: '20px' }" color="black" class="white--text ml-2">회원가입
+                  </v-btn>
+                </router-link>
+              </div>
               <router-link to="/playlist-register-page">
                 <v-btn v-if="isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text mr-2">플레이리스트 등록
                 </v-btn>
@@ -47,15 +49,22 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations, mapState } from "vuex";
 const accountModule = 'accountModule'
 
 export default {
   name: 'App',
 
   data: () => ({
-    isLogin: localStorage.getItem("isLogin"),
   }),
+  created() {
+    if (localStorage.getItem("userToken")) {
+      this.LOGIN_COMPLETE(true)
+    }
+  },
+  computed: {
+    ...mapState(accountModule, ['isLogin'])
+  },
   methods: {
     ...mapActions(accountModule, ["requestLogoutToSpring"]),
 
@@ -101,5 +110,9 @@ export default {
 
 .container {
   margin-top: 20px;
+}
+
+.notLogin {
+  margin-left: 200px;
 }
 </style>
