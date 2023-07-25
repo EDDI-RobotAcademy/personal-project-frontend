@@ -33,9 +33,9 @@
       <v-col cols="4">
         <ul>
           <h3>상점</h3>
-          <li>리스트 아이템 4</li>
-          <li>리스트 아이템 5</li>
-          <li>리스트 아이템 6</li>
+          <li>상점 title 1</li>
+          <li>상점 title 2</li>
+          <li>상점 title 3</li>
         </ul>
         <ul>
         </ul>

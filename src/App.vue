@@ -55,11 +55,10 @@ export default {
       {
         id: 1,
         text: "NOTICE",
-        link: "/",
+        link: "/notice-page",
         images: [
-          { id: 1, src: "exampleImage.jpg", link: "/notice-page", },
-          { id: 2, src: "exampleImage.jpg", link: "/imsi", },
-          { id: 3, src: "exampleImage.jpg", link: "/way-to-come-page", },
+          { id: 1, src: "noticelogo.png", link: "/notice-page", },
+          { id: 2, src: "waytocomelogo.png", link: "/way-to-come-page", },
         ],
       },
       {
@@ -67,9 +66,9 @@ export default {
         text: "SHOP",
         link: "/",
         images: [
-          { id: 4, src: "exampleImage.jpg", link: "/", },
-          { id: 5, src: "exampleImage.jpg", link: "/", },
-          { id: 6, src: "exampleImage.jpg", link: "/", },
+          { id: 4, src: "suitlogo.png", link: "/", },
+          { id: 5, src: "proteinlogo.png", link: "/", },
+          { id: 6, src: "medicinelogo.png", link: "/", },
         ],
       },
       {
