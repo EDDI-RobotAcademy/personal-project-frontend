@@ -6,6 +6,7 @@ import AccountListPage from "@/views/account/AccountListPage.vue";
 import LoginPage from "@/views/account/LoginPage.vue";
 import CheckPasswordPage from "@/views/account/CheckPasswordPage.vue";
 import Mypage from "@/views/account/Mypage.vue";
+import AccountModifyPage from "@/views/account/AccountModifyPage.vue";
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,12 @@ const accountRoutes = [
     path: "/mypage/:accountId",
     name: "Mypage",
     components: { default: Mypage },
+    props: { default: true },
+  },
+  {
+    path: "/account-modify/:accountId",
+    name: "AccountModifyPage",
+    components: { default: AccountModifyPage },
     props: { default: true },
   },
 ];

@@ -113,4 +113,33 @@ export default {
         console.error("회원 정보 요청 중 오류 발생 : ", error);
       });
   },
+  accountInfoModify({}, payload) {
+    const {
+      accountId,
+      password,
+      accountName,
+      accountBirth,
+      accountPhone,
+      accountAddress,
+    } = payload;
+    const userToken = getCookie("userToken");
+    console.log(payload);
+    return axiosInst
+      .put(`/account/${accountId}`, {
+        accountId,
+        userToken,
+        password,
+        accountName,
+        accountBirth,
+        accountPhone,
+        accountAddress,
+      })
+      .then((res) => {
+        console.log("수정 완료 : " + res);
+      })
+      .catch((error) => {
+        console.error("회원 정보 수정 요청 중 오류 발생 : ", error);
+      });
+  },
+  accountDelete({}) {},
 };
