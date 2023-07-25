@@ -120,7 +120,6 @@ export default {
     },
     methods: {
         ...mapActions('accountModule', ['requestSpringToCheckEmail', 'accountDelete']),
-
         onSubmit() {
             if (this.$refs.form.validate()) {
                 const { email, password, accountName, accountBirth, accountPhone, Address, DetailAddress } = this
@@ -131,24 +130,20 @@ export default {
                 alert('올바른 정보를 입력하세요!')
             }
         },
-
         foldAddress() {
             this.element_wrap.style.display = 'none';
         },
-
         findAddress() {
             var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
 
             new daum.Postcode({
                 oncomplete: (data) => {
                     var addr = '';
-
                     if (data.userSelectedType === 'R') {
                         addr = data.roadAddress;
                     } else {
                         addr = data.jibunAddress;
                     }
-
                     this.Address = addr;
                     this.$refs.DetailAddress.$refs.input.focus();
                     this.element_wrap.style.display = 'none';
@@ -161,9 +156,12 @@ export default {
                 width: '100%',
                 height: '100%'
             }).embed(this.element_wrap);
-
             this.element_wrap.style.display = 'block';
         },
+        async deleteAccount() {
+            await this.accountDelete(this.accountId)
+            await this.$router.push({ name: 'home' })
+        }
     },
     computed: {
         passwordCheck() {

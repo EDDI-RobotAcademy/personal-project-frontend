@@ -123,6 +123,7 @@ export default {
       accountAddress,
     } = payload;
     const userToken = getCookie("userToken");
+
     console.log(payload);
     return axiosInst
       .put(`/account/${accountId}`, {
@@ -141,5 +142,17 @@ export default {
         console.error("회원 정보 수정 요청 중 오류 발생 : ", error);
       });
   },
-  accountDelete({}) {},
+  accountDelete({}, accountId) {
+    const userToken = getCookie("userToken");
+
+    return axiosInst
+      .delete(`/account/${accountId}`, { data: { accountId, userToken } })
+      .then((res) => {
+        console.log("삭제 성공");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("회원 정보 삭제 요청 중 오류 발생 : ", error);
+      });
+  },
 };

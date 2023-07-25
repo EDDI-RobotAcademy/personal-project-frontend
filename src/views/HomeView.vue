@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <div>
-      <v-carousel :cycle="cycle" :interval="interval" :height="height" v-model="carouselModel" :show-arrows="false">
+      <v-carousel height="400" hide-delimiters progress="" :cycle="cycle" :interval="interval" :height="height"
+        v-model="carouselModel" :show-arrows="false">
         <v-carousel-item v-for="(picture, idx) in pictures" :key="idx">
           <v-sheet :height="height" tile>
             <v-row class="fill-height" align="center" justify="center">
@@ -11,8 +12,7 @@
         </v-carousel-item>
       </v-carousel>
     </div>
-    <br>
-    <hr><br>
+    <br><br>
 
     <v-row>
       <v-col cols="4">
@@ -80,11 +80,11 @@ export default {
     return {
       carouselModel: false,
       pictures: [
-        { img: require("@/assets/asdf.jpg") },
-        { img: require("@/assets/image1.jpg") },
-        { img: require("@/assets/image2.jpg") },
-        { img: require("@/assets/LogoImage.png") },
-        { img: require("@/assets/exampleImage.jpg") },
+        { img: require("@/assets/gym1.jpg") },
+        { img: require("@/assets/gym2.jpg") },
+        { img: require("@/assets/gym3.jpg") },
+        { img: require("@/assets/gym4.jpg") },
+        { img: require("@/assets/gym5.jpg") },
       ],
       cycle: true,
       interval: 2500,

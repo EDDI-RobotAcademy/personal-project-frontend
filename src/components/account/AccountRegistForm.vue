@@ -126,7 +126,7 @@ export default {
                 const accountAddress = `${Address} ${DetailAddress}`;
 
                 this.$emit('submit', { email, password, accountName, accountBirth, accountPhone, accountAddress });
-                this.$router.push('/account-list-page');
+                this.$router.push('/');
             } else {
                 alert('올바른 정보를 입력하세요!')
             }
