@@ -33,6 +33,7 @@ export default {
         return axiosInst.springAxiosInst.post('/playlist/register', { title })
             .then((res) => {
                 alert('등록 성공!')
+                return res.data
             })
             .catch(() => {
                 alert('문제 발생!')
@@ -53,8 +54,9 @@ export default {
             })
     },
     // 로그인한 유저가 등록한 플레이리스트 목록 요청
-    requestPlaylistByLoginAccountToSpring({ commit },) {
-        return axiosInst.springAxiosInst.post('/playlist/list-by-login-account')
+    requestPlaylistByLoginAccountToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/list-by-login-account/${page}`)
             .then((res) => {
                 commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
             })
@@ -109,6 +111,13 @@ export default {
     },
     // 전체 페이지 수 요청
     requestCountPlaylistToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
+            .then((res) => {
+                return res.data
+            })
+    },
+
+    requestCountPlaylistByLoginAccountToSpring({ },) {
         return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
             .then((res) => {
                 return res.data
