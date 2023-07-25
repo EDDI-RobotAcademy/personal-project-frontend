@@ -40,14 +40,15 @@
                                             @click="updatePlayerSrc(index)"><v-icon>mdi-play</v-icon></button>
                                         <button class="buttons mr-1"
                                             @click="toggleTooltip(index)"><v-icon>mdi-text-box-outline</v-icon></button>
+                                        <button class="buttons"
+                                            @click="goYoutube(index)"><v-icon>mdi-youtube</v-icon></button>
                                         <div v-if="showTooltip[index]" class="tooltip-container">
                                             <div class="tooltip">
                                                 <p @click="closeTooltip(index)" class="close-icon">x</p>
                                                 <span v-html="songList.lyrics"></span>
                                             </div>
                                         </div>
-                                        <button class="buttons"
-                                            @click="goYoutube(index)"><v-icon>mdi-youtube</v-icon></button>
+
                                     </td>
                                 </tr>
                             </table>
@@ -433,7 +434,7 @@ body {
     color: #fff;
     padding: 5px;
     border-radius: 5px;
-    left: 150px;
+    left: 160px;
     width: 300px;
     max-height: 300px;
     overflow-y: auto;

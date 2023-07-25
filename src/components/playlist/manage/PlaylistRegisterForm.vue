@@ -56,7 +56,8 @@ export default {
  }
 
  .v-card {
-     border: 1px solid #000 !important;
+     border: 3px solid #000 !important;
+     border-radius: 25px !important;
  }
 
  .custom-title {

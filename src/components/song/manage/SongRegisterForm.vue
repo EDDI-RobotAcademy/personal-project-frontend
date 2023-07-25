@@ -59,7 +59,7 @@ body {
 }
 
 #form-container {
-    height: 100vh;
+    height: 70vh;
 }
 
 .v-text-field__slot input {

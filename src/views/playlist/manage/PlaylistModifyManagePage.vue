@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>플레이리스트 수정</h2>
+        <h2 style="text-align: center;">플레이리스트 수정</h2>
         <playlist-modify-manage-form v-if="playlist" :playlist="playlist.playlist" @submit="onSubmit" />
     </div>
 </template>
