@@ -5,6 +5,9 @@ import HomeView from "../views/HomeView.vue";
 import MapTestPage from "../views/MapTestPage.vue";
 import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 
+import LoginPage from "../views/LoginPage.vue";
+import SignupPage from "../views/SignupPage.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -31,6 +34,16 @@ const routes = [
     path: "/mapMarkerTestPage",
     name: "MapMarkerTestPage",
     component: MapMarkerTestPage,
+  },
+  {
+    path: "/loginPage",
+    name: "LoginPage",
+    component: LoginPage,
+  },
+  {
+    path: "/signupPage",
+    name: "SignupPage",
+    component: SignupPage,
   },
 ];
 
