@@ -8,6 +8,8 @@ import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignupPage from "../views/SignupPage.vue";
 
+import BordRegisterPage from "../views/Bord/BordRegisterPage.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,6 +46,11 @@ const routes = [
     path: "/signupPage",
     name: "SignupPage",
     component: SignupPage,
+  },
+  {
+    path: "/bordRegisterPage",
+    name: "BordRegisterPage",
+    component: BordRegisterPage,
   },
 ];
 
