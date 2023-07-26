@@ -58,7 +58,7 @@ export default {
   data: () => ({
   }),
   created() {
-    if (localStorage.getItem("userToken")) {
+    if (localStorage.getItem("isLogin")) {
       this.LOGIN_COMPLETE(true)
     }
   },
@@ -66,6 +66,7 @@ export default {
     ...mapState(accountModule, ['isLogin'])
   },
   methods: {
+    ...mapMutations(accountModule, ['LOGIN_COMPLETE']),
     ...mapActions(accountModule, ["requestLogoutToSpring"]),
 
     async accountLogout() {
