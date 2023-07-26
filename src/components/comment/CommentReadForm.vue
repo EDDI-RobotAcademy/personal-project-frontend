@@ -9,10 +9,15 @@
             <span class="comments_postdate">{{ comment.createdDate }} <br></span>
             </p>
                 <div class="comments_content"> 
+                    <div v-if="!isModify">
                     <span class="comments_description">{{ comment.text }} <br></span>
+                    </div>
+                    <div v-else="!isModify">
+                    <input class="comments_description_modify" v-model="comment.text"/>
+                    </div>
                     <div class="button_icon">
-                    <button class="mr-1"><v-icon>mdi-note-edit-outline</v-icon></button>
-                    <button><v-icon>mdi-alpha-x-circle-outline</v-icon></button>
+                    <button class="mr-1" @click="modifyComment(comment)"><v-icon>mdi-note-edit-outline</v-icon></button>
+                    <button @click="deleteComment"><v-icon>mdi-alpha-x-circle-outline</v-icon></button>
                 </div>
             </div>
           </li>
@@ -21,6 +26,8 @@
     </div>
 </template>
 <script>
+const commentModule = 'commentModule'
+import { mapActions } from 'vuex';
 export default {
     props: { 
         board: {
@@ -31,7 +38,25 @@ export default {
     data(){
         return{
             text:'',
+            userToken:'',
+            isModify: false
         }
+    },
+    methods:{
+        ...mapActions( 
+            commentModule, ['requestCommentModifyToSpring']
+        ),
+        modifyComment(comment){
+            this.isModify = !this.isModify
+            if(!this.isModify){
+            const {text, commentId} = comment
+            const userToken = this.userToken
+            this.requestCommentModifyToSpring({text, userToken, commentId})
+            }
+        }
+    },
+    created(){
+        this.userToken=localStorage.getItem("userToken")
     },
 }
 </script>
@@ -90,4 +115,16 @@ color: grey;
 font-size: 15px;
 margin-left: auto;
 }
+.comments_description_modify:focus{
+    outline: none;
+}
+.comments_description_modify{
+    width: 550px;
+    font-size: 15px;
+    color: #505050;
+    display: block;
+    font-weight: bold;
+    padding-left: 30px;
+}
+
 </style>
