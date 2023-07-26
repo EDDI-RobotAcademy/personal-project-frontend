@@ -7,7 +7,7 @@ import axiosInst from '@/router/utility/axiosInst'
 
 export default {
     requestBoardListToSpring ({ commit }) {
-        return axiosInst.axiosInst.get('/member-board/list', page)
+        return axiosInst.axiosInst.get('/member-board/list')
             .then((res) => {
                 commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
             })

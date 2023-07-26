@@ -8,27 +8,7 @@
           </div>
           <v-btn @click="getLocation" class="mylocation" style="border-radius: 16px;"><v-icon> mdi-crosshairs-gps</v-icon> 내 위치중심</v-btn></v-img>
     </v-row>
-    <v-col>
-      
-      <!-- <div class="BodyBox">
-        <section class="card_section">
-          <h1 class="card_section_title">#테라스</h1>
-          <div class="a">
-            <ul class="card_list">
-              <li class="item1">
-                  <div class="sc-hnmMDg jjkSyj sc-kGLCOL bsDcBK">
-                    <div class="distance_tag">
-                      <span>422m</span>
-                    </div>
-                    https://d12zq4w4guyljn.cloudfront.net/750_750_20221209050618700_photo_c2f5e0670740.jpg
-                    <img class="Restaurant__Card__Img" sizes="238px" srcset="" src="../assets/cafe/cafe1.jpg" alt="" width="238" height="238" loading="lazy" style="opacity: 1;">
-                    </div>
-                </li>
-            </ul>   
-          </div>
-        </section>
-      </div> -->
-    
+    <v-col>  
       <div class="BodyBox">
         <section class="card_section">
           <h1 class="card_section_title">#가성비</h1>
@@ -62,10 +42,10 @@
             :slide-ratio="1 / 5"
             :dragging-distance="200"
             :breakpoints="{ 800: { visibleSlides: 2, slideMultiple: 2 } }">
-            <VueperSlide v-for="(slide, i) in slides" :key="i" :image="slide.image">
+            <VueperSlide v-for="board in boards" :key="board.boardId" :image="getImageUrl(board.filePathList[0]?.imagePath)">
           <template #content>
             <div class="slide_content_text">
-                <h4>{{ slide.content }}</h4>            
+                <h4>{{ board.title }}</h4>            
             </div>
           </template>
             </VueperSlide>
@@ -79,13 +59,22 @@
 <script>
 import axios from 'axios'
 import {VueperSlides, VueperSlide } from 'vueperslides'
+import { mapActions, mapState } from 'vuex';
+
+const boardModule = 'boardModule'
 import 'vueperslides/dist/vueperslides.css'
   
   export default {
     name: 'Home',
+    components:{ 
+      VueperSlides, VueperSlide 
+    },
     data(){
       return{
         your_location: '',
+        awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
+        awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
+        awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
         slides: [
                     {
                         title: 'El Teide Volcano, Spain',
@@ -133,12 +122,25 @@ import 'vueperslides/dist/vueperslides.css'
         })
         }, ()=>{}, {enableHighAccuracy:true, maximumAge: 300000, timeout:27000})
         
-      }
+      },
+      ...mapActions(
+            boardModule, ['requestBoardListToSpring']
+      ),
+      getImageUrl(filePath){
+        if(filePath == undefined){
+          return require('@/assets/icon/default.png')
+        }
+        else{
+          return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${filePath}`
+        }
+    }
+   },
+    computed: { 
+      ...mapState(boardModule, ['boards']),
     },
-    components: 
-      { VueperSlides, VueperSlide },
     mounted(){
       this.getLocation()
+      this.requestBoardListToSpring()
     }
   }
 </script>
@@ -236,5 +238,10 @@ import 'vueperslides/dist/vueperslides.css'
   position: absolute; 
   top: 4%;
   right: 10%
+}
+.vueperslides .vueperslide{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 </style>
