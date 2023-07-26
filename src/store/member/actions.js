@@ -1,3 +1,10 @@
+import {
+    REQUEST_USER_TOKEN_TO_SPRING,
+    REQUEST_USER_INFO_TO_SPRING,
+    REQUEST_MEMBER_LIST_TO_SPRING,
+    REQUEST_MEMBER_TO_SPRING
+  } from "./mutation-types";
+
 import axiosInst from "@/utility/axiosInst";
 import Cookies from "js-cookie";
 
@@ -82,22 +89,33 @@ export default {
             })
     },
     // 로그인
-    requestLoginMemberToSpring ({}, payload) {
+    requestLoginMemberToSpring ({ commit }, payload) {
         const { memberId, memberPw } = payload
 
-        return axiosInst.post('/application/json', {
+        return axiosInst.post('/library-member/sign-in', {
             memberId, memberPw
         })
         .then((res) => {
+            const token = {};
+            token.refreshToken = res.data.refreshToken
+            token.accessToken = res.data.accessToken
+            commit(REQUEST_USER_TOKEN_TO_SPRING, token);
+
+            const member = {};
+            member.role = res.data.role
+            member.memberId = res.data.memberId
+            commit(REQUEST_USER_INFO_TO_SPRING, member);
+
             if (res.data.accessToken) {
-              const { accessToken, refreshToken } = res.data;
+              const { accessToken, refreshToken, role } = res.data;
               Cookies.set('accessToken', accessToken);
               Cookies.set('refreshToken', refreshToken);
-              location.reload()
+              Cookies.set('role', role);
               alert('회원님 반갑습니다!');
               return accessToken;
             } else {
               alert('회원이 아닙니다.');
+              commit(REQUEST_USER_INFO_TO_SPRING, null);
               return null;
             }
           })
@@ -106,4 +124,43 @@ export default {
             throw error;
           });
     },
+    requestLoginTest({commit}) {
+        commit(REQUEST_USER_INFO_TO_SPRING, null);
+    },
+    // 회원 리스트
+    requestMemberListToSpring({commit}) {
+         // axios의 기본 설정에 토큰을 포함시킵니다.
+         const yourJwtToken = Cookies.get("refreshToken");
+         axiosInst.defaults.headers.common['Authorization'] = `Bearer ${yourJwtToken}`;
+
+        return axiosInst.get("/library-member/member-list")
+        .then((res) => {
+            commit(REQUEST_MEMBER_LIST_TO_SPRING, res.data);
+        })
+    },
+    // 회원 정지
+    requestStopMemberToSpring({}, payload) {
+        // axios의 기본 설정에 토큰을 포함시킵니다.
+        const yourJwtToken = Cookies.get("refreshToken");
+        axiosInst.defaults.headers.common['Authorization'] = `Bearer ${yourJwtToken}`;
+
+        const { memberId, managerId } = payload
+
+        if (!managerId) {
+            alert("로그인이 필요합니다.");
+            return null;
+        }
+
+        return axiosInst.post("/library-member/member-account-stop", {
+            memberId,
+            managerId,
+        })
+        .then((res) => {
+            alert("계정이 정지 되었습니다.");
+            return res.data;
+        })
+        .catch(() => {
+            alert("문제 발생!");
+        });
+    }
 }

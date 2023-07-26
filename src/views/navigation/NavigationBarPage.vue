@@ -1,14 +1,13 @@
 <template lang="">
     <nav>
-        <v-app-bar color="white" app elevation="0">
+        <v-app-bar color="#d7f2ff" app elevation="0">
             <v-app-bar-nav-icon color="black" @click="navigation_drawer = !navigation_drawer"/>
             <!-- 로고가 들어갈 타이틀 문구 있는 곳 -->
-            <v-btn depressed color="white" @click="goToHome">
+            <v-btn depressed color="#d7f2ff" @click="goToHome">
               <v-toolbar-title class="text-uppercase text--darken-4">
                 <b>cloud library</b>
               </v-toolbar-title>
             </v-btn>
-
             <!-- 검색 창 -->
             <v-spacer></v-spacer>
               <navigation-search-bar-page />
@@ -19,13 +18,13 @@
               <v-menu offset-y open-on-hover elevation="0">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    color="white"
+                    color="#d7f2ff"
                     v-bind="attrs"
                     v-on="on"
                     depressed
                   >
                     <span>category</span>
-                    <v-icon>mdi-book</v-icon>
+                    <v-icon>mdi-library</v-icon>
                   </v-btn>
                 </template>
                 <v-list>
@@ -53,19 +52,23 @@
               </v-menu>
             </div>
 
-            <v-btn v-if="isLogin" text @click="myPage">
+            <v-btn v-if="isLogin()" text @click="myPage">
                 <span>마이페이지</span>
                 <v-icon right>mdi-hand-back-left-outline</v-icon>
             </v-btn>
-            <v-btn v-if="!isLogin" text @click="signUp">
+            <v-btn v-if="isManager()" text @click="bookManagement">
+                <span>도서관리</span>
+                <v-icon right>mdi-book</v-icon>
+            </v-btn>
+            <v-btn v-if="!isLogin()" text @click="signUp">
                 <span>회원가입</span>
                 <v-icon right>mdi-account-plus-outline</v-icon>
             </v-btn>
-            <v-btn v-if="!isLogin" text @click="signIn">
+            <v-btn v-if="!isLogin()" text @click="signIn">
                 <span>로그인</span>
                 <v-icon right>mdi-login</v-icon>
             </v-btn>
-            <v-btn v-if="isLogin" text @click="signOut">
+            <v-btn v-if="isLogin()" text @click="signOut">
                 <span>로그아웃</span>
                 <v-icon right>mdi-exit-to-app</v-icon>
             </v-btn>
@@ -85,26 +88,7 @@
           </v-list-item>
 
           <v-divider></v-divider>
-          <v-sheet class="pa-4 primary lighten-2">
-            <v-text-field
-              v-model="search"
-              label="서비스 검색"
-              dark
-              flat
-              solo-inverted
-              hide-details
-              clearable
-              clear-icon="mdi-close-circle-outline"
-              @input="searchGroup" />
-
-            <v-checkbox
-              v-model="caseSensitive"
-              dark
-              hide-details
-              label="Case sensitive search"
-            ></v-checkbox>
-          </v-sheet>
-
+         
           <v-list nav dense>
             <v-list-item
               v-for="(link, index) in links"
@@ -149,9 +133,10 @@
 <script>
 import router from "@/router";
 import Cookies from "js-cookie";
-import MemberModule from "@/store/member/MemberModule";
 import NavigationSearchBarPage from "@/views/navigation/NavigationSearchBarPage.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
+
+const MemberModule = 'MemberModule';
 
 export default {
   components: { NavigationSearchBarPage },
@@ -170,18 +155,28 @@ export default {
                 { title: '희망도서' },
                 { title: '전체도서' },
             ],
-            isLogin: false,
-            loginUserInfo: ''
         };
     },
+    computed: {
+      ...mapState(MemberModule, ["memberInfo"]),
+    },
     methods: {
-      ...mapActions(MemberModule, 'requestMemberLoginOutToSpring'),
+      isLogin(){
+        return this.memberInfo !== null
+      },
+      isManager(){
+        if(!this.isLogin())
+          return false
+        
+        return this.memberInfo.role === "ROLE_MANAGER" 
+      },
+      ...mapActions(MemberModule, ['requestLoginTest']),
         newBook() {
           router.push("/new-book")
             .catch(() => {})
         },
         hopeBook() {
-          router.push("/hope-book")
+          router.push("/hope-list-book")
             .catch(() => {})
         },
         wholeBook() {
@@ -193,6 +188,7 @@ export default {
             .catch(() => {})
         },
         signIn() {
+          console.log(this.memberInfo)
           router.push('/sign-in')
           .catch(() => {});
         },
@@ -201,8 +197,14 @@ export default {
           if (accessToken != null) {
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
-            location.reload();
-            alert('로그아웃 되었습니다.');
+            Cookies.remove('role');
+            this.requestLoginTest();
+
+            if(this.memberInfo == null) {
+              router.push("/")
+            .catch(() => {})
+              alert('로그아웃 되었습니다.');
+            }
           }
         },
         goToHome() {
@@ -229,17 +231,16 @@ export default {
           //   }
           // }
         },
-      },
-      mounted() {
-        this.loginUserInfo = Cookies.get('accessToken');
-
-        if (this.loginUserInfo != null) {
-            this.isLogin = true;
-            router.push('/').catch(() => {});
+        bookManagement() {
+          router.push("/management-book")
+          .catch(() => {})
         }
       },
 }
 </script>
 
 <style>
+.text-center{
+  z-index: 999;
+}
 </style>
