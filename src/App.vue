@@ -68,7 +68,7 @@ export default {
         images: [
           { id: 4, src: "suitlogo.png", link: "/", },
           { id: 5, src: "proteinlogo.png", link: "/", },
-          { id: 6, src: "medicinelogo.png", link: "/", },
+          { id: 6, src: "medicinelogo.png", link: "/account-list-page", },
         ],
       },
       {
