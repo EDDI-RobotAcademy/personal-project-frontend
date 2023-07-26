@@ -20,7 +20,7 @@
         <ul style="list-style-type: none;">
           <li v-for="(notice, index) in noticeBoards" :key="index" v-if="index < 5">
             No.{{ notice.noticeId }} -
-            <router-link :to="{ name: 'NoticeReadPage', params: { noticeId: notice.noticeId } }">
+            <router-link :to="{ name: 'NoticeReadPage', params: { noticeId: notice.noticeId } }" class="board-link">
               {{ notice.title }}
             </router-link>
           </li>
@@ -46,7 +46,8 @@
         <ul style="list-style-type: none;">
           <li v-for="(community, index) in communityBoards" :key="index" v-if="index < 5">
             No.{{ community.communityId }} -
-            <router-link :to="{ name: 'CommunityReadPage', params: { communityId: community.communityId } }">
+            <router-link :to="{ name: 'CommunityReadPage', params: { communityId: community.communityId } }"
+              class="board-link">
               {{ community.title }}
             </router-link>
           </li>
@@ -108,10 +109,15 @@ export default {
 </script>
 
 <style scoped>
+.board-link {
+  color: black;
+}
+
 .button {
   margin-top: 10px;
   color: dimgrey;
   font-size: 20px;
+
 }
 </style>
 
