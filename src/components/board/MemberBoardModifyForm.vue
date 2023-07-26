@@ -17,6 +17,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="table_title" >추천 카페</td>
+                    <td class="table_title_content">
+                        <input type="text" v-model="board.cafeTitle"/>
+                    </td>
+                </tr>
+                <tr>
                     <td class="table_title">등록일자</td>
                     <td class="table_title_content">
                         <input type="text" :value="board.createDate" disabled/>
@@ -106,6 +112,7 @@ export default {
             content: '',
             nickname: '',
             createDate: '',
+            cafeTitle: '',
             awsFileList: [],
 
             randomFileName: [],
@@ -130,7 +137,8 @@ export default {
                 nickname: this.board.member.nickname,
                 content: this.board.content,
                 awsFileList: this.awsFileList,
-                userToken: this.userToken
+                userToken: this.userToken,
+                cafeTitle: this.board.cafeTitle
             }
             this.$emit('submit', boardInfo)
 
@@ -242,6 +250,7 @@ export default {
         this.title = this.board.title
         this.content = this.board.content
         this.createDate = this.board.createDate
+        this.cafeTitle = this.board.cafeTitle
         this.$EventBus.$on('fetchData', () => {
         this.onSubmit();
     })

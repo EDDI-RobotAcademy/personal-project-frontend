@@ -42,10 +42,13 @@
             :slide-ratio="1 / 5"
             :dragging-distance="200"
             :breakpoints="{ 800: { visibleSlides: 2, slideMultiple: 2 } }">
-            <VueperSlide v-for="board in boards" :key="board.boardId" :image="getImageUrl(board.filePathList[0]?.imagePath)">
+            <VueperSlide v-for="board in boards" 
+              :key="board.boardId" 
+              :image="getImageUrl(board.filePathList[0]?.imagePath)"
+            >
           <template #content>
             <div class="slide_content_text">
-                <h4>{{ board.title }}</h4>            
+                <h4>{{ board.cafeTitle }}</h4>            
             </div>
           </template>
             </VueperSlide>
@@ -133,7 +136,10 @@ import 'vueperslides/dist/vueperslides.css'
         else{
           return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${filePath}`
         }
-    }
+      },
+      goToBoardDetails(){
+      this.$router.push(`/member-board-read-page/${board.boardId}`);
+    },
    },
     computed: { 
       ...mapState(boardModule, ['boards']),

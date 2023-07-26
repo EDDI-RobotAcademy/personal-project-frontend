@@ -18,6 +18,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="table_title">카페 이름</td>
+                    <td colspan="3">
+                        <input type="text" v-model="cafeTitle"/>
+                    </td>
+                </tr>
+                <tr>
                     <td  class="table_title">본문</td>
                     <td>
                         <textarea cols="20" rows="30" v-model="content"/>
@@ -88,6 +94,7 @@ export default {
         return {
             title: '제목을 입력하세요',
             content: '본문을 입력하세요',
+            cafeTitle: '',
             file: null,
             awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
             awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
@@ -113,7 +120,8 @@ export default {
                 nickname: this.nickname,
                 content: this.content,
                 awsFileList: this.awsFileList,
-                userToken: this.userToken
+                userToken: this.userToken,
+                cafeTitle: this.cafeTitle
             }
             console.log(boardInfo.awsFileList)
             await this.$emit('submit', boardInfo)

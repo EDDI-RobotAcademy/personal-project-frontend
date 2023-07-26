@@ -16,6 +16,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="table_title">추천 카페</td>
+                    <td class="table_title_content">
+                        <input type="text" :value="board?.cafeTitle" readonly/>
+                    </td>
+                </tr>
+                <tr>
                     <td class="table_title">등록일자</td>
                     <td class="table_title_content">
                         <input type="text" :value="board?.createDate" readonly/>
