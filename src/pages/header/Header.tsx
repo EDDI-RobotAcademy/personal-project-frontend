@@ -15,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
   const handleLogout = () => {
     // accessToken 토큰 삭제
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('accountId')
     setIsLoggedIn(false);
   };
 
@@ -29,18 +30,20 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
   return (
     <div>
       <div className='navbar'>
-        <Link className='Menu' to={'/'}>홈</Link>
+        <Link className='PetCareFinder' to={'/'}>PetCareFinder</Link>
         {isLoggedIn ? (
           <>
             <button className='Menu-logout' onClick={handleLogout}>로그아웃</button>
             <Link className='Menu' to={'/myPage'}>마이페이지</Link>
             <Link className='Menu' to={'/board'}>게시판</Link>
+            <Link className='Menu' to={'/map'}>병원찾기</Link>
           </>
         ) : (
           <>
             <Link className='Menu' to={'/login'}>로그인</Link>
             <Link className='Menu' to={'/signupHome'}>회원가입</Link>
             <Link className='Menu' to={'/board'}>게시판</Link>
+            <Link className='Menu' to={'/map'}>병원찾기</Link>
           </>
         )}
       </div>

@@ -43,11 +43,17 @@ export const useBoardQuery = (boardId: string): UseQueryResult<Board | null, unk
   return useQuery(['board', boardId], () => fetchBoard(boardId))
 }
 
+// 수정
 export const updateBoard = async (updatedData: Board): Promise<Board> => {
   const { boardId, title, content, writer } = updatedData
 
   const response = await axiosInstance.springAxiosInst.put<Board>(
-    `/board/${boardId}`, { title, content, writer })
+    `/board/${boardId}`, { title, content, writer }, {
+      headers: {
+        Authorization: localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      },
+    })
 
   return response.data
 }
@@ -62,6 +68,12 @@ export const useBoardUpdateMutation = (): UseMutationResult<Board, unknown, Boar
   })
 }
 
+// 삭제
 export const deleteBoard = async (boardId: string): Promise<void> => {
-  await axiosInstance.springAxiosInst.delete(`/board/${boardId}`)
+  await axiosInstance.springAxiosInst.delete(`/board/${boardId}`, {
+    headers: {
+      Authorization: localStorage.getItem('accessToken'),
+      "Content-Type": "application/json",
+    },
+  })
 }
