@@ -64,9 +64,10 @@ export default {
             });
     },
     // 로그아웃 요청
-    requestLogoutToSpring({ }) {
+    requestLogoutToSpring({ commit }) {
         return axiosInst.springAxiosInst.post("/account/logout")
             .then((res) => {
+                commit(LOGIN_COMPLETE, false)
                 alert("로그아웃")
             })
             .catch(() => {
@@ -101,11 +102,12 @@ export default {
             });
     },
     // 회원 탈퇴 요청
-    requestAccountWithdrawToSpring({ }) {
+    requestAccountWithdrawToSpring({ commit }) {
         return axiosInst.springAxiosInst.delete("/account/withdraw")
             .then((res) => {
                 if (res.data) {
                     alert("탈퇴 성공!");
+                    commit(LOGIN_COMPLETE, false)
                     return true
                 } else {
                     alert("탈퇴 실패!");
