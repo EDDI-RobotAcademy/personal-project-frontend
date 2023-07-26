@@ -53,7 +53,7 @@ export default {
         })
      }, 
      getTokenToSpring(context, payload) {
-        axiosInst.axiosInst.get("http://localhost:7777/klogin?code=" + payload)
+        axiosInst.axiosInst.get("/klogin?code=" + payload)
           .then((res) => {
             console.log(res.data)
             localStorage.setItem("userToken", res.data.userToken)
