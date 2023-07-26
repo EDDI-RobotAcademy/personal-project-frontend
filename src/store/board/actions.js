@@ -33,9 +33,8 @@ export default {
       })
   },
   requestRegisterBoardToSpring({}, payload) {
-    const { userToken, title, content, category } = payload
-    console.log(category)
-    return axiosInst.springAxiosInst.post('board/register', { userToken, title, content, category })
+    const { userToken, title, content, category, thumbNailName, imageNameList } = payload
+    return axiosInst.springAxiosInst.post('board/register', { userToken, title, content, category, thumbNailName, imageNameList })
     .then((res) => {
       alert('게시글 등록 성공')
       return res.data
@@ -88,8 +87,8 @@ export default {
       })
   },
   requestModifyBoardToSpring({}, payload) {
-    const { boardId, title, content } = payload
-    return axiosInst.springAxiosInst.put(`board/${boardId}/modify-board`, { title, content })
+    const { boardId, title, content, newThumbNailName, newImageNameList } = payload
+    return axiosInst.springAxiosInst.put(`board/${boardId}/modify-board`, { title, content, newThumbNailName, newImageNameList })
     .then((res) => {})
   },
   requestDeleteBoardToSpring({}, boardId) {
@@ -100,6 +99,12 @@ export default {
     return axiosInst.springAxiosInst.get(`board/${userToken}/my-liked-boards`)
       .then((res) => {
         commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
+      })
+  },
+  requestBoardForModifyToSpring({ commit }, boardId ) {
+    return axiosInst.springAxiosInst.get(`board/${boardId}/for-modify`)
+      .then((res) => {
+        commit(REQUEST_BOARD_TO_SPRING, res.data)
       })
   },
 }

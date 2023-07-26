@@ -38,11 +38,11 @@ computed: {
   ...mapState(commentModule, ['comments'])
 },
 methods: {
-  ...mapActions(boardModule, ['requestReadBoardToSpring']),
+  ...mapActions(boardModule, ['requestBoardForModifyToSpring']),
   ...mapActions(commentModule, ['requestCommentListToSpring'])
 },
 async mounted() {
-  await this.requestReadBoardToSpring(this.boardId)
+  await this.requestBoardForModifyToSpring(this.boardId)
   await this.requestCommentListToSpring(this.boardId)
   if (this.board.boardCategory == "Asia") {
     this.backgroundImage = require("@/assets/images/asia_banner.jpg")
@@ -74,6 +74,7 @@ async mounted() {
   margin-top: 450px; 
   position: absolute;
   width: 100%;
+  padding-bottom: 80px;
 }
 
 </style>

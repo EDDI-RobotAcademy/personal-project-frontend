@@ -10,6 +10,7 @@
       </div>    
     </div>
     <div class="register_form_divider">
+      <div id="register-section"></div>
       <div class="register_form">
         <BoardRegisterForm @submit="register"/> 
       </div>
@@ -32,12 +33,13 @@ export default {
 
     async register(payload) {
       const boardId = await this.requestRegisterBoardToSpring(payload)
+      await new Promise((resolve) => setTimeout(resolve, 300));
       await this.$router.push({
         name: 'BoardReadPage',
         params: { boardId: boardId.toString() }
       })
     }
-  }
+  },
 }
 
 </script>
