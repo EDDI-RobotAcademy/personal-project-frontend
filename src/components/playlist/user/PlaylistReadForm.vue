@@ -121,7 +121,6 @@ export default {
             isDataLoaded: false,
 
             showTooltip: {},
-            check: '',
         }
     },
     props: {
