@@ -13,14 +13,15 @@
             <div class="row" style="text-align: center;">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-custom1"> 후기 남기기 </button>
+                    <!-- <button type="button" class="btn btn-custom1" @click="$router.push('/reviewRegisterPage')"> 후기 남기기 </button> -->
+                    <button type="button" class="btn btn-custom1" @click="clickPlace"> 후기 남기기 </button>
                 </div>
                 <div class="col-sm-4"></div>
             </div>
-            1<br/>
-            1<br/>
-            1<br/>
-            1<br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             <div class="row" style="text-align: center;">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-1">
@@ -31,8 +32,19 @@
     </div>
 </template>
 <script>
+// import ReviewRegisterPage from "../views/reviewBord/ReviewRegisterPage.vue"
 export default {
-    props: ['placeData']
+    props: ['placeData'],
+    methods: {
+        clickPlace() {
+            this.$router.push({
+                name: "ReviewRegisterPage",
+                path: "/reviewRegisterPage",
+                params: { placeName: this.placeData.title }
+            })
+        }
+    },
+
 }
 </script>
 <style>

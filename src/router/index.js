@@ -9,6 +9,7 @@ import LoginPage from "../views/LoginPage.vue";
 import SignupPage from "../views/SignupPage.vue";
 
 import BordRegisterPage from "../views/Bord/BordRegisterPage.vue";
+import ReviewRegisterPage from "../views/reviewBord/ReviewRegisterPage.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,12 @@ const routes = [
     path: "/bordRegisterPage",
     name: "BordRegisterPage",
     component: BordRegisterPage,
+  },
+  {
+    path: "/reviewRegisterPage",
+    name: "ReviewRegisterPage",
+    component: ReviewRegisterPage,
+    props: true
   },
 ];
 
