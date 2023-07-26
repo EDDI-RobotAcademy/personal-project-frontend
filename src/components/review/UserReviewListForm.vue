@@ -15,31 +15,31 @@
                                         </v-btn>
                                     </div>
                                 </template>
-                                <v-list style="width: 100px">
-                                    <v-list-item @click="handleShare(item)">
+                                <v-list style="width: 85px; height: 122px;">
+                                    <v-list-item style="margin-top: -10px;" @click="handleShare(item)">
                                         <v-list-item-icon>
                                             <v-icon small>mdi-share</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content
-                                            style="font-size: 13px; margin-left: -20px;">공유</v-list-item-content>
+                                            style="font-size: 13px; margin-left: -30px;">공유</v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="handleModify(item)">
+                                    <v-list-item style="margin-top: -10px;" @click="openModifyDialog(item)">
                                         <v-list-item-icon>
                                             <v-icon small>mdi-pencil</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content
-                                            style="font-size: 13px; margin-left: -20px;">수정</v-list-item-content>
+                                            style="font-size: 13px; margin-left: -30px;">수정</v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="handleDelete(item)">
+                                    <v-list-item style="margin-top: -10px;" @click="handleDelete(item)">
                                         <v-list-item-icon>
                                             <v-icon small>mdi-delete</v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content
-                                            style="font-size: 13px; margin-left: -20px;">삭제</v-list-item-content>
+                                            style="font-size: 13px; margin-left: -30px;">삭제</v-list-item-content>
                                     </v-list-item>
                                 </v-list>
                             </v-menu>
-                            <div class="star-rating space-x-4 mx-auto">
+                            <div class="list-star-rating space-x-4 mx-auto">
                                 <label v-for="star in 5" :key="star" class="star"
                                     :style="{ color: star <= item.ratings ? 'gold' : 'white' }">★</label>
                             </div>
@@ -58,27 +58,58 @@
                 </v-card>
             </v-flex>
         </v-layout>
+
+        <!-- 수정용 팝업 -->
+        <v-dialog v-model="showModifyDialog" max-width="800px">
+            <v-card>
+                <v-card-title style="justify-content: center;">
+                    <div class="headline">후기 수정 팝업</div>
+                </v-card-title>
+                <v-card-text>
+                    <user-review-modify-form v-if="showModifyDialog" :review="modifiedReview" @submit="submitReview" />
+                </v-card-text>
+                <v-card-actions style="justify-content: center;">
+                    <v-btn @click="cancelModify">취소</v-btn>
+                </v-card-actions>
+
+            </v-card>
+
+        </v-dialog>
+
     </v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex'
 // import env from '@/env'
+
+import UserReviewModifyForm from '@/components/review/UserReviewModifyForm.vue'
 
 const reviewModule = 'reviewModule'
 
 export default {
+    components: {
+        UserReviewModifyForm,
+    },
+
     data() {
         return {
             id: null,
+            showModifyDialog: false,
+            userToken: '',
+            registeredReview: null,
+            modifiedReview: null
         }
     },
 
     methods: {
+        ...mapActions(reviewModule, ["requestModifyReviewToSpring",]),
+        ...mapActions(reviewModule, ["requestReviewToSpring",]),
+        ...mapActions(reviewModule, ["requestDeleteReviewToSpring",]),
+
         handleCellClick(item) {
-            this.id = item.id // id 값을 설정
-            this.$router.push({ name: 'UserReviewReadPage', params: { id: item.id } })
-            console.log(this.id) // 설정된 id 값 확인
+            this.id = item.id
+            console.log(this.id)
         },
 
         // getS3ImageUrl(imageKey) {
@@ -86,27 +117,54 @@ export default {
         //     const bucketName = env.api.MAIN_AWS_BUCKET_NAME
 
         //     return `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${imageKey}`;
-        // }
+        // },
+
+        async openModifyDialog(item) {
+            this.id = item.id;
+            this.registeredReview = await this.requestReviewToSpring(this.id);
+
+            this.showModifyDialog = true;
+        },
+
+        cancelModify() {
+            this.showModifyDialog = false
+        },
+
+        async submitReview(payload) {
+
+            await this.requestModifyReviewToSpring(payload)
+            this.showModifyDialog = false
+        },
+
+        async handleDelete(item) {
+            this.id = item.id;
+            this.modifiedReview = await this.requestDeleteReviewToSpring(this.id);
+        }
     },
 
     computed: {
         ...mapState(reviewModule, ['reviews']),
+        ...mapState(reviewModule, ['review']),
         Reviews() {
             return this.reviews
         }
-    }
-};
+    },
+
+    created() {
+        this.userToken = localStorage.getItem("userToken")
+    },
+}
 </script>
 
-<style scoped>
-.star-rating {
+<style >
+.list-star-rating {
     display: flex;
     font-size: 1.5rem;
     line-height: 2.5rem;
     width: 5em;
 }
 
-.star-rating label {
+.list-star-rating label {
     /* -webkit-text-fill-color: transparent; */
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: #2b2a29;

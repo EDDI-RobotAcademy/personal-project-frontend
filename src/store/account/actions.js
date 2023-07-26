@@ -27,7 +27,7 @@ export default {
         return axiosInst.springAxiosInst.get(`/account/check-email/${email}`)
             .then((resCheckedEmail) => {
                 if (resCheckedEmail.data) {
-                    alert('사용 가능한 이메일입니다!')
+                    alert('사용 가능한 이메일입니다! 이메일을 확인하여 인증코드를 작성해주세요!')
                     return true
                 } else {
                     alert('중복된 이메일입니다!')
@@ -79,6 +79,32 @@ export default {
             })
             .catch(() => {
                 alert("통신이 불가합니다")
+            })
+    },
+    requestAccountIdToSpring({ }, payload) {
+        const { userToken } = payload
+
+        return axiosInst.springAxiosInst.post('/account/return-accountId', { userToken })
+            .then((resAccountId) => {
+                if (resAccountId.data !== "") {
+                    console.log('accountId: ' + resAccountId.data)
+                    return localStorage.setItem("accountId", resAccountId.data);
+                }
+            })
+            .catch(() => {
+                alert("통신이 불가합니다")
+            })
+    },
+    requestEmailCodeToSpring({ }, payload) {
+        const { email } = payload
+
+        return axiosInst.springAxiosInst.post(`/account/mail-confirm/${email}`)
+            .then((resEmailCode) => {
+                console.log('emailCode: ' + resEmailCode.data)
+                return resEmailCode.data
+            })
+            .catch(() => {
+                alert("이메일 코드 통신이 불가합니다")
             })
     },
 }
