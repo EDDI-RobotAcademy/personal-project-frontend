@@ -23,12 +23,16 @@ export default {
     },
     methods: {
         register(){
-            let commentInfo={
+            if(this.text.trim() != ''){
+                let commentInfo={
                 userToken: this.userToken,
                 text: this.text,
             }
             this.$emit("registerComment", commentInfo)
             this.text=''
+            }else{
+                alert('공백이 입력되었습니다.')
+            }
         }
     },
     created(){
