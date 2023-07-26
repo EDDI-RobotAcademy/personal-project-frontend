@@ -48,7 +48,6 @@
                                                 <span v-html="songList.lyrics"></span>
                                             </div>
                                         </div>
-
                                     </td>
                                 </tr>
                             </table>
@@ -429,12 +428,13 @@ body {
 }
 
 .tooltip {
-    position: absolute;
+    position: fixed;
+    z-index: 999;
     background-color: #000;
     color: #fff;
     padding: 5px;
     border-radius: 5px;
-    left: 200px;
+    right: 500px;
     width: 300px;
     max-height: 300px;
     overflow-y: auto;
