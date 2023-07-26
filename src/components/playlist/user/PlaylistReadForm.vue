@@ -361,7 +361,7 @@ body {
     border-collapse: separate;
     border-spacing: 1em;
     width: 100%;
-    padding-left: 200px;
+    padding-left: 220px;
     text-align: left;
 }
 
@@ -434,7 +434,7 @@ body {
     color: #fff;
     padding: 5px;
     border-radius: 5px;
-    left: 160px;
+    left: 200px;
     width: 300px;
     max-height: 300px;
     overflow-y: auto;
@@ -464,6 +464,6 @@ body {
 
 .right-align {
     text-align: right;
-    padding-right: 200px;
+    padding-right: 220px;
 }
 </style>
