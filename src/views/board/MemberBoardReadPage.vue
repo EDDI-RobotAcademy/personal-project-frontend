@@ -103,7 +103,7 @@ export default {
             })
         },
         modifyBoard(){
-            if(this.userToken){
+            if(this.userToken == this.board.member.userToken){
                 this.$router.push({ name: 'MemberBoardModifyPage', params: { boardId: this.boardId }} )
             }
         },
