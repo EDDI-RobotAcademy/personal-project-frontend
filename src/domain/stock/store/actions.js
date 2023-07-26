@@ -1,13 +1,22 @@
 import { REQUEST_STOCK_LIST_TO_SPRING,
             REQUEST_STOCK_TO_SPRING,
+            REQUEST_OPINON_LIST_TO_SPRING,
     } from './mutation-types'
 import axiosInst from '@/utility/axiosInst'
 
 export default {
-    requestStockListToSpring({ commit }) {
-        return axiosInst.spring.get('/stock/list')
+    async requestStockListToSpring({ commit }, payload) {
+        const { OCVA, ascending, pageNumber } = payload
+        return axiosInst.spring.get(`/stock/list/${OCVA}/${ascending}/${pageNumber}`)
         .then((res) => {
             commit(REQUEST_STOCK_LIST_TO_SPRING, res.data)
+        })
+    },
+    async requestOpinionListToSpring({commit}, payload) {
+        const {sortItem, ascending, pageNumber} = payload
+        return axiosInst.spring.get(`/stock/opinion-list/${sortItem}/${ascending}/${pageNumber}`)
+        .then((res) => {
+            commit(REQUEST_OPINON_LIST_TO_SPRING, res.data)
         })
     },
     requestStockToSpring({ commit }, ticker) {

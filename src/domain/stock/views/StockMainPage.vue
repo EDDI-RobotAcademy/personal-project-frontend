@@ -12,7 +12,7 @@
         <div>
           <v-container>
             <v-card elevation="3" height="700" width="590" rounded>
-              <article-display-form :articles="articles" />
+              <article-display-form :articles="articles" @update-now-page="handleNowPageUpdate" />
             </v-card>
           </v-container>
         </div>
@@ -64,6 +64,7 @@ export default {
     },
     data () {
         return {
+          nowPage: '1'
         }
     },
     computed: {
@@ -73,14 +74,20 @@ export default {
         stockName() {return this.stock.stockName;}
     },
     async created() {
+        const payload = { stockName: this.stock.stockName, nowPage: this.nowPage };
         await this.requestBoardListToSpring(this.ticker);
         await this.requestStockToSpring(this.ticker);
-        this.requestAritcleListToFastApi(this.stock.stockName);
+        await this.requestAritcleListToFastApi(payload);
     },
     methods: {
         ...mapActions(boardModule, ['requestBoardListToSpring']),
         ...mapActions(stockMoudle, ['requestStockToSpring']),
-        ...mapActions(articleModule, ['requestAritcleListToFastApi'])
+        ...mapActions(articleModule, ['requestAritcleListToFastApi']),
+        async handleNowPageUpdate(value) {
+          this.nowPage = value;
+          const payload = { stockName: this.stock.stockName, nowPage: this.nowPage };
+          await this.requestAritcleListToFastApi(payload);
+        },
     }
 }
 </script>

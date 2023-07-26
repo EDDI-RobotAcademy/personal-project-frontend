@@ -3,7 +3,14 @@
     <div style="display: flex; flex-direction: row; justify-content: center; position: sticky; top: 64px;">
       <v-card class="table" style="width: 700px;">
         <v-container>
-          <stock-list-form :stocks="stocks" />
+          <stock-list-form 
+          :stocks="stocks" 
+          :nowPage="nowPage" 
+          :hasStocks="hasStocks"
+          @sort-item-selected="handleSortItemUpdate"                                             
+          @ascending-selected="handleAscendingSelectedUpdate"                               
+          @update-now-page="handleNowPageUpdate"
+          @update-mode="handleUpdateMode"/>
         </v-container>
       </v-card>
       <v-card class="chat-table" style="width: 500px; position: sticky; top: 64px; right: 0; height: calc(60vh - 64px);">
@@ -25,7 +32,10 @@ const stockModule = 'stockModule'
 export default {
   data() {
     return {
+      nowPage: 1,
       ticker: "1",
+      selectedSortItem:'open',
+      selectedAscending: 'desc' 
     }
   },
   components: {
@@ -34,14 +44,99 @@ export default {
   },
   methods: {
     ...mapActions(
-      stockModule, ['requestStockListToSpring']
+      stockModule, ['requestStockListToSpring', 'requestOpinionListToSpring']
     ),  
+    handleUpdateMode(mode) {
+      if (mode === 'stock') {
+          this.selectedSortItem = 'open';
+          this.fetchStockList();
+        } else if (mode === 'sentiment') {
+          this.selectedSortItem = 'positiveCount';
+          this.fetchOpinionList();
+        }
+    },
+    handleSortItemUpdate(selectedSortItem) {
+      this.selectedSortItem = selectedSortItem;
+      if (
+            selectedSortItem === "open" ||
+            selectedSortItem === "close" ||
+            selectedSortItem === "rangeValue" ||
+            selectedSortItem === "fluctuationRate" ||
+            selectedSortItem === "volume"
+          ) {
+            this.fetchStockList();
+          } else if (
+            selectedSortItem === "positiveCount" ||
+            selectedSortItem === "negativeCount" ||
+            selectedSortItem === "naturalCount" ||
+            selectedSortItem === "totalSentimentScore"
+          ) {
+            this.fetchOpinionList();
+          }
+    },
+    handleAscendingSelectedUpdate(selectedAscending) {
+      this.selectedAscending = selectedAscending;
+      if (
+            this.selectedSortItem === "open" ||
+            this.selectedSortItem === "close" ||
+            this.selectedSortItem === "rangeValue" ||
+            this.selectedSortItem === "fluctuationRate" ||
+            this.selectedSortItem === "volume"
+          ) {
+            this.fetchStockList();
+          } else if (
+            this.selectedSortItem === "positiveCount" ||
+            this.selectedSortItem === "negativeCount" ||
+            this.selectedSortItem === "naturalCount" ||
+            this.selectedSortItem === "totalSentimentScore"
+          ) {
+            this.fetchOpinionList();
+          }    
+        },
+    handleNowPageUpdate(nowPage) {
+      this.nowPage = nowPage
+      if (
+            this.selectedSortItem === "open" ||
+            this.selectedSortItem === "close" ||
+            this.selectedSortItem === "rangeValue" ||
+            this.selectedSortItem === "fluctuationRate" ||
+            this.selectedSortItem === "volume"
+          ) {
+            this.fetchStockList();
+          } else if (
+            this.selectedSortItem === "positiveCount" ||
+            this.selectedSortItem === "negativeCount" ||
+            this.selectedSortItem === "naturalCount" ||
+            this.selectedSortItem === "totalSentimentScore"
+          ) {
+            this.fetchOpinionList();
+          }        
+        },
+    fetchStockList() {
+      const payload = {
+          OCVA: this.selectedSortItem,
+          ascending: this.selectedAscending,
+          pageNumber: this.nowPage
+        }
+      this.requestStockListToSpring(payload);
+    },
+    fetchOpinionList() {
+      const payload = {
+          sortItem: this.selectedSortItem,
+          ascending: this.selectedAscending,
+          pageNumber: this.nowPage
+        }
+        this.requestOpinionListToSpring(payload);
+    }
   },
   computed: {
-    ...mapState(stockModule, ['stocks'])
+    ...mapState(stockModule, ['stocks']),
+    hasStocks() {
+      return this.stocks !== null && this.stocks.length > 0;
+    },
   },
   mounted () {
-    this.requestStockListToSpring()
+    this.fetchStockList();
   },
 }
 </script>

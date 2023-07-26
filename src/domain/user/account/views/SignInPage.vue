@@ -20,8 +20,8 @@ export default {
         ...mapActions(accountModule, ['requestLoginAccountToSpring']),
         async onSubmit (payload) {  
             await this.requestLoginAccountToSpring(payload)
-            const userToken = localStorage.getItem("userToken")
-            if( userToken ) {
+            const isLogin = localStorage.getItem("isLogin")
+            if( isLogin ) {
                 await this.$router.push("/")
                 location.reload()
             }         
