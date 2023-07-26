@@ -29,9 +29,6 @@ export default {
             if (this.modifyCheckPass) {
                 localStorage.setItem("nickname", payload.nickname)
                 this.$router.push({ name: 'AccountMyPage' })
-                    .catch(
-                        location.reload()
-                    )
             }
         },
     }

@@ -5,26 +5,20 @@
                 <v-col cols="12" lg="8" xl="6">
                     <v-card width="100%"
                         style="background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px;">
+                        <button class="back-button" @click="goBack" style="margin-left: 15px; margin-top: 15px;">
+                            <v-icon>mdi-arrow-left</v-icon>
+                        </button>
                         <v-card-text class="text-center px-12 py-16">
 
-                            <table v-if="playlist.playlist" style="margin-bottom: 20px; width: 100%;">
-                                <tr>
-                                    <td style="font-weight: bold; padding-right: 70px;">플레이리스트 번호</td>
-                                    <td>
-                                        <input type="text" :value="playlist.playlist.id" readonly
-                                            style=" border: none; font-weight: bold" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold; padding-right: 70px;">이름</td>
-                                    <td>
-                                        <input type="text" :value="playlist.playlist.title" readonly
-                                            style="border: none; font-weight: bold" />
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <h3 v-if="playlist.songList" style="font-weight: bold; margin-bottom: 20px;">목록</h3>
+                            <div v-if="playlist.playlist" class="playlist-title">
+                                <h3 class="title-weight">
+                                    {{ playlist.playlist.title }}
+                                </h3>
+                            </div>
+                            <hr>
+                            <h3 v-if="playlist.songList" class="song-list-title">
+                                목록
+                            </h3>
 
                             <table v-if="playlist.songList"
                                 style="border-collapse: separate; border-spacing: 1em; width: 100%">
@@ -38,17 +32,12 @@
                                 </tr>
                             </table>
                             <div v-if="playlist.playlist" class="text-center">
-                                <router-link :to="{
-                                    name: 'SongRegisterPage',
-                                    params: { playlistId: playlist.playlist.id.toString() }
-                                }">
-                                    <v-btn class="mr-2" rounded color="gray lighten-1" style="border-radius: 5px;">
-                                        노래 등록
-                                    </v-btn>
-                                </router-link>
-                                <v-btn @click="onModify"> 수정 </v-btn>
-                                <v-btn @click="onDelete"> 삭제 </v-btn>
-                                <v-btn @click="goBack"> 돌아가기 </v-btn>
+                                <button class="mr-2" rounded color="gray lighten-1" style="border-radius: 5px;"
+                                    @click="goToPlaylistRegister(playlist.playlist.id)">
+                                    노래 등록
+                                </button>
+                                <button class="mr-2" @click="onModify"> 수정 </button>
+                                <button class="mr-2" @click="onDelete"> 삭제 </button>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -97,9 +86,24 @@ export default {
                 })
             }
         },
+        goToPlaylistRegister(playlistId) {
+            this.$router.push({
+                name: 'SongRegisterPage',
+                params: { playlistId: playlistId.toString() }
+            })
+        }
     },
 }
 </script>
-<style lang="">
-    
+<style>
+.playlist-title {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.song-list-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
 </style>

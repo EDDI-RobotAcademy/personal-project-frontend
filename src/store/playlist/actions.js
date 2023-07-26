@@ -17,7 +17,6 @@ export default {
     requestPlaylistCountToSpring({ }) {
         return axiosInst.springAxiosInst.post('/playlist/count-playlist')
             .then((res) => {
-                console.log("res.data = " + res.data)
                 return res.data
             })
     },
@@ -25,7 +24,6 @@ export default {
     requestPlaylistToSpring({ commit }, id) {
         return axiosInst.springAxiosInst.get(`/playlist/${id}`)
             .then((res) => {
-                console.log(res.data)
                 commit(REQUEST_PALYLIST_TO_SPRING, res.data)
             })
     },
@@ -50,18 +48,17 @@ export default {
         return axiosInst.springAxiosInst.post('/playlist/modify', requestData)
             .then((res) => {
                 alert('수정 성공!')
-                return res.data
             })
             .catch(() => {
                 alert('문제 발생!')
             })
     },
     // 로그인한 유저가 등록한 플레이리스트 목록 요청
-    requestPlaylistByLoginAccountToSpring({ commit },) {
-        return axiosInst.springAxiosInst.post('/playlist/list-by-login-account')
+    requestPlaylistByLoginAccountToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/list-by-login-account/${page}`)
             .then((res) => {
                 commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
-                console.log(res.data)
             })
     },
     // 플레이리스트 삭제 요청
@@ -73,6 +70,57 @@ export default {
             })
             .catch(() => {
                 alert('문제 발생!')
+            })
+    },
+    // 좋아요 설정 요청
+    requestIncreaseLikeCountToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.post(`/playlist/like-playlist/${payload}`)
+            .then((res) => {
+                return res.data
+            })
+    },
+    // 좋아요 설정 해제 요청
+    requestDecreaseLikeCountToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.post(`/playlist/unlike-playlist/${payload}`)
+            .then((res) => {
+                return res.data
+            })
+    },
+    // 좋아요 설정 유무 확인 요청
+    requestIsPlaylistLikedToSpring({ }, payload) {
+        return axiosInst.springAxiosInst.post(`/playlist/check-liked/${payload}`)
+            .then((res) => {
+                return res.data
+            })
+    },
+    // 페이징 된 플레이리스트 요청
+    requestSlicePlaylistToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/slice-list/${page}`)
+            .then((res) => {
+                commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
+            })
+    },
+    // 좋아요 순으로 정렬 된 플레이리스트 요청
+    requestSortSlicePlaylistToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.post(`/playlist/sort-slice-list/${page}`)
+            .then((res) => {
+                commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
+            })
+    },
+    // 전체 페이지 수 요청
+    requestCountPlaylistToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
+            .then((res) => {
+                return res.data
+            })
+    },
+
+    requestCountPlaylistByLoginAccountToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
+            .then((res) => {
+                return res.data
             })
     },
 }

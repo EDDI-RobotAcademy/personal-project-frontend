@@ -26,8 +26,8 @@ export default {
     methods: {
         ...mapActions(playlistModule, ['requestPlaylistToSpring'])
     },
-    created() {
-        this.requestPlaylistToSpring(this.id)
+    async created() {
+        await this.requestPlaylistToSpring(this.id)
     }
 }
 </script>

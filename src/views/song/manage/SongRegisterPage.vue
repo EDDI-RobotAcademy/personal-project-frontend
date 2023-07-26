@@ -26,8 +26,6 @@ export default {
 
         async registerSong(payload) {
             const playlistId = this.playlistId
-            console.log(payload)
-            console.log(playlistId)
             const song = await this.requestRegisterSongToSpring({ payload, playlistId });
             console.log('song: ' + JSON.stringify(song))
             await this.$router.push({

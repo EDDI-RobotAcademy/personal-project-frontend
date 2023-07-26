@@ -1,36 +1,32 @@
-<template lang="">
-    <div>
-        <table>
-            <tr>
-                <td>제목</td>
-                <td>
-                    <input type="text" :value="song.title" readonly/>
-                </td>
-            </tr>
-            <tr>
-                <td>가수</td>
-                <td>
-                    <input type="text" :value="song.singer" readonly/>
-                </td>
-            </tr>
-            <tr>
-                <td>장르</td>
-                <td>
-                    <input type="text" :value="song.genre" readonly/>
-                </td>
-            </tr>
-            <tr>
-                <td>유튜브 링크</td>
-                <td>
-                    <input type="text" :value="song.link" readonly/>
-                </td>
-            </tr>
-            <v-btn @click="onModify"> 수정 </v-btn>
-            <v-btn @click="onDelete"> 삭제 </v-btn>
-            <v-btn @click="goBack"> 돌아가기 </v-btn>
-        </table>
-    </div>
+<template>
+    <v-container id="form-container" class="d-flex justify-center align-center" fluid>
+        <v-row justify="center">
+            <v-col cols="12" lg="8" xl="6">
+                <v-card
+                    style="width: 60%; padding: 20px; background-color: rgba(255, 255, 255, 0.8); border: 3px solid #000000; border-radius: 25px; margin: 0 auto;">
+                    <button class="back-button" @click="goBack" style="margin-left: 10px; margin-top: 5px;">
+                        <v-icon>mdi-arrow-left</v-icon>
+                    </button>
+                    <v-card-text>
+                        <form @submit.prevent="onSubmit">
+                            <v-text-field label="제목" :value="song.title" readonly />
+                            <v-text-field label="가수" :value="song.singer" readonly />
+                            <v-text-field label="장르" :value="song.genre" readonly />
+                            <v-text-field label="유튜브 링크" :value="song.link" readonly />
+                            <v-row>
+                                <v-col style="text-align: center;">
+                                    <v-btn class="mr-3" @click="onModify"> 수정 </v-btn>
+                                    <v-btn @click="onDelete"> 삭제 </v-btn>
+                                </v-col>
+                            </v-row>
+                        </form>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
+
 <script>
 import { mapActions } from 'vuex'
 
@@ -80,6 +76,8 @@ export default {
     },
 }
 </script>
-<style lang="">
-    
+<style>
+#form-container {
+    height: 70vh;
+}
 </style>

@@ -1,4 +1,5 @@
 import axiosInst from '@/utility/axiosInst'
+import { LOGIN_COMPLETE } from "./mutation-types"
 
 export default {
     // 회원 가입 요청
@@ -46,7 +47,7 @@ export default {
             })
     },
     // 로그인 요청
-    requestLoginToSpring({ }, payload) {
+    requestLoginToSpring({ commit }, payload) {
         const { email, password } = payload;
         return axiosInst.springAxiosInst.post("/account/login", { email, password })
             .then((res) => {
@@ -54,6 +55,7 @@ export default {
                     alert("로그인 성공!");
                     localStorage.setItem("nickname", res.data)
                     localStorage.setItem("isLogin", true)
+                    commit(LOGIN_COMPLETE, true)
                     return true
                 } else {
                     alert("로그인 실패!");
@@ -62,9 +64,10 @@ export default {
             });
     },
     // 로그아웃 요청
-    requestLogoutToSpring({ }) {
+    requestLogoutToSpring({ commit }) {
         return axiosInst.springAxiosInst.post("/account/logout")
             .then((res) => {
+                commit(LOGIN_COMPLETE, false)
                 alert("로그아웃")
             })
             .catch(() => {
@@ -99,11 +102,12 @@ export default {
             });
     },
     // 회원 탈퇴 요청
-    requestAccountWithdrawToSpring({ }) {
+    requestAccountWithdrawToSpring({ commit }) {
         return axiosInst.springAxiosInst.delete("/account/withdraw")
             .then((res) => {
                 if (res.data) {
                     alert("탈퇴 성공!");
+                    commit(LOGIN_COMPLETE, false)
                     return true
                 } else {
                     alert("탈퇴 실패!");

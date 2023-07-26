@@ -1,41 +1,44 @@
 <template>
     <v-app>
-        <v-main class="grey lighten-4">
-            <v-container style="padding-left: 400px;">
-                <v-row :style="{ width: '1200px' }">
-                    <v-col cols="2">
-                        <v-sheet rounded="lg">
-                            <v-list>
-                                <v-list-item v-for="link in links" :key="link.title" :to="link.address" link>
-                                    <v-list-item-content>
-                                        <v-list-item-title>
-                                            {{ link.title }}
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-sheet>
-                    </v-col>
+        <v-container fluid>
+            <v-row class="d-flex justify-center">
 
-                    <v-col>
-                        <v-sheet min-height="70vh" width="700px" class="grey lighten-4">
-                            <div>
-                                {{ nickname }} 님
-                            </div>
-                            <div>
-                                <p>등록된 플레이리스트 수</p>
-                                {{ playlistValue }}
-                            </div>
-                            <br>
-                            <div>
-                                <p>등록된 곡 수</p>
-                                {{ songValue }}
-                            </div>
-                        </v-sheet>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-main>
+                <v-col cols="2">
+                    <v-sheet class="pt-3 pb-6 pl-2 pr-2"
+                        style="border-radius: 15px; margin: 20px; border: 1px solid #e0e0e0;">
+                        <v-list>
+                            <v-list-item v-for="link in links" :key="link.title">
+                                <router-link :to="link.address" class="link" link>
+                                    <v-btn text>
+                                        {{ link.title }}
+                                    </v-btn>
+                                </router-link>
+                            </v-list-item>
+                        </v-list>
+                    </v-sheet>
+                </v-col>
+
+                <v-col cols="5">
+                    <v-sheet class="pt-3 pb-6 pl-2 pr-2" style="border-radius: 15px; margin-top: 10px;">
+                        <v-card>
+                            <v-card-title>{{ nickname }} 님</v-card-title>
+                            <v-card-text>
+                                <v-row>
+                                    <v-col cols="6">
+                                        <div class="subtitle-1">등록된 플레이리스트 수</div>
+                                        <div class="headline">{{ playlistValue }}</div>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <div class="subtitle-1">등록된 곡 수</div>
+                                        <div class="headline">{{ songValue }}</div>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-card>
+                    </v-sheet>
+                </v-col>
+            </v-row>
+        </v-container>
     </v-app>
 </template>
   
@@ -69,3 +72,27 @@ export default {
     },
 }
 </script>
+  
+<style>
+.link {
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: all 0.3s;
+}
+
+.link:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.headline {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.subtitle-1 {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 400;
+}
+</style>

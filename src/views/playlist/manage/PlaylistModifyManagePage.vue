@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>플레이리스트 수정</h2>
+        <h2 style="text-align: center;">플레이리스트 수정</h2>
         <playlist-modify-manage-form v-if="playlist" :playlist="playlist.playlist" @submit="onSubmit" />
     </div>
 </template>
@@ -28,7 +28,6 @@ export default {
         ),
         async onSubmit(payload) {
             const playlistId = Number(this.playlistId)
-
             await this.requestModifyPlaylistToSpring({ payload, playlistId })
             await this.$router.push({
                 name: 'PlaylistReadManagePage',

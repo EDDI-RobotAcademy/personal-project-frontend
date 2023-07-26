@@ -1,6 +1,9 @@
 <template>
     <v-container id="form-container" class="d-flex justify-center align-center" fluid>
         <v-card class="mx-auto pa-0 custom-card" color="white" width="500">
+            <button class="back-button" @click="goBack" style="margin-left: 15px; margin-top: 15px;">
+                <v-icon>mdi-arrow-left</v-icon>
+            </button>
             <v-card-title class="custom-title">노래 수정하기</v-card-title>
             <v-card-text>
                 <form @submit.prevent="onSubmit">
@@ -8,11 +11,9 @@
                     <v-text-field label="가수" v-model="singer" />
                     <v-text-field label="장르" v-model="genre" />
                     <v-text-field label="유튜브 링크" v-model="link" />
-
                     <v-row>
-                        <v-col>
+                        <v-col style="text-align: center;">
                             <v-btn color="black" text type="submit">수정</v-btn>
-                            <v-btn color="black" text @click="goBack">취소</v-btn>
                         </v-col>
                     </v-row>
                 </form>
@@ -69,7 +70,7 @@ body {
 }
 
 #form-container {
-    height: 100vh;
+    height: 70vh;
 }
 
 .v-text-field__slot input {
@@ -92,7 +93,8 @@ body {
 }
 
 .v-card {
-    border: 1px solid #000 !important;
+    border: 3px solid #000 !important;
+    border-radius: 25px !important;
 }
 
 .custom-title {

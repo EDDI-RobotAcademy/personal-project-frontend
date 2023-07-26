@@ -1,47 +1,67 @@
-<template lang="">
-    <v-container fluid>
-      <v-row justify="center">
-        <h3 class="text-center">플레이리스트 관리</h3>
-        <v-col cols="12" lg="8" xl="6">
-          <div>
-            <h3 class="text-center">플레이리스트 목록</h3>
-            <table width="100%">
-              <tr>
-                <th align="center" width="70%">제목</th>
-              </tr>
-              <tr v-if="!playlists || (Array.isArray(playlists) && playlists.length === 0)">
-                <td colspan="4">
-                  현재 등록된 플레이리스트가 없습니다!
-                </td>
-              </tr>
-              <tr v-else v-for="playlist in playlists" :key="playlist.id">
-                <td align="center">
-                  <router-link :to="{
-                    name: 'PlaylistReadManagePage',
-                    params: { id: playlist.id.toString() }
-                  }">
-                    {{ playlist.title }}
-                  </router-link>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </template>
-  
-<script>
+<template>
+  <v-container fluid>
+    <v-row justify="center">
+      <v-col cols="12" lg="12" xl="12">
+        <v-row v-if="isNoPlaylistAvailable" align="center" justify="center">
+          <v-col>
+            <p>현재 등록된 플레이리스트가 없습니다!!</p>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12" sm="6" md="4" v-for="playlist in playlists" :key="playlist.playlist.id">
+            <div class="playlist-padding">
+              <v-card elevation="4" class="playlist-card" @click="goToPlaylist(playlist.playlist.id)">
+                <v-img v-if="playlist.songList[0]" class="mx-auto" :src="getYoutubeImage(playlist.songList[0].link)"
+                  height="200" width="200"></v-img>
+                <v-card-text class="text-center">
+                  {{ playlist.playlist.title }}
+                </v-card-text>
+              </v-card>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
+<script>
 export default {
   props: {
     playlists: {
-      type: Array
+      type: Array,
+    },
+  },
+  computed: {
+    isNoPlaylistAvailable() {
+      return !this.playlists || (Array.isArray(this.playlists) && this.playlists.length === 0);
+    },
+  },
+  methods: {
+    getYoutubeImage(link) {
+      return 'https://img.youtube.com/vi/' + link.substring(link.lastIndexOf('=') + 1) + '/mqdefault.jpg'
+    },
+    goToPlaylist(playlistId) {
+      this.$router.push({
+        name: 'PlaylistReadManagePage',
+        params: { id: playlistId.toString() }
+      })
     }
   },
-  data: () => ({
-  }),
-
 }
 </script>
-  
+
+<style>
+.playlist-padding {
+  padding: 10px;
+}
+
+.playlist-card {
+  padding-top: 10px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>

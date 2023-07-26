@@ -13,16 +13,19 @@ export default {
     components: {
         PlaylistRegisterForm,
     },
+    data() {
+        return {
+            playlistId: '',
+        }
+    },
     methods: {
         ...mapActions(playlistModule, ['requestRegisterPlaylistToSpring']),
 
         async registerPlaylist(payload) {
-            console.log(payload)
-            const playlist = await this.requestRegisterPlaylistToSpring(payload)
-            console.log('playlist: ' + JSON.stringify(playlist))
+            this.playlistId = await this.requestRegisterPlaylistToSpring(payload)
             await this.$router.push({
-                name: 'PlaylistReadPage',
-                params: { id: playlist.id.toString() }
+                name: 'PlaylistReadManagePage',
+                params: { id: this.playlistId }
             })
         }
     }
