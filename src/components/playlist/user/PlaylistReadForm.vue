@@ -427,13 +427,14 @@ body {
 }
 
 .tooltip {
-    position: fixed;
+    position: absolute;
     z-index: 999;
     background-color: #000;
     color: #fff;
     padding: 5px;
     border-radius: 5px;
-    right: 500px;
+    top: 0;
+    left: 100%;
     width: 300px;
     max-height: 300px;
     overflow-y: auto;
