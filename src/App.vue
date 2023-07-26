@@ -45,45 +45,61 @@
   </v-app>
 </template>
 
-
 <script>
 
+import VueCookies from 'vue-cookies';
+import { mapActions } from 'vuex';
+
 export default {
+
   name: "App",
-  data: () => ({
-    buttons: [
-      {
-        id: 1,
-        text: "NOTICE",
-        link: "/notice-page",
-        images: [
-          { id: 1, src: "noticelogo.png", link: "/notice-page", },
-          { id: 2, src: "waytocomelogo.png", link: "/way-to-come-page", },
-        ],
-      },
-      {
-        id: 2,
-        text: "SHOP",
-        link: "/",
-        images: [
-          { id: 4, src: "suitlogo.png", link: "/", },
-          { id: 5, src: "proteinlogo.png", link: "/", },
-          { id: 6, src: "medicinelogo.png", link: "/account-list-page", },
-        ],
-      },
-      {
-        id: 3,
-        text: "COMMUNITY",
-        link: "/community-page"
-      },
-      {
-        id: 4,
-        text: "MYPAGE",
-        link: "/check-password",
-      },
-    ],
-  }),
-};
+  created() {
+    this.checkUserToken();
+    setInterval(this.checkUserToken, 5000);
+  },
+  methods: {
+    ...mapActions('accountModule', ['checkToken']),
+    checkUserToken() {
+      this.userToken = VueCookies.get('userToken');
+      console.log('User Token:', this.userToken);
+      this.$store.dispatch('checkToken', this.userToken)
+    },
+    data: () => ({
+      userToken: null,
+      buttons: [
+        {
+          id: 1,
+          text: "NOTICE",
+          link: "/notice-page",
+          images: [
+            { id: 1, src: "noticelogo.png", link: "/notice-page", },
+            { id: 2, src: "waytocomelogo.png", link: "/way-to-come-page", },
+          ],
+        },
+        {
+          id: 2,
+          text: "SHOP",
+          link: "/",
+          images: [
+            { id: 4, src: "suitlogo.png", link: "/", },
+            { id: 5, src: "proteinlogo.png", link: "/", },
+            { id: 6, src: "medicinelogo.png", link: "/account-list-page", },
+          ],
+        },
+        {
+          id: 3,
+          text: "COMMUNITY",
+          link: "/community-page"
+        },
+        {
+          id: 4,
+          text: "MYPAGE",
+          link: "/check-password",
+        },
+      ],
+    }),
+  }
+}
 </script>
 
 <style scoped>

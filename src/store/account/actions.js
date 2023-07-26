@@ -155,4 +155,10 @@ export default {
         console.error("회원 정보 삭제 요청 중 오류 발생 : ", error);
       });
   },
+  checkToken({}, payload) {
+    const { userToken } = payload;
+    return axiosInst.get("/account/checktoken", { userToken }).then((res) => {
+      console.log(res.data);
+    });
+  },
 };
