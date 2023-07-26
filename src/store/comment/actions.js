@@ -1,10 +1,3 @@
-import {
-    REQUEST_COMMENT_LIST_TO_SPRING,
-} from './mutation-types'
-import {
-    REQUEST_BOARD_TO_SPRING
-} from '../board/mutation-types'
-
 import axiosInst from '@/router/utility/axiosInst'
 
 export default {
@@ -22,20 +15,20 @@ export default {
                 
             })
     },
-    // requestDeleteBoardToSpring ({}, boardId) {
-    //     const userToken = localStorage.getItem("userToken") 
-    //     return axiosInst.axiosInst.delete(`/member-board/${boardId}`,{headers: {Authorization: userToken}})
-    //         .then((res) => {
-    //             if(res.data){
-    //                 alert("삭제 성공!")
-    //             }else{
-    //                 alert("문제 발생")
-    //             }
-    //         })
-    //         .catch(() => {
-    //             alert('문제 발생!')
-    //         })
-    // },
+    requestDeleteCommentToSpring (context, commentId) {
+        const userToken = localStorage.getItem("userToken") 
+        return axiosInst.axiosInst.delete(`/board/comment/${commentId}`,{headers: {Authorization: userToken}})
+            .then((res) => {
+                if(res.data){
+                    alert("삭제 성공!")
+                }else{
+                    alert("문제 발생")
+                }
+            })
+            .catch(() => {
+                alert('지울 수 없습니다.')
+            })
+    },
     requestCommentModifyToSpring ({}, payload) {
         return axiosInst.axiosInst.put(`/board/comment/${payload.commentId}/modify`,payload)
             .then((res) => {

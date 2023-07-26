@@ -17,7 +17,7 @@
                     </div>
                     <div class="button_icon">
                     <button class="mr-1" @click="modifyComment(comment)"><v-icon>mdi-note-edit-outline</v-icon></button>
-                    <button @click="deleteComment"><v-icon>mdi-alpha-x-circle-outline</v-icon></button>
+                    <button @click="deleteComment(comment.commentId)"><v-icon>mdi-alpha-x-circle-outline</v-icon></button>
                 </div>
             </div>
           </li>
@@ -44,7 +44,7 @@ export default {
     },
     methods:{
         ...mapActions( 
-            commentModule, ['requestCommentModifyToSpring']
+            commentModule, ['requestCommentModifyToSpring','requestDeleteCommentToSpring']
         ),
         modifyComment(comment){
             this.isModify = !this.isModify
@@ -53,6 +53,9 @@ export default {
             const userToken = this.userToken
             this.requestCommentModifyToSpring({text, userToken, commentId})
             }
+        },
+        deleteComment(commentId){
+            this.requestDeleteCommentToSpring(commentId)
         }
     },
     created(){
