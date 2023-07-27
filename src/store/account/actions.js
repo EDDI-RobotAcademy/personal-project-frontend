@@ -20,5 +20,16 @@ export default {
         .catch(()=>{
             alert("회원가입 실패");
         });
-    } 
+    },
+    requestLoginToSpring({ commit }, payload) {
+        const {email, password} = payload
+
+        return axiosInst.post('/account/login', {
+            email, password
+        })
+        .then((res) =>{
+            commit(REQUEST_ACCOUNT_TO_SPRING, res.data);
+            alert("로그인 성공")
+        })
+    }
 }

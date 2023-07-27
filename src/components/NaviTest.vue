@@ -3,9 +3,9 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/mapMarkerTestPage">SwimminGo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> -->
                 <button type="button" class="btn btn-custom2" @click="$router.push('/reviewListPage')">Reviews</button>
                 <button type="button" class="btn btn-custom2" @click="$router.push('/boardListPage')">Board</button>
                 <!-- <button type="button" class="btn btn-custom2" @click="$router.push('/boardRegisterPage')">등록테스트</button> -->

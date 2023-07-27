@@ -1,6 +1,5 @@
 <template>
     <div>
-        <NaviTest />
         <div style="padding-top: 90px">
             <template>
                 <div class="card" style="width: 500px; margin: auto;">
