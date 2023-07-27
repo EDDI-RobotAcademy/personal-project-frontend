@@ -11,7 +11,7 @@
                         <SignupForm @submit="onSubmit"/>
                     </div>
                 </div>
-</template>          
+            </template>          
         </div>
     </div>
 </template>

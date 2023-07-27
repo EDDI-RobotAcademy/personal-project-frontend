@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="onsubmit" id="signupInfo">
+        <form @submit.prevent="onSubmit" id="signupInfo">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" v-model="placeName2" id="placeName" placeholder="placeName"
                     disabled>
@@ -136,7 +136,7 @@ export default {
         placeName: {
             type: String,
             required: true,
-            default: ''
+            // default: ''
         }
     },
     data() {
@@ -149,8 +149,9 @@ export default {
     },
     methods: {
         onSubmit() {
-            const { placeName2, content, starRating1, starRating2 } = this
-            this.$emit('submit', { placeName2, content, starRating1, starRating2 })
+            // this.placeName2 = this.placeName;
+            const { content, placeName, starRating1, starRating2 } = this
+            this.$emit('submit', { content, placeName, starRating1, starRating2 })
         }
     },
 }

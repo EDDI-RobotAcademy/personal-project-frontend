@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-// import ReviewRegisterPage from "../views/reviewBord/ReviewRegisterPage.vue"
+// import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue"
 export default {
     props: ['placeData'],
     methods: {

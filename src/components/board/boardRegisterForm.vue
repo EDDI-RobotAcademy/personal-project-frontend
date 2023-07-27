@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="onsubmit" id="signupInfo">
+        <form @submit.prevent="onSubmit" id="signupInfo">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" v-model="title" id="title" placeholder="title">
                 <label for="floatingInput">Title</label>

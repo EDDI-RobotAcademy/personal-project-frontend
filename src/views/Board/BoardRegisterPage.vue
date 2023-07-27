@@ -6,7 +6,7 @@
                 <div class="card" style="width: 500px; margin: auto;">
                     <div class="card-body">
                         <h5 class="card-title">게시물 등록 페이지</h5>
-                        <BordRegisterForm @submit="onSubmit" />
+                        <BoardRegisterForm @submit="onSubmit" />
                     </div>
                 </div>
             </template>
@@ -16,24 +16,24 @@
 </template>
 <script>
 import NaviTest from '@/components/NaviTest.vue'
-import BordRegisterForm from '@/components/bord/bordRegisterForm.vue'
+import BoardRegisterForm from '@/components/board/boardRegisterForm.vue'
 
 import { mapActions } from 'vuex';
 
-const bordModule = 'bordModule'
+const boardModule = 'boardModule'
 
 export default {
     components: {
         NaviTest,
-        BordRegisterForm
+        BoardRegisterForm
     },
     methods: {
         ...mapActions(
-            bordModule, ['requestRegisterBordToSpring']
+            boardModule, ['requestRegisterBoardToSpring']
         ),
         async onSubmit(payload) {
             const { title, content } = payload
-            await this.requestRegisterBordToSpring({ title, content })
+            await this.requestRegisterBoardToSpring({ title, content })
         }
     }
 

@@ -16,7 +16,7 @@
 </template>
 <script>
 import NaviTest from '@/components/NaviTest.vue'
-import ReviewRegisterForm from '@/components/reviewBord/reviewRegisterForm.vue'
+import ReviewRegisterForm from '@/components/reviewBoard/reviewRegisterForm.vue'
 
 import { mapActions } from 'vuex';
 
@@ -36,11 +36,11 @@ export default {
     },
     methods: {
         ...mapActions(
-            reviewModule, ['requestRegisterReviewBordToSpring']
+            reviewModule, ['requestRegisterReviewBoardToSpring']
         ),
         async onSubmit(payload) {
-            const { starRating, placeName, content } = payload
-            await this.requestRegisterReviewBordToSpring({ starRating, placeName, content })
+            const { content, placeName, starRating1, starRating2 } = payload
+            await this.requestRegisterReviewBoardToSpring({ content, placeName, starRating1, starRating2 })
         }
     },
 

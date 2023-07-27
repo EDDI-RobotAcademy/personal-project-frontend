@@ -2,15 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import accountModule from '@/store/account/AccountModule.js';
-import bordModule from '@/store/bord/BordModule.js'
-import reviewModule from '@/store/reviewBord/ReviewModule.js'
+import boardModule from '@/store/board/BoardModule.js'
+import reviewModule from '@/store/reviewBoard/ReviewModule.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     accountModule: accountModule,
-    bordModule: bordModule,
+    boardModule: boardModule,
     reviewModule : reviewModule
   }
 })
