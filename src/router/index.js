@@ -8,8 +8,11 @@ import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignupPage from "../views/SignupPage.vue";
 
-import BordRegisterPage from "../views/Bord/BordRegisterPage.vue";
-import ReviewRegisterPage from "../views/reviewBord/ReviewRegisterPage.vue";
+import BoardRegisterPage from "../views/Board/BoardRegisterPage.vue";
+import BoardListPage from "../views/Board/BoardListPage.vue";
+
+import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue";
+import ReviewListPage from "../views/reviewBoard/ReviewListPage.vue";
 
 Vue.use(VueRouter);
 
@@ -49,14 +52,26 @@ const routes = [
     component: SignupPage,
   },
   {
-    path: "/bordRegisterPage",
-    name: "BordRegisterPage",
-    component: BordRegisterPage,
+    path: "/boardRegisterPage",
+    name: "BoardRegisterPage",
+    component: BoardRegisterPage,
   },
   {
     path: "/reviewRegisterPage",
     name: "ReviewRegisterPage",
     component: ReviewRegisterPage,
+    props: true
+  },
+  {
+    path: "/boardListPage",
+    name: "BoardListPage",
+    component: BoardListPage,
+    props: true
+  },
+  {
+    path: "/reviewListPage",
+    name: "ReviewListPage",
+    component: ReviewListPage,
     props: true
   },
 ];
