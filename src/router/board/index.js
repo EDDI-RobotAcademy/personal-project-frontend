@@ -5,6 +5,7 @@ import MemberBoardListPage from '@/views/board/MemberBoardListPage.vue'
 import MemberBoardRegisterPage from '@/views/board/MemberBoardRegisterPage.vue'
 import MemberBoardReadPage from '@/views/board/MemberBoardReadPage.vue'
 import MemberBoardModifyPage from '@/views/board/MemberBoardModifyPage.vue'
+import MyBoardListPage from '@/views/board/MyBoardListPage.vue'
 Vue.use(VueRouter)
 
 const memberBoardRoutes = [
@@ -37,6 +38,11 @@ const memberBoardRoutes = [
         props: {
             default: true
         }
+    },
+    {
+        path: '/my-board-list-page',
+        name: 'MyBoardListPage',
+        component: MyBoardListPage
     }
 ]
 

@@ -1,5 +1,8 @@
 <template lang="">
     <div>
+    <div>
+        <h1 class="list_title">나의 게시글 관리</h1><br>
+    </div>
         <v-simple-table 
             style="margin: 10px; width:1000px; margin: 0 auto"
             :items-per-page="5">
@@ -30,7 +33,7 @@
                     </router-link>
                 </td>
                 <td align="center">
-                    {{ board.member?.nickname }}
+                    {{ board.nickname }}
                 </td>
                 <td align="center">
                     {{ board.createDate }}
@@ -44,6 +47,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+const memberModule = 'memberModule'
+
 export default {
     props: {
         boards: {
@@ -64,6 +70,9 @@ export default {
             this.$emit("sendPage", page)
         }
     },
+    computed: {
+        ...mapState(memberModule, ['nickname'])
+    },
     watch: {
         page: {
             immediate: true,
@@ -82,5 +91,11 @@ export default {
 
 .pagination {
     margin: 10px
+}
+
+.list_title {
+    min-height: 30px;
+    margin: 40px 0 0px;
+    text-align: center;
 }
 </style>

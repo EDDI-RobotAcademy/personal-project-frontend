@@ -4,7 +4,7 @@ import axiosInst from "@/router/utility/axiosInst"
 import { LOGIN_COMPLETE, SET_NICKNAME } from "./mutation-types"
 
 export default {
-    requestSpringToCheckNicknameDuplication ({ }, payload) {
+    requestSpringToCheckNicknameDuplication({ }, payload) {
         const { nickname } = payload
         return axiosInst.axiosInst.get(`/member/check-nickName/${nickname}`)
             .then((res) => {
@@ -20,9 +20,9 @@ export default {
                 alert("문제 발생!")
             })
     },
-    requestRegisterMemberToSpring ({ }, payload) {
+    requestRegisterMemberToSpring({ }, payload) {
 
-        const { email, nickname, password,roleType } = payload
+        const { email, nickname, password, roleType } = payload
         return axiosInst.axiosInst.post('/member/sign-up', { email, nickname, password, roleType })
             .then((res) => {
                 return res.data
@@ -31,8 +31,8 @@ export default {
                 alert('문제 발생!')
             })
     },
-    requestSpringToLogin(context, payload){
-        const { email, password,roleType,nickname } = payload
+    requestSpringToLogin(context, payload) {
+        const { email, password, roleType, nickname } = payload
         return axiosInst.axiosInst.post('/member/login', { email, password, roleType, nickname })
             .then((res) => {
                 localStorage.setItem("userToken", res.data.userToken)
@@ -43,25 +43,25 @@ export default {
             })
             .catch(() => {
                 alert('문제 발생!')
-            })  
-    }, 
-    requestSpringToAddresskakaoOauthLogin(){
+            })
+    },
+    requestSpringToAddresskakaoOauthLogin() {
         axiosInst.axiosInst.get('kakao/oauth')
-        .then((res)=>{
-         console.log(res.data)
-         window.location.href = res.data;
-        })
-     }, 
-     getTokenToSpring(context, payload) {
+            .then((res) => {
+                console.log(res.data)
+                window.location.href = res.data;
+            })
+    },
+    getTokenToSpring(context, payload) {
         axiosInst.axiosInst.get("/klogin?code=" + payload)
-          .then((res) => {
-            console.log(res.data)
-            localStorage.setItem("userToken", res.data.userToken)
-            localStorage.setItem("roleType", res.data.roleType)
-            context.commit(LOGIN_COMPLETE, true)
-            context.commit(SET_NICKNAME, res.data.nickname)
-            
-        });
+            .then((res) => {
+                console.log(res.data)
+                localStorage.setItem("userToken", res.data.userToken)
+                localStorage.setItem("roleType", res.data.roleType)
+                context.commit(LOGIN_COMPLETE, true)
+                context.commit(SET_NICKNAME, res.data.nickname)
 
-      },
+            });
+
+    },
 }
