@@ -9,19 +9,24 @@ import { mapActions } from "vuex";
 
 const memberModule = 'memberModule'
 export default {
-    components:{
+    components: {
         MemberLoginForm
+    },
+    data() {
+        return {
+            isLogin: false,
+        }
     },
     methods: {
         ...mapActions(memberModule, ['requestSpringToLogin']),
-        async onSubmit (payload) {
-            await this.requestSpringToLogin(payload)
-              .then(()=>{
+        async onSubmit(payload) {
+            this.isLogin = await this.requestSpringToLogin(payload)
+            if (this.isLogin) {
                 this.$router.push('/')
-              })
+            }
         }
     }
-    
+
 }
 </script>
 <style lang="">

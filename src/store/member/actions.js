@@ -35,11 +35,16 @@ export default {
         const { email, password, roleType, nickname } = payload
         return axiosInst.axiosInst.post('/member/login', { email, password, roleType, nickname })
             .then((res) => {
-                localStorage.setItem("userToken", res.data.userToken)
-                localStorage.setItem("roleType", res.data.roleType)
-                context.commit(LOGIN_COMPLETE, true)
-                context.commit(SET_NICKNAME, res.data.nickname)
-                return res.data
+                if (res.data != '') {
+                    localStorage.setItem("userToken", res.data.userToken)
+                    localStorage.setItem("roleType", res.data.roleType)
+                    context.commit(LOGIN_COMPLETE, true)
+                    context.commit(SET_NICKNAME, res.data.nickname)
+                    return true
+                } else {
+                    alert('이메일과 비밀번호를 다시 확인해주세요')
+                    return false
+                }
             })
             .catch(() => {
                 alert('문제 발생!')
