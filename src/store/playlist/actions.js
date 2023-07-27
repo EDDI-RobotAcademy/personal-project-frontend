@@ -116,9 +116,31 @@ export default {
                 return res.data
             })
     },
-
+    // 내가 등록한 플레이리스트 수 요청
     requestCountPlaylistByLoginAccountToSpring({ },) {
         return axiosInst.springAxiosInst.post('/playlist/count-all-playlist')
+            .then((res) => {
+                return res.data
+            })
+    },
+    // 내가 좋아요를 누른 플레이리스트 수 요청
+    requestCountLikedPlaylistByLoginAccountToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-liked-playlist')
+            .then((res) => {
+                return res.data
+            })
+    },
+    // 내가 좋아요를 누른 플레이리스트 목록 요청
+    requestLikedPlaylistToSpring({ commit }, payload) {
+        const page = payload
+        return axiosInst.springAxiosInst.get(`/playlist/liked-playlist-by-login-account/${page}`)
+            .then((res) => {
+                commit(REQUEST_PALYLIST_LIST_TO_SPRING, res.data)
+            })
+    },
+    // 내가 좋아요를 누른 플레이리스트 페이지 요청
+    requestCountPageLikedPlaylistByLoginAccountToSpring({ },) {
+        return axiosInst.springAxiosInst.post('/playlist/count-page-liked-playlist')
             .then((res) => {
                 return res.data
             })

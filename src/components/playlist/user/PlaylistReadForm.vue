@@ -6,11 +6,11 @@
                     <v-card width="100%" class="playlist-card">
                         <v-card-text class="text-center">
                             <div class="playlist-controls">
-                                <router-link to="/">
-                                    <button class="back-button">
-                                        <v-icon>mdi-arrow-left</v-icon>
-                                    </button>
-                                </router-link>
+                                <!-- <router-link to="/"> -->
+                                <button @click="goBack" class="back-button">
+                                    <v-icon>mdi-arrow-left</v-icon>
+                                </button>
+                                <!-- </router-link> -->
                                 <button @click="doLike(playlist.playlist.id)" class="like-button"
                                     style="margin-right: 20px;">
                                     {{ this.playlistLiked ? "❤️" : "🤍" }}
@@ -139,6 +139,9 @@ export default {
         }
     },
     methods: {
+        goBack() {
+            this.$router.go(-1)
+        },
         ...mapActions(playlistModule, ['requestIncreaseLikeCountToSpring', 'requestDecreaseLikeCountToSpring', 'requestIsPlaylistLikedToSpring']),
 
         async doLike(playlistId) {

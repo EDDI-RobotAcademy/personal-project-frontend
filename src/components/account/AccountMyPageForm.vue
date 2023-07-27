@@ -25,12 +25,27 @@
                             <v-card-text>
                                 <v-row>
                                     <v-col cols="6">
-                                        <div class="subtitle-1">등록된 플레이리스트 수</div>
-                                        <div class="headline">{{ playlistValue }}</div>
+                                        <router-link :to="{ name: 'PlaylistListManagePage', }"
+                                            style="text-decoration: none; color: black;">
+                                            <div class="subtitle-1">등록한 플레이리스트 수</div>
+                                            <div class="headline" style="text-decoration: none; color: black;">{{
+                                                playlistValue
+                                            }}</div>
+                                            <div class="text-right" style="padding-right: 85px"> 바로가기 </div>
+                                        </router-link>
                                     </v-col>
                                     <v-col cols="6">
-                                        <div class="subtitle-1">등록된 곡 수</div>
-                                        <div class="headline">{{ songValue }}</div>
+                                        <div class="subtitle-1">등록한 곡 수</div>
+                                        <div class="headline" style="text-decoration: none; color: black;">{{ songValue }}
+                                        </div>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <router-link :to="{ name: 'LikedPlaylistListPage', }"
+                                            style="text-decoration: none; color: black;">
+                                            <div class="subtitle-1">좋아요 누른 플레이리스트 수</div>
+                                            <div class="headline">{{ likedPlaylistValue }}</div>
+                                            <div class="text-right" style="padding-right: 85px"> 바로가기 </div>
+                                        </router-link>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -57,16 +72,18 @@ export default {
             { title: "회원 탈퇴", address: "/account-withdraw-page" },
         ],
         playlistValue: 0,
+        likedPlaylistValue: 0,
         songValue: 0,
         nickname: '',
     }),
     methods: {
-        ...mapActions(playlistModule, ['requestPlaylistCountToSpring']),
+        ...mapActions(playlistModule, ['requestPlaylistCountToSpring', 'requestCountLikedPlaylistByLoginAccountToSpring']),
         ...mapActions(songModule, ['requestSongCountToSpring']),
 
     },
     async created() {
         this.playlistValue = await this.requestPlaylistCountToSpring()
+        this.likedPlaylistValue = await this.requestCountLikedPlaylistByLoginAccountToSpring()
         this.songValue = await this.requestSongCountToSpring()
         this.nickname = localStorage.getItem("nickname")
     },

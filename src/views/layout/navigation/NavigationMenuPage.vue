@@ -107,6 +107,8 @@ export default {
 
 .custom-btn {
   font-size: 20px !important;
+  height: auto !important;
+  padding-top: 8px !important;
 }
 
 .container {
