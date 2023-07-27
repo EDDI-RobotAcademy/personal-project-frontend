@@ -1,22 +1,31 @@
 <template>
     <div>
-        <table style="margin: 10px">
+        <table style="margin: 30px">
             <!-- 1줄 -->
-            <tr>
-                <th align="center" width="5%">번호</th>
-                <th align="center" width="5%">수영장 이름</th>
-                <th align="center" width="5%">수질 별점</th>
-                <th align="center" width="5%">시설 별점</th>
+            <tr class="textCenter">
+                <th width="2%">번호</th>
+                <th width="10%">제목</th>
+                <th width="5%">작성자</th>
             </tr>
-            <tr>
-                <tb>{{ }}</tb>
+            <tr v-for="board in boards" :key="board.bordId" class="textCenter">
+                <td>{{ board.bordId }}</td>
+                <td>{{ board.title }}</td>
+                <!-- <td>{{ board.content }}</td> -->
             </tr>
         </table>
     </div>
 </template>
 <script>
 export default {
-
+    props: {
+        boards: {
+            type: Array
+        }
+    }
 }
 </script>
-<style></style>
+<style>
+.textCenter {
+    text-align: center;
+}
+</style>

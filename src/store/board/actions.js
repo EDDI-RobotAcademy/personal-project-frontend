@@ -7,6 +7,12 @@ import {
 import axiosInst from "@/utility/axiosInst";
 
 export default {
+    requestBoardListToSpring({ commit }) {
+        axiosInst.get('board/list')
+        .then((res) => {
+            commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
+        })
+    },
     requestRegisterBoardToSpring({}, payload) {
         const { title, content} = payload;
 
