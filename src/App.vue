@@ -50,6 +50,8 @@
 import VueCookies from 'vue-cookies';
 import { mapActions } from 'vuex';
 
+const accountModule = 'accountModule'
+
 export default {
 
   name: "App",
@@ -58,14 +60,13 @@ export default {
     setInterval(this.checkUserToken, 5000);
   },
   methods: {
-    ...mapActions('accountModule', ['checkToken']),
+    ...mapActions(accountModule, ['checkToken']),
     checkUserToken() {
       this.userToken = VueCookies.get('userToken');
       console.log('User Token:', this.userToken);
-      this.$store.dispatch('checkToken', this.userToken)
+      this.checkToken(this.userToken);
     },
     data: () => ({
-      userToken: null,
       buttons: [
         {
           id: 1,

@@ -144,7 +144,6 @@ export default {
   },
   accountDelete({}, accountId) {
     const userToken = getCookie("userToken");
-
     return axiosInst
       .delete(`/account/${accountId}`, { data: { accountId, userToken } })
       .then((res) => {
@@ -155,10 +154,16 @@ export default {
         console.error("회원 정보 삭제 요청 중 오류 발생 : ", error);
       });
   },
+
   checkToken({}, payload) {
-    const { userToken } = payload;
-    return axiosInst.get("/account/checktoken", { userToken }).then((res) => {
-      console.log(res.data);
-    });
+    const userToken = payload;
+    return axiosInst
+      .post("/account/checktoken", { data: { userToken } })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("회원 이름 요청 중 오류 발생 : ", error);
+      });
   },
 };
