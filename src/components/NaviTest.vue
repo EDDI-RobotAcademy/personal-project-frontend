@@ -8,7 +8,7 @@
                 </button>
                 <button type="button" class="btn btn-custom2" @click="$router.push('/reviewListPage')">Reviews</button>
                 <button type="button" class="btn btn-custom2" @click="$router.push('/boardListPage')">Board</button>
-                <button type="button" class="btn btn-custom2" @click="$router.push('/boardRegisterPage')">등록테스트</button>
+                <!-- <button type="button" class="btn btn-custom2" @click="$router.push('/boardRegisterPage')">등록테스트</button> -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <!-- <li class="nav-item">

@@ -5,6 +5,13 @@
         <h4 style="text-align: center; margin: 30px; font-weight: bold; color: #83c1e7;;">Board</h4>
         <hr />
         <board-list-from :boards="boards" />
+        <hr />
+        <div style="text-align: center;">
+            <button type="button" class="btn btn-custom2" @click="$router.push('/boardRegisterPage')">
+                새 글쓰기
+            </button>
+        </div>
+
     </div>
 </template>
 <script>

@@ -20,7 +20,7 @@ export default {
         .post("/board/register", payload)
         .then((res) => {
             alert("게시물이 등록 되었습니다.");
-            router.push('/mapMarkerTestPage')
+            router.push('/boardListPage')
             return res;
         })
         .catch(()=>{
