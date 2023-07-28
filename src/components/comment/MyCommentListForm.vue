@@ -21,15 +21,14 @@
         </router-link>
           <div class="comments_content">
             <div class="comments_description_icon">
-              <div v-if="!isModify">
+              <div v-if="!isModify[index]">
                 <span class="comments_description">{{ comment.text }} <br></span>
               </div>
               <div v-else>
                 <input class="comments_description_modify" v-model="comment.text" />
               </div>
               <div class="button_icon">
-                <button class="mr-1" @click="modifyComment(comment)"
-                >
+                <button class="mr-1" @click="modifyComment(comment, index)">
                   <v-icon>mdi-note-edit-outline</v-icon>
                 </button>
                 <button @click="deleteComment(comment.commentId)">
@@ -65,7 +64,7 @@ export default {
         return {
             text: '',
             userToken: '',
-            isModify: false,
+            isModify: {},
             page: 1
         }
     },
@@ -77,9 +76,9 @@ export default {
             const page = this.page
             this.$emit("sendPage", page)
         },
-        modifyComment(comment) {
-            this.isModify = !this.isModify
-            if (!this.isModify) {
+        modifyComment(comment, index) {
+            this.$set(this.isModify, index, !this.isModify[index])
+            if (!this.isModify[index]) {
                 const { text, commentId } = comment
                 const userToken = this.userToken
                 this.requestCommentModifyToSpring({ text, userToken, commentId })
@@ -109,23 +108,6 @@ export default {
 }
 </script>
 <style scoped>
-.comments_description_icon {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.router-link-custom {
-    color: black;
-    text-decoration: none;
-}
-
-.router-link-custom:hover {
-    color: grey;
-    text-decoration: underline;
-}
-
 .comments_card {
     padding: 20px 0px;
     width: 1000px;
@@ -152,11 +134,35 @@ export default {
     padding: 20px 0px 10px 0px;
 }
 
+.router-link-custom {
+    color: black;
+    text-decoration: none;
+}
+
+.router-link-custom:hover {
+    color: grey;
+    text-decoration: underline;
+}
+
 .comments_title_container {
     font-size: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.comments_postdate {
+    color: grey;
+    font-size: 15px;
+}
+
+.comments_description_icon {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
 }
 
 .comments_description {
@@ -169,33 +175,16 @@ export default {
 
 .comments_description_modify:focus {
     outline: none;
+    width: 850px;
 }
 
 .comments_description_modify {
     color: red;
 }
 
-.comments_description_icon {
-    margin: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.comments_description {
-    font-size: 15px;
-    color: #505050;
-    flex: 1;
-}
-
 .button_icon {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.comments_postdate {
-    color: grey;
-    font-size: 15px;
 }
 </style>
