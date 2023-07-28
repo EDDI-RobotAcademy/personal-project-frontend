@@ -37,14 +37,44 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form> -->
             
-                    <button type="button" class="btn btn-custom2" @click="$router.push('/loginPage')">Login</button>
+                    <button type="button" v-if="isLogin" class="btn btn-custom2" @click="loginBtn">Login</button>
+                    <button type="button" v-if="isLogout" class="btn btn-custom2" @click="logoutBtn">Logout</button>
                 </div>
             </div>
         </nav>
     </div>
 </template>
 <script>
+import router from "@/router";
 export default {
+    data() {
+        return {
+            isLogin: true,
+            isLogout: false,
+        }
+    },
+    created() {
+        //mounted() {
+        // UUID가 존재하면 = 로그인 되어있으면
+        if (window.localStorage.getItem('UUID')) {
+            this.isLogin = false;
+            this.isLogout = true;
+        } else {
+            this.isLogin = true;
+            this.isLogout = false;
+        }
+    },
+    methods: {
+        loginBtn() {
+            router.push('/loginPage')
+                .catch(() => { })
+        },
+        logoutBtn() {
+            window.localStorage.removeItem('UUID');
+            router.push('/mapMarkerTestPage')
+                .catch(() => { })
+        }
+    }
 }
 </script>
 <style>
