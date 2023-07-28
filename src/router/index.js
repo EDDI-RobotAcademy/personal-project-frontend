@@ -6,6 +6,7 @@ import defaultSetRoutes from './defaultRouterSet'
 import memberBoardRoutes from './board'
 import cafeRoutes from './cafe'
 import oauthRoutes from './oauth'
+import commentRoutes from './comment'
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,7 +14,8 @@ const routes = [
   ...defaultSetRoutes,
   ...memberBoardRoutes,
   ...cafeRoutes,
-  ...oauthRoutes
+  ...oauthRoutes,
+  ...commentRoutes
 
 ]
 

@@ -59,6 +59,9 @@ export default {
         },
         deleteComment(commentId) {
             this.requestDeleteCommentToSpring(commentId)
+                .then(() =>
+                    location.reload()
+                )
         }
     },
     created() {
@@ -141,4 +144,5 @@ export default {
     display: block;
     font-weight: bold;
     padding-left: 30px;
-}</style>
+}
+</style>
