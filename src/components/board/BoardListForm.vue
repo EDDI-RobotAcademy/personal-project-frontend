@@ -7,8 +7,8 @@
                 <th width="10%">제목</th>
                 <th width="5%">작성자</th>
             </tr>
-            <tr v-for="board in boards" :key="board.bordId" class="textCenter">
-                <td>{{ board.bordId }}</td>
+            <tr v-for="board in boards" :key="board.boardId" class="textCenter">
+                <td>{{ board.boardId }}</td>
                 <td>{{ board.title }}</td>
                 <!-- <td>{{ board.content }}</td> -->
             </tr>

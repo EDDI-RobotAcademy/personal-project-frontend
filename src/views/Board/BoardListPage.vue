@@ -4,7 +4,7 @@
         <div style="padding-top: 90px;"></div>
         <h4 style="text-align: center; margin: 30px; font-weight: bold; color: #83c1e7;;">Board</h4>
         <hr />
-        <board-list-from :boards="boards" />
+        <board-list-form :boards="boards" />
         <hr />
         <div style="text-align: center;">
             <button type="button" class="btn btn-custom2" @click="$router.push('/boardRegisterPage')">
@@ -20,11 +20,11 @@ import { mapActions, mapState } from 'vuex';
 const boardModule = 'boardModule'
 
 import NaviTest from "@/components/NaviTest.vue"
-import BoardListFrom from "@/components/board/BoardListFrom.vue";
+import BoardListForm from "@/components/board/BoardListForm.vue";
 export default {
     components: {
         NaviTest,
-        BoardListFrom
+        BoardListForm
     },
     computed: {
         ...mapState(boardModule, ['boards']),
