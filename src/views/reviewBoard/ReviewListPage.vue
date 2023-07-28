@@ -5,6 +5,7 @@
         <h4 style="text-align: center; margin: 30px; font-weight: bold; color: #83c1e7;;">Reviews</h4>
         <hr />
         <review-list-form :reviewBoards="reviewBoards" />
+        <hr />
     </div>
 </template>
 <script>
