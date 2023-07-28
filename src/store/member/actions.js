@@ -20,6 +20,22 @@ export default {
                 alert("문제 발생!")
             })
     },
+    requestSpringToCheckEmailDuplication({ }, payload) {
+        const { email } = payload
+        return axiosInst.axiosInst.get(`/member/check-email/${email}`)
+            .then((res) => {
+                if (res.data) {
+                    alert('사용 가능한 이메일입니다!')
+                    return true
+                } else {
+                    alert('중복된 이메일입니다!')
+                    return false
+                }
+            })
+            .catch((res) => {
+                alert("문제 발생!")
+            })
+    },
     requestRegisterMemberToSpring({ }, payload) {
 
         const { email, nickname, password, roleType } = payload

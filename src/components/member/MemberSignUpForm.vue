@@ -21,6 +21,7 @@
                                         닉네임 <br/>중복 확인
                                     </v-btn>
                                     </div>
+                                    <div class="d-flex">
                                     <v-text-field
                                         v-model="email"
                                         label="email"
@@ -28,6 +29,13 @@
                                         :disabled="false"
                                         required>
                                     </v-text-field>
+                                    <v-btn text large outlined style="font-size: 12px"
+                                            class="mt-3 ml-5" color="#84d9b3"
+                                            @click="checkDuplicateEmail"
+                                            :disabled="false">
+                                        이메일 <br/>중복 확인
+                                    </v-btn>
+                                    </div>
                                     <v-text-field
                                         v-model="password"
                                         label="password"
@@ -55,13 +63,14 @@ import { mapActions } from 'vuex'
 const memberModule = 'memberModule'
 
 export default {
-    data () {
+    data() {
         return {
             email: "",
             nickname: "",
             password: "",
             roleType: "NORMAL",
             nicknamePass: false,
+            emailPass: false,
             email_rule: [
                 v => !!v || '이메일을 입력해주세요!',
                 v => {
@@ -73,8 +82,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions('memberModule', ['requestSpringToCheckNicknameDuplication']),
-        onSubmit () {
+        ...mapActions('memberModule', ['requestSpringToCheckNicknameDuplication', 'requestSpringToCheckEmailDuplication']),
+        onSubmit() {
             if (this.$refs.form.validate()) {
                 const { email, nickname, password, roleType } = this
                 this.$emit("submit", { email, nickname, password, roleType })
@@ -86,13 +95,17 @@ export default {
                 alert("닉네임 중복 확인을 해주세요!")
             }
         },
-        async checkDuplicateNickname () {
-                const { nickname } = this
-                this.nicknamePass = await this.requestSpringToCheckNicknameDuplication({ nickname })
-            }
+        async checkDuplicateNickname() {
+            const { nickname } = this
+            this.nicknamePass = await this.requestSpringToCheckNicknameDuplication({ nickname })
         },
-        
-    }
+        checkDuplicateEmail() {
+            const { email } = this
+            this.emailPass = this.requestSpringToCheckEmailDuplication({ email })
+        }
+    },
+
+}
 
 
 
