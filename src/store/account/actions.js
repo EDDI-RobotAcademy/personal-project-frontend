@@ -158,7 +158,7 @@ export default {
   checkToken({}, payload) {
     const userToken = payload;
     return axiosInst
-      .post("/account/checktoken", { data: { userToken } })
+      .post("/account/checktoken", { userToken })
       .then((res) => {
         console.log(res.data);
       })

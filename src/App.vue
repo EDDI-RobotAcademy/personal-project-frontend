@@ -30,6 +30,9 @@
         </div>
       </div>
       <v-spacer></v-spacer>
+
+      <span v-if="accountName">{{ accountName }} 님 안녕하세요</span>
+
       <v-btn to="/account-regist-page" text>
         SIGNUP
         <v-icon>person_add_alt</v-icon>
@@ -64,42 +67,48 @@ export default {
     checkUserToken() {
       this.userToken = VueCookies.get('userToken');
       console.log('User Token:', this.userToken);
-      this.checkToken(this.userToken);
+      this.checkToken(this.userToken).then((res) => {
+        console.log(res)
+        this.accountName = res.data.accountName;
+      }).catch((error) => {
+        console.error("회원 이름 요청 중 오류 발생 : ", error);
+      });
     },
-    data: () => ({
-      buttons: [
-        {
-          id: 1,
-          text: "NOTICE",
-          link: "/notice-page",
-          images: [
-            { id: 1, src: "noticelogo.png", link: "/notice-page", },
-            { id: 2, src: "waytocomelogo.png", link: "/way-to-come-page", },
-          ],
-        },
-        {
-          id: 2,
-          text: "SHOP",
-          link: "/",
-          images: [
-            { id: 4, src: "suitlogo.png", link: "/", },
-            { id: 5, src: "proteinlogo.png", link: "/", },
-            { id: 6, src: "medicinelogo.png", link: "/account-list-page", },
-          ],
-        },
-        {
-          id: 3,
-          text: "COMMUNITY",
-          link: "/community-page"
-        },
-        {
-          id: 4,
-          text: "MYPAGE",
-          link: "/check-password",
-        },
-      ],
-    }),
-  }
+  },
+  data: () => ({
+    accountName: '',
+    buttons: [
+      {
+        id: 1,
+        text: "NOTICE",
+        link: "/notice-page",
+        images: [
+          { id: 1, src: "noticelogo.png", link: "/notice-page", },
+          { id: 2, src: "waytocomelogo.png", link: "/way-to-come-page", },
+        ],
+      },
+      {
+        id: 2,
+        text: "SHOP",
+        link: "/",
+        images: [
+          { id: 4, src: "suitlogo.png", link: "/", },
+          { id: 5, src: "proteinlogo.png", link: "/", },
+          { id: 6, src: "medicinelogo.png", link: "/account-list-page", },
+        ],
+      },
+      {
+        id: 3,
+        text: "COMMUNITY",
+        link: "/community-page"
+      },
+      {
+        id: 4,
+        text: "MYPAGE",
+        link: "/check-password",
+      },
+    ],
+  }),
 }
 </script>
 
