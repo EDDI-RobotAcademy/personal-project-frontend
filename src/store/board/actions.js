@@ -14,7 +14,7 @@ export default {
         })
     },
     requestRegisterBoardToSpring({}, payload) {
-        const { title, content} = payload;
+        const { title, content, userEmail} = payload;
 
         return axiosInst
         .post("/board/register", payload)

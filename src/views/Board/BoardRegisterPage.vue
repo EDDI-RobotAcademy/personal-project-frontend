@@ -23,17 +23,25 @@ import { mapActions } from 'vuex';
 const boardModule = 'boardModule'
 
 export default {
+    // data() {
+    //     return {
+    //         userEmail: ''
+    //     }
+    // },
     components: {
         NaviTest,
         BoardRegisterForm
     },
+    // created() {
+    //     this.userEmail = window.localStorage.getItem("EMAIL");
+    // },
     methods: {
         ...mapActions(
             boardModule, ['requestRegisterBoardToSpring']
         ),
         async onSubmit(payload) {
-            const { title, content } = payload
-            await this.requestRegisterBoardToSpring({ title, content })
+            const { title, content, userEmail } = payload
+            await this.requestRegisterBoardToSpring({ title, content, userEmail })
         }
     }
 

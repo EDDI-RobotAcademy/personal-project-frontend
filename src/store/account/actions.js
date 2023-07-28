@@ -37,7 +37,7 @@ export default {
                 alert("로그인 성공")
                 // alert(res.data.userToken)
                 window.localStorage.setItem("UUID", res.data.userToken);
-                window.localStorage.setItem("EMIAL", res.data.email);
+                window.localStorage.setItem("EMAIL", res.data.email);
             }
             
         })

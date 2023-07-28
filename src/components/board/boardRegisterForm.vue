@@ -24,15 +24,19 @@ export default {
     data() {
         return {
             title: '',
-            content: ''
+            content: '',
+            userEmail: ''
         }
     },
     methods: {
         onSubmit() {
-            const { title, content } = this
-            this.$emit('submit', { title, content })
+            const { title, content, userEmail } = this
+            this.$emit('submit', { title, content, userEmail })
         }
-    }
+    },
+    created() {
+        this.userEmail = window.localStorage.getItem("EMAIL");
+    },
 }
 </script>
 <style></style>

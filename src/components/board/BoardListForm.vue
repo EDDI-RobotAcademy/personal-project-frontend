@@ -10,7 +10,7 @@
             <tr v-for="board in boards" :key="board.boardId" class="textCenter">
                 <td>{{ board.boardId }}</td>
                 <td>{{ board.title }}</td>
-                <!-- <td>{{ board.content }}</td> -->
+                <td>{{ board.userEmail }}</td>
             </tr>
         </table>
     </div>
