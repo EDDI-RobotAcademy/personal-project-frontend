@@ -71,6 +71,7 @@ export default {
         },
         logoutBtn() {
             window.localStorage.removeItem('UUID');
+            window.localStorage.removeItem('EMAIL');
             router.push('/mapMarkerTestPage')
                 .catch(() => { })
         }
