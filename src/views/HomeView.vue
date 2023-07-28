@@ -10,7 +10,7 @@
       </v-img>
     </v-row>
     <v-col>
-      <div class="BodyBox">
+      <!-- <div class="BodyBox">
         <section class="card_section">
           <h1 class="card_section_title">#가성비</h1>
           <VueperSlides class="no-shadow" :visible-slides="5" slide-multiple :gap="2" :slide-ratio="1 / 5"
@@ -24,15 +24,14 @@
             </VueperSlide>
           </VueperSlides>
         </section>
-      </div>
+      </div> -->
 
       <div class="BodyBox">
         <section class="card_section">
           <h1 class="card_section_title">#아인슈페너</h1>
           <VueperSlides class="no-shadow" :visible-slides="5" slide-multiple :gap="2" :slide-ratio="1 / 5"
             :dragging-distance="200" :breakpoints="{ 800: { visibleSlides: 2, slideMultiple: 2 } }">
-            <VueperSlide v-for="board in boards" :key="board.boardId"
-              :image="getImageUrl(board.filePathList[0]?.imagePath)">
+            <VueperSlide v-for="board in boards" :key="board.boardId" :image="getImageUrl(board)">
               <template #content>
                 <div class="slide_content_text">
                   <h4><button @click="goToBoardDetails(board.boardId)">{{ board.cafeTitle }}</button></h4>
@@ -65,38 +64,6 @@ export default {
       awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
       awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
       awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
-      slides: [
-        {
-          title: 'El Teide Volcano, Spain',
-          content: 'Photo by Max Rive',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-        {
-          title: 'El Teide Volcano, Spain',
-          content: 'Photo by Max Rive',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-        {
-          title: 'El Teide Volcano, Spain',
-          content: 'Photo by Max Rive',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-        {
-          title: 'El Teide Volcano, Spain',
-          content: '사진이야',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-        {
-          title: 'El Teide Volcano, Spain',
-          content: '오예',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-        {
-          title: 'El Teide Volcano, Spain',
-          content: '조여울',
-          image: require('@/assets/cafe/cafe1.jpg')
-        },
-      ]
     }
   },
   methods: {
@@ -116,13 +83,17 @@ export default {
     ...mapActions(
       boardModule, ['requestBoardListToSpring']
     ),
-    getImageUrl(filePath) {
-      if (filePath == undefined) {
-        return require('@/assets/icon/default.png')
+    getImageUrl(board) {
+      if (!board || !board.filePathList || board.filePathList.length === 0) {
+        return require('@/assets/icon/default.png');
       }
-      else {
-        return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${filePath}`
+      const filePath = board.filePathList[0];
+      if (!filePath || !filePath.imagePath) {
+        return require('@/assets/icon/default.png');
       }
+      return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${filePath.imagePath}`;
+
+
     },
     goToBoardDetails(boardId) {
       this.$router.push(`/member-board-read-page/${boardId}`);
@@ -157,19 +128,6 @@ export default {
 .card_section_title {
   text-align: left;
   padding: 10px;
-}
-
-.a {
-  height: 300px;
-  width: 1100px;
-  background-color: #ffffff;
-  border-top: black;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  margin: 0px;
-  padding: 0;
 }
 
 .BodyBox {
