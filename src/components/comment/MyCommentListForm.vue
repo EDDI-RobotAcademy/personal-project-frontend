@@ -162,24 +162,20 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
 }
 
 .comments_description {
     font-size: 17px;
     color: #505050;
     display: block;
-    /* font-weight: bold; */
+    width: 850px;
     padding-left: 30px;
 }
 
-.comments_description_modify:focus {
-    outline: none;
-    width: 850px;
-}
-
 .comments_description_modify {
-    color: red;
+    height: 50px;
+    width: 850px;
+    background-color: #dfdfdf;
 }
 
 .button_icon {
