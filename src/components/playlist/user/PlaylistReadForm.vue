@@ -64,11 +64,18 @@
                             </div>
                             <div class="progress-container">
                                 <input id="progress-bar" type="range" min="0" max="100" value="0" step="0.1"
-                                    @change="seekVideo" @input="seekVideo" />
+                                    @change="seekVideo" @input="seekVideo" style="margin-left: 200px" />
                                 <div class="duration">
                                     <span>{{ currentTimeText }}</span>
                                     <span> / </span>
                                     <span>{{ totalTimeText }}</span>
+                                </div>
+                                <div class="volume-icon" @mousedown="startRotation" @mousemove="rotateIcon"
+                                    @mouseup="stopRotation"
+                                    style="display: flex; margin-left: 50px; justify-content: space-between">
+                                    <img src="@/assets/volume.png" draggable="false" width="50" hegiht="50" />
+                                    <div style="margin: 15px 50px 0 60px; position: absolute; align-items: center;">
+                                        Volume = {{ this.volume }}</div>
                                 </div>
                             </div>
                             <div class="controls-container">
@@ -121,6 +128,11 @@ export default {
             isDataLoaded: false,
 
             showTooltip: {},
+
+            isRotating: false,
+            initialAngle: 0,
+            currentAngle: 0,
+            volume: 0,
         }
     },
     props: {
@@ -297,6 +309,60 @@ export default {
         },
         goYoutube(index) {
             window.open(this.playlist.songList[index].link)
+        },
+
+        startRotation(event) {
+            this.isRotating = true;
+            const rect = this.$el.querySelector(".volume-icon").getBoundingClientRect();
+            const centerX = rect.x + rect.width / 2;
+            const centerY = rect.y + rect.height / 2;
+            this.initialAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX) * (180 / Math.PI);
+        },
+        rotateIcon(event) {
+            if (!this.isRotating) return;
+
+            const rect = this.$el.querySelector(".volume-icon").getBoundingClientRect();
+            const centerX = rect.x + rect.width / 2;
+            const centerY = rect.y + rect.height / 2;
+            const angle = Math.atan2(event.clientY - centerY, event.clientX - centerX) * (180 / Math.PI);
+            let delta = 0;
+
+            if (event.clientX > centerX) {
+                delta = -(this.initialAngle - angle);
+            }
+            else {
+                delta = angle - this.initialAngle + (angle < this.initialAngle ? 360 : 0);
+            }
+
+            let rotation = this.currentAngle + delta;
+            rotation = (rotation + 360) % 360;
+            this.volume = Math.max(0, Math.min(100, Math.round(rotation / 360 * 100)));
+            console.log(this.volume)
+
+            this.$el.querySelector(".volume-icon img").style.transform = `rotate(${rotation}deg)`;
+
+            const deltaVolume = Math.abs(this.volume - this.ytPlayer.getVolume())
+            if (deltaVolume >= 1) {
+                this.ytPlayer.setVolume(this.volume);
+            }
+        },
+        stopRotation(event) {
+            if (!this.isRotating) return;
+
+            this.isRotating = false;
+            const rect = this.$el.querySelector(".volume-icon").getBoundingClientRect();
+            const centerX = rect.x + rect.width / 2;
+            const centerY = rect.y + rect.height / 2;
+            const angle = Math.atan2(event.clientY - centerY, event.clientX - centerX) * (180 / Math.PI);
+            let delta = 0;
+
+            if (event.clientX > centerX) {
+                delta = -(this.initialAngle - angle);
+            } else {
+                delta = this.initialAngle - angle;
+            }
+
+            this.currentAngle = (this.currentAngle + delta + 360) % 360;
         }
     },
     watch: {
@@ -407,6 +473,7 @@ body {
 .controls-container {
     display: flex;
     justify-content: center;
+    text-align: right;
 }
 
 .progress-container {
@@ -468,5 +535,9 @@ body {
 .right-align {
     text-align: right;
     padding-right: 220px;
+}
+
+.volume-icon {
+    align-items: right;
 }
 </style>
