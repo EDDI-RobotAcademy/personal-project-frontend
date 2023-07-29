@@ -2,21 +2,21 @@
     <div>
         <v-card class="comments_card">
         <ul class="comments_ul">
-        <li class="comments_li" v-for="comment in board.commentList">
+        <li class="comments_li" v-for="(comment, index) in board.commentList">
             <p class="comments_name">
                 <v-img class="logoImg" src="../../assets/icon/no_logo.png" />
               <span class="comments_nickname">{{ comment.member.nickname }} <br></span>
             <span class="comments_postdate">{{ comment.createdDate }} <br></span>
             </p>
                 <div class="comments_content"> 
-                    <div v-if="!isModify">
+                    <div v-if="!isModify[index]">
                     <span class="comments_description">{{ comment.text }} <br></span>
                     </div>
                     <div v-else="!isModify">
                     <input class="comments_description_modify" v-model="comment.text"/>
                     </div>
                     <div class="button_icon">
-                    <button class="mr-1" @click="modifyComment(comment)"><v-icon>mdi-note-edit-outline</v-icon></button>
+                    <button class="mr-1" @click="checkMember(comment,index)"><v-icon>mdi-note-edit-outline</v-icon></button>
                     <button @click="deleteComment(comment.commentId)"><v-icon>mdi-alpha-x-circle-outline</v-icon></button>
                 </div>
             </div>
@@ -27,6 +27,7 @@
 </template>
 <script>
 const commentModule = 'commentModule'
+const memberModule = 'memberModule'
 import { mapActions } from 'vuex';
 export default {
     props: {
@@ -39,16 +40,28 @@ export default {
         return {
             text: '',
             userToken: '',
-            isModify: false
+            isModify: {}
         }
     },
     methods: {
         ...mapActions(
             commentModule, ['requestCommentModifyToSpring', 'requestDeleteCommentToSpring']
         ),
-        modifyComment(comment) {
-            this.isModify = !this.isModify
-            if (!this.isModify) {
+        ...mapActions(
+            memberModule, ['requestSpringCheckMember']
+        ),
+        checkMember(comment, index) {
+            this.requestSpringCheckMember(comment.member.id)
+                .then((res) => {
+                    if (res) {
+                        this.modifyComment(comment, index)
+                    }
+                })
+        },
+
+        modifyComment(comment, index) {
+            this.$set(this.isModify, index, !this.isModify[index])
+            if (!this.isModify[index]) {
                 const { text, commentId } = comment
                 const userToken = this.userToken
                 this.requestCommentModifyToSpring({ text, userToken, commentId })
@@ -133,16 +146,9 @@ export default {
     margin-left: auto;
 }
 
-.comments_description_modify:focus {
-    outline: none;
-}
-
 .comments_description_modify {
-    width: 550px;
-    font-size: 15px;
-    color: #505050;
-    display: block;
-    font-weight: bold;
-    padding-left: 30px;
+    height: 50px;
+    width: 850px;
+    background-color: #dfdfdf;
 }
 </style>
