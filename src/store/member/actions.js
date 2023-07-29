@@ -66,6 +66,13 @@ export default {
                 alert('문제 발생!')
             })
     },
+    requestSpringCheckMember({ }, memberId) {
+        const userToken = localStorage.getItem("userToken")
+        return axiosInst.axiosInst.get(`/member/check/${memberId}`, { headers: { Authorization: userToken } })
+            .then((res) => {
+                return res.data
+            })
+    },
     requestSpringToAddresskakaoOauthLogin() {
         axiosInst.axiosInst.get('kakao/oauth')
             .then((res) => {

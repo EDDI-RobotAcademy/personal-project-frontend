@@ -29,14 +29,14 @@ import CommentReadForm from '../../components/comment/CommentReadForm.vue'
 
 const boardModule = 'boardModule'
 const commentModule = 'commentModule'
-
+const memberModule = 'memberModule'
 export default {
-    data(){
-        return{
-        awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
-        awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
-        awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
-        userToken: ''
+    data() {
+        return {
+            awsBucketName: process.env.VUE_APP_AWS_BUCKET_NAME,
+            awsBucketRegion: process.env.VUE_APP_AWS_BUCKET_REGION,
+            awsIdentityPoolId: process.env.VUE_APP_AWS_IDENTITY_POOLID,
+            userToken: ''
         }
     },
     name: 'MemberBoardReadPage',
@@ -48,10 +48,10 @@ export default {
     props: {
         boardId: {
             type: String,
-            required: true, 
-    }
+            required: true,
+        }
     },
-    mounted(){
+    mounted() {
         this.userToken = localStorage.getItem("userToken")
     },
     computed: {
@@ -64,30 +64,33 @@ export default {
         ...mapActions(
             commentModule, ['requestCreateCommentToSpring']
         ),
-        async onDelete () {
-            if(this.userToken){
+        ...mapActions(
+            memberModule, ['requestSpringCheckMember']
+        ),
+        async onDelete() {
+            if (this.userToken) {
                 await this.s3fileDelete()
                 await this.requestDeleteBoardToSpring(this.boardId)
                 await this.$router.push('/member-board-list-page')
-                
+
             }
         },
-        s3fileDelete(){
-                this.awsS3Config()
-                const board = this.board
-                console.log(board)
-                for(let i=0 ; i< this.board.filePathList.length; i++ ){
-                    console.log("aws3에서 사진 지우기", this.board.filePathList[i].imagePath)
+        s3fileDelete() {
+            this.awsS3Config()
+            const board = this.board
+            console.log(board)
+            for (let i = 0; i < this.board.filePathList.length; i++) {
+                console.log("aws3에서 사진 지우기", this.board.filePathList[i].imagePath)
                 this.s3.deleteObject({
                     Key: this.board.filePathList[i].imagePath
                 }, (err, data) => {
-                    if(err){
+                    if (err) {
                         return alert('AWS 버킷 데이터 삭제에 문제가 발생했습니다.: ' + err.message)
                     }
                 })
-                }
+            }
         },
-        awsS3Config(){
+        awsS3Config() {
             AWS.config.update({
                 region: this.awsBucketRegion,
                 credentials: new AWS.CognitoIdentityCredentials({
@@ -102,34 +105,37 @@ export default {
                 }
             })
         },
-        modifyBoard(){
-            if(this.userToken == this.board.member.userToken){
-                this.$router.push({ name: 'MemberBoardModifyPage', params: { boardId: this.boardId }} )
+        async modifyBoard() {
+            const userPass = await this.requestSpringCheckMember(this.board.member.id)
+            if (userPass) {
+                this.$router.push({ name: 'MemberBoardModifyPage', params: { boardId: this.boardId } })
             }
         },
-        registerComment(payload){
+        registerComment(payload) {
             payload.boardId = this.boardId
-        this.requestCreateCommentToSpring (payload)
-    }
+            this.requestCreateCommentToSpring(payload)
+        }
     },
-    async created () {
+    async created() {
         await this.requestBoardToSpring(this.boardId)
+        console.log(this.board)
+
     },
 }
 </script>
 <style scoped>
 .btn_router_div {
-  justify-content: center;
-  display: flex;
+    justify-content: center;
+    display: flex;
 }
 
 .btn_container {
-  width: 1000px;
-  display: flex;
-  justify-content: flex-end;
+    width: 1000px;
+    display: flex;
+    justify-content: flex-end;
 }
 
-.btn_container > * {
-  margin-left: 8px;
+.btn_container>* {
+    margin-left: 8px;
 }
 </style>
