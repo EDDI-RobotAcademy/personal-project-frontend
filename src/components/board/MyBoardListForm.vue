@@ -25,12 +25,8 @@
                 <td align="center">
                     {{ board.boardId }}
                 </td>
-                <td align="center">
-                    <router-link :to="{ 
-                        name: 'MemberBoardReadPage',  
-                        params: { boardId: board.boardId.toString() }}">
-                            {{ board.title }}
-                    </router-link>
+                <td align="center" @click="readBoard(board.boardId)">
+                    {{ board.title }}
                 </td>
                 <td align="center">
                     {{ board.nickname }}
@@ -68,6 +64,12 @@ export default {
         sendPage() {
             const page = this.page
             this.$emit("sendPage", page)
+        },
+        readBoard(boardId) {
+            this.$router.push({
+                name: 'MemberBoardReadPage',
+                params: { boardId: boardId.toString() }
+            })
         }
     },
     computed: {
