@@ -20,7 +20,8 @@
             <VueperSlide v-for="board in boards" :key="board.boardId" :image="getImageUrl(board)">
               <template #content>
                 <div class="slide_content_text">
-                  <h4><button @click="goToBoardDetails(board.boardId)">{{ board.cafeTitle }}</button></h4>
+                  <h4 style="color: white;"><button @click="goToBoardDetails(board.boardId)">{{ board.cafeTitle }}</button>
+                  </h4>
                 </div>
               </template>
             </VueperSlide>
