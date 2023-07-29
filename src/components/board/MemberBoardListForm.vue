@@ -22,12 +22,10 @@
                 <td align="center">
                     {{ board.boardId }}
                 </td>
-                <td align="center">
-                    <router-link :to="{ 
-                        name: 'MemberBoardReadPage',  
-                        params: { boardId: board.boardId.toString() }}">
+                <td align="center" @click="readBoard(board.boardId)">
+                    
                             {{ board.title }}
-                    </router-link>
+                    
                 </td>
                 <td align="center">
                     {{ board.member?.nickname }}
@@ -62,6 +60,20 @@ export default {
         sendPage() {
             const page = this.page
             this.$emit("sendPage", page)
+        },
+        readBoard(boardId) {
+            const userToken = localStorage.getItem("userToken")
+            console.log('userToken : ' + userToken)
+            if (userToken) {
+                this.$router.push({
+                    name: 'MemberBoardReadPage',
+                    params: { boardId: boardId.toString() }
+                })
+                console.log(boardId)
+            }
+            else {
+                alert("로그인 후 이용하세요")
+            }
         }
     },
     watch: {
