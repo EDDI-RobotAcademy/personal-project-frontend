@@ -154,6 +154,7 @@ export default {
         goBack() {
             this.$router.go(-1)
         },
+
         ...mapActions(playlistModule, ['requestIncreaseLikeCountToSpring', 'requestDecreaseLikeCountToSpring', 'requestIsPlaylistLikedToSpring']),
 
         async doLike(playlistId) {
@@ -240,7 +241,7 @@ export default {
             this.$refs.ytPlayer.src = `https://www.youtube.com/embed/${this.videoIds[currentIndex]}?autoplay=1&mute=0&enablejsapi=1`;
             this.isPlaying = true;
         },
-
+        // 다음 곡 , 이전 곡
         nextVideo() {
             this.currentIndex++;
             if (this.currentIndex >= this.videoIds.length) {
@@ -256,7 +257,7 @@ export default {
             }
             this.updatePlayerSrc(this.currentIndex);
         },
-
+        // 재생, 일시정지
         togglePlay() {
             if (!this.ytPlayer) return;
 
@@ -267,7 +268,7 @@ export default {
             }
             this.isPlaying = !this.isPlaying;
         },
-
+        // 재생 상태바
         updateProgressBar() {
             if (!this.ytPlayer) return;
             if (this.ytPlayer.getPlayerState() == 0) {
@@ -298,7 +299,7 @@ export default {
             const seconds = Math.floor(time - minutes * 60);
             return ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
         },
-
+        // 가사 툴팁
         toggleTooltip(index) {
             console.log(index)
             this.$set(this.showTooltip, index, !this.showTooltip[index]);
@@ -307,10 +308,11 @@ export default {
         closeTooltip(index) {
             this.$set(this.showTooltip, index, false);
         },
+
         goYoutube(index) {
             window.open(this.playlist.songList[index].link)
         },
-
+        // 볼륨 조절
         startRotation(event) {
             this.isRotating = true;
             const rect = this.$el.querySelector(".volume-icon").getBoundingClientRect();
@@ -318,6 +320,7 @@ export default {
             const centerY = rect.y + rect.height / 2;
             this.initialAngle = Math.atan2(event.clientY - centerY, event.clientX - centerX) * (180 / Math.PI);
         },
+
         rotateIcon(event) {
             if (!this.isRotating) return;
 
@@ -346,6 +349,7 @@ export default {
                 this.ytPlayer.setVolume(this.volume);
             }
         },
+
         stopRotation(event) {
             if (!this.isRotating) return;
 
@@ -363,7 +367,7 @@ export default {
             }
 
             this.currentAngle = (this.currentAngle + delta + 360) % 360;
-        }
+        },
     },
     watch: {
         playlist: {

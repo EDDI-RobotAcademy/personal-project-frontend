@@ -61,7 +61,11 @@ export default {
                     alert("로그인 실패!");
                     return false
                 }
+            })
+            .catch(() => {
+                alert("이메일 혹은 비밀번호를 다시 한번 확인해주세요")
             });
+
     },
     // 로그아웃 요청
     requestLogoutToSpring({ commit }) {

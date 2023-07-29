@@ -27,7 +27,9 @@ export default {
             }
             this.modifyCheckPass = await this.requestAccountModifyToSpring(payload)
             if (this.modifyCheckPass) {
-                localStorage.setItem("nickname", payload.nickname)
+                if (payload.nickname != null) {
+                    localStorage.setItem("nickname", payload.nickname)
+                }
                 this.$router.push({ name: 'AccountMyPage' })
             }
         },
