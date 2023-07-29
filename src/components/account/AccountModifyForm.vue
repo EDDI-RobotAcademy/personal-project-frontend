@@ -22,7 +22,7 @@
                                     닉네임 <br> 중복 확인
                                 </v-btn>
                             </div>
-                            <v-text-field v-model="password" label="비밀번호" :disabled="false" type="password"
+                            <v-text-field v-model="password" label="바꿀 비밀번호" :disabled="false" type="password"
                                 :rules="password_rule"></v-text-field>
                             <v-text-field v-model="realPassword" label="비밀번호 확인" :disabled="false" type="password"
                                 :rules="password_confirm_rule"></v-text-field>

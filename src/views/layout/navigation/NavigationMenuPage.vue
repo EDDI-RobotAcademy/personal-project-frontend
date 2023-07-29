@@ -73,9 +73,6 @@ export default {
       await this.requestLogoutToSpring()
       localStorage.removeItem('isLogin')
       await this.$router.push({ name: 'home' })
-        .catch(
-          location.reload()
-        )
     },
   },
 };
