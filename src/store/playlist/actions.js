@@ -32,7 +32,6 @@ export default {
         const { title } = payload;
         return axiosInst.springAxiosInst.post('/playlist/register', { title })
             .then((res) => {
-                alert('등록 성공!')
                 return res.data
             })
             .catch(() => {
@@ -47,7 +46,6 @@ export default {
 
         return axiosInst.springAxiosInst.post('/playlist/modify', requestData)
             .then((res) => {
-                alert('수정 성공!')
             })
             .catch(() => {
                 alert('문제 발생!')
@@ -65,7 +63,6 @@ export default {
     requestDeletePlaylistToSpring({ }, payload) {
         return axiosInst.springAxiosInst.delete(`/playlist/${payload}`)
             .then((res) => {
-                alert('삭제 성공!')
                 return true
             })
             .catch(() => {

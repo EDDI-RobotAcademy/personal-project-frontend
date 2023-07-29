@@ -52,7 +52,6 @@ export default {
         return axiosInst.springAxiosInst.post("/account/login", { email, password })
             .then((res) => {
                 if (res.data != null) {
-                    alert("로그인 성공!");
                     localStorage.setItem("nickname", res.data)
                     localStorage.setItem("isLogin", true)
                     commit(LOGIN_COMPLETE, true)
@@ -72,7 +71,6 @@ export default {
         return axiosInst.springAxiosInst.post("/account/logout")
             .then((res) => {
                 commit(LOGIN_COMPLETE, false)
-                alert("로그아웃")
             })
             .catch(() => {
                 alert("실패")
@@ -97,7 +95,6 @@ export default {
         return axiosInst.springAxiosInst.post("/account/modify", { nickname, password })
             .then((res) => {
                 if (res.data) {
-                    alert("수정 성공!");
                     return true
                 } else {
                     alert("수정 실패!");
