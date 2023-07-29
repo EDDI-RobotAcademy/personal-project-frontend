@@ -143,6 +143,7 @@ export default {
         return {
             placeName2: '',
             content: '',
+            userEmail: '',
             starRating1: '',
             starRating2: ''
         }
@@ -150,9 +151,12 @@ export default {
     methods: {
         onSubmit() {
             // this.placeName2 = this.placeName;
-            const { content, placeName, starRating1, starRating2 } = this
-            this.$emit('submit', { content, placeName, starRating1, starRating2 })
+            const { content, placeName, userEmail, starRating1, starRating2 } = this
+            this.$emit('submit', { content, placeName, userEmail, starRating1, starRating2 })
         }
+    },
+    created() {
+        this.userEmail = window.localStorage.getItem("EMAIL");
     },
 }
 </script>

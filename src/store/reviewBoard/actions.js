@@ -14,7 +14,7 @@ export default {
         })
     },
     requestRegisterReviewBoardToSpring({}, payload) {
-        const { content, placeName, starRating1, starRating2 } = payload;
+        const { content, placeName, userEmail, starRating1, starRating2 } = payload;
 
         return axiosInst
         .post("/review/register", payload)

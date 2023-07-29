@@ -39,8 +39,8 @@ export default {
             reviewModule, ['requestRegisterReviewBoardToSpring']
         ),
         async onSubmit(payload) {
-            const { content, placeName, starRating1, starRating2 } = payload
-            await this.requestRegisterReviewBoardToSpring({ content, placeName, starRating1, starRating2 })
+            const { content, placeName, userEmail, starRating1, starRating2 } = payload
+            await this.requestRegisterReviewBoardToSpring({ content, placeName, userEmail, starRating1, starRating2 })
         }
     },
 
