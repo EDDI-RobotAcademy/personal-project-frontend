@@ -63,6 +63,9 @@
                     <dt><span class="required">*</span>닉네임</dt>
                         <dd>
                             <input type="text" v-model="nickName" placeholder="닉네임을 입력하세요"></input>
+                            <v-btn text large outlined style="font-size: 13px; margin-left: 20px; width:50px;" @click="checkDuplicateNickname">
+                            닉네임 <br/>중복 확인
+                            </v-btn>
                             <p v-show="nickName && !validateNickName()" class="input-error">닉네임은 영문자, 한글, 숫자로 1~8글자 이내로 입력하세요.</p>
                         </dd>
                     </dl>
@@ -83,8 +86,8 @@
                         <dd>
                            <select v-model="gender" class="gender-select">
                                 <option value="" hidden></option>
-                                <option value="male">남</option>
-                                <option value="female">여</option>
+                                <option value="남">남</option>
+                                <option value="여">여</option>
                             </select>
                         </dd>
                     </dl>
@@ -133,6 +136,8 @@ export default {
             detailAddress: "",
 
             nickName: "",
+            isNicknameVerified: false,
+
             userName: "",
             birth: "",
             gender: "",
@@ -140,7 +145,7 @@ export default {
     },
     methods: {
         ...mapActions(accountModule, ['requestSpringToCheckEmailDuplication',
-            'requestEmailCodeToSpring']),
+            'requestEmailCodeToSpring', 'requestCheckNicknameToSpring']),
         async onSubmit() {
             if (!this.email) {
                 alert("이메일을 입력해주세요!")
@@ -249,6 +254,16 @@ export default {
             const isNickNameValid = this.validateNickName();
 
             return isEmailValid && isPasswordValid && isPasswordCheckValid && isNickNameValid;
+        },
+
+        async checkDuplicateNickname() {
+            if (!this.validateNickName()) {
+                alert("유효한 닉네임을 입력하세요!");
+                return;
+            }
+            // 유효한 닉네임일 경우 서버에 중복 여부 요청
+            const { nickName } = this;
+            this.isNicknameVerified = await this.requestCheckNicknameToSpring({ nickName });
         },
 
         togglePasswordVisibility() {
@@ -412,10 +427,6 @@ export default {
 
 .check_membership {
     margin-top: 10px;
-}
-
-.valid_form_button {
-    margin-left: 170px;
 }
 
 input[type="date"].placeholder {

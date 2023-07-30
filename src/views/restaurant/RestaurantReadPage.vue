@@ -1,12 +1,10 @@
 <template lang="">
   <div>
-  <h1>맛집 상세 페이지</h1>
     <template v-if="restaurant">
       <restaurant-read-form :restaurant="restaurant" />
       <v-container fluid>
         <v-row justify="center">
-          <user-review-list-form :restaurantName="restaurant.restaurantName" :review="review" />
-          <user-review-form :restaurantName="restaurant.restaurantName" @submit="submitReview"/>
+          <user-review-list-form class="review-list" :id="restaurant.id" :review="review"/>
         </v-row>
         <v-col justify="center">
           <v-btn class="centered-button" @click="goToRestaurantListPage">목록으로</v-btn>
@@ -21,7 +19,6 @@
 
 <script>
 import RestaurantReadForm from "@/components/restaurant/RestaurantReadForm.vue";
-import UserReviewForm from '@/components/review/UserReviewForm.vue'
 import UserReviewListForm from '@/components/review/UserReviewListForm.vue'
 
 import { mapActions, mapState } from "vuex"
@@ -29,6 +26,7 @@ import router from "@/router"
 
 const restaurantModule = "restaurantModule"
 const reviewModule = 'reviewModule'
+const accountModule = 'accountModule'
 
 export default {
   name: "RestaurantReadPage",
@@ -41,44 +39,34 @@ export default {
 
   components: {
     RestaurantReadForm,
-    UserReviewForm,
     UserReviewListForm,
   },
 
   data() {
     return {
-      // review: null,
+      restaurantId: '',
     }
   },
 
   computed: {
     ...mapState(restaurantModule, ["restaurant"]),
     ...mapState(reviewModule, ["review"]),
-
-    // handleReviewData() {
-    //   return this.review
-    // },
+    // ...mapState(accountModule, ["account"]),
   },
   methods: {
     ...mapActions(restaurantModule, ["requestRestaurantToSpring",]),
-    ...mapActions(reviewModule, ["requestReviewRegisterToSpring", 'requestReviewListToSpring', 'requestReviewToSpring']),
+    // ...mapActions(accountModule, ["requestAccountToSpring",]),
+    ...mapActions(reviewModule, ['requestReviewListToSpring']),
 
     goToRestaurantListPage() {
       router.push("/restaurant-list-page");
-    },
-
-    async submitReview(payload) {
-      await this.requestReviewRegisterToSpring(payload)
-
-      // Todo: 후기 작성 후 초기화
-      // this.$refs.userReviewForm.comment = "";
-      // this.$refs.userReviewForm.ratings = "";
     },
   },
 
   async created() {
     await this.requestRestaurantToSpring(this.id)
-    await this.requestReviewListToSpring({ restaurantName: this.restaurant.restaurantName });
+    await this.requestReviewListToSpring({ restaurantId: this.id });
+    // await this.requestAccountToSpring({ userToken: this.userToken })
   }
 }
 </script>
@@ -87,5 +75,6 @@ export default {
 .centered-button {
   margin: 0 auto;
   margin-top: 20px;
+  margin-left: 500px;
 }
 </style>
