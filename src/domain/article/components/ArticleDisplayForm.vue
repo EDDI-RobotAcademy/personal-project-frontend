@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isArticleLoading">
     <v-list>
       <v-list-item
         v-for="(article, index) in articles"
@@ -31,6 +31,9 @@
       </v-btn>
     </div>
   </div>
+  <div v-else>
+    <v-progress-circular indeterminate color="blue"></v-progress-circular>
+  </div>
 </template>
 
 <script>
@@ -45,6 +48,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    isArticleLoading: {
+            type: Boolean,
+            required: true,
+        },
   },
   methods: {
     goToHref(href) {

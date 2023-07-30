@@ -24,5 +24,17 @@ export default {
         .then((res) => {
             commit(REQUEST_STOCK_TO_SPRING, res.data)
         })
+    },
+    requestStockPageNumToSpring({ }){
+        return axiosInst.spring.get('/stock/list')
+        .then((res) => {
+            return res.data.pageNum;
+        })
+    },
+    requestOpinionPageNumToSrping({}) {
+        return axiosInst.spring.get('/stock/opinion-list')
+        .then((res) => {
+            return res.data.pageNum;
+        })
     }
 }

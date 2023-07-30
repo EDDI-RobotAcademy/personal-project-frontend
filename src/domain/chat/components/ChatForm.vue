@@ -6,13 +6,15 @@
       </div>
     </div>
     <div class="input-container">
-      <input type="text" v-model="message" @keyup.enter="sendMessage" />
-      <button @click="sendMessage">send</button>
+      <input type="text" v-model="message" @keydown.enter.prevent="message.trim() !== '' && sendMessage()" />
+      <button @click="sendMessage" :disabled="!message.trim()">send</button>
     </div>
   </div>
 </template>
   
   <script>
+import axiosInst from '@/utility/axiosInst';
+
   let ws
   export default {
     props: {
@@ -25,16 +27,28 @@
       return {
         isConnected: false,
         message: "",
-        logs: []
+        logs: [],
+        clientIp: '',
       }
     },
     methods: {
+      getCookieValue(key) {
+        const cookieString = document.cookie;
+        const value = cookieString
+          .split("; ")
+          .find((cookie) => cookie.startsWith(key))
+          ?.split("=")[1];
+
+        return value;
+      },  
       connect() {
-        ws = new WebSocket("ws://" + "localhost:7777" + "/chat/" + this.ticker)
+        const accessToken = this.getCookieValue("AccessToken");
+        const queryString = `?accessToken=${accessToken}&clientIp=${this.clientIp}`;
+
+        ws = new WebSocket("ws://" + '43.201.41.0:7777' + "/chat/" + this.ticker + queryString)
         ws.onopen = () => {
           ws.onmessage = ({data}) => {
-            this.logs.push({event: '메세지 수신', data});
-            console.log(data)
+            this.logs.push(data);
           }
         }
       },
@@ -49,7 +63,9 @@
     beforeDestroy() {
       ws.close();
     },
-    mounted() {
+    async mounted() {      
+      const response = await axiosInst.spring.get('/api/get-client-ip');
+      this.clientIp = response.data;
       this.connect()
     },
     beforeUnmount() {

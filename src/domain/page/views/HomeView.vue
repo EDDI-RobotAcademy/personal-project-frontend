@@ -6,7 +6,8 @@
           <stock-list-form 
           :stocks="stocks" 
           :nowPage="nowPage" 
-          :hasStocks="hasStocks"
+          :totalStockPages="totalStockPages"
+          :totalOpinionPages="totalOpinionPages"
           @sort-item-selected="handleSortItemUpdate"                                             
           @ascending-selected="handleAscendingSelectedUpdate"                               
           @update-now-page="handleNowPageUpdate"
@@ -35,7 +36,9 @@ export default {
       nowPage: 1,
       ticker: "1",
       selectedSortItem:'open',
-      selectedAscending: 'desc' 
+      selectedAscending: 'desc' ,
+      totalStockPages: 1,
+      totalOpinionPages: 1,
     }
   },
   components: {
@@ -44,7 +47,12 @@ export default {
   },
   methods: {
     ...mapActions(
-      stockModule, ['requestStockListToSpring', 'requestOpinionListToSpring']
+      stockModule, [
+        'requestStockListToSpring', 
+        'requestOpinionListToSpring', 
+        'requestStockPageNumToSpring',
+        'requestOpinionPageNumToSrping'
+      ]
     ),  
     handleUpdateMode(mode) {
       if (mode === 'stock') {
@@ -127,16 +135,21 @@ export default {
           pageNumber: this.nowPage
         }
         this.requestOpinionListToSpring(payload);
+    },
+    async fetchStockPageNum() {
+      this.totalStockPages = await this.requestStockPageNumToSpring();
+    },
+    async fetchOpinioPageNum() {
+      this.totalOpinionPages = await this.requestOpinionPageNumToSrping();
     }
   },
   computed: {
     ...mapState(stockModule, ['stocks']),
-    hasStocks() {
-      return this.stocks !== null && this.stocks.length > 0;
-    },
   },
   mounted () {
     this.fetchStockList();
+    this.fetchStockPageNum();
+    this.fetchOpinioPageNum()
   },
 }
 </script>

@@ -81,8 +81,8 @@
         </tr>
       </table>
 
-      <div class="text-center">
-        {{ nowPage }}
+      <div v-if="mode === 'stock'" class="text-center">
+        {{ nowPage }} <p>/</p> {{totalStockPages}}
         <v-btn
           icon
           :disabled="nowPage === 1"
@@ -92,6 +92,24 @@
         </v-btn>
         <v-btn
           icon
+          :disabled="nowPage === totalStockPages"
+          @click="increasePage"
+        >
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+      </div>
+      <div v-else class="text-center">
+        {{ nowPage }} <p>/</p> {{totalOpinionPages}}
+        <v-btn
+          icon
+          :disabled="nowPage === 1"
+          @click="decreasePage"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          :disabled="nowPage === totalOpinionPages"
           @click="increasePage"
         >
           <v-icon>mdi-chevron-right</v-icon>
@@ -119,9 +137,13 @@ export default {
       type: Number,
       required: true,
     },
-    hasStocks: {
-      type: Boolean,
-      required: true,
+    totalStockPages: {
+      type: Number,
+      default: 1,
+    },
+    totalOpinionPages: {
+      type: Number,
+      default: 1,
     },
   },
   data() {
@@ -184,10 +206,6 @@ export default {
       this.$emit("ascending-selected", selectedAscending);
     },
     increasePage() {
-      if (!this.hasStocks) {
-          alert("마지막 페이지입니다.");
-          return;
-        }
       this.$emit("update-now-page", this.nowPage + 1);
     },
     decreasePage() {

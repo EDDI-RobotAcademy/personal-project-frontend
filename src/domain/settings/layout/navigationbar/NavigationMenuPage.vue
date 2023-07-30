@@ -40,7 +40,7 @@
         }
       },
       toLoginAndSignUpPage() {
-        this.$router.push('sign-in-page').catch(() => {});
+        this.$router.push('/sign-in-page').catch(() => {});
       },
       async signOut() {
         await this.requestLogOutAccountToSpring();

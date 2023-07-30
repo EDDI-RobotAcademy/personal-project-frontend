@@ -116,13 +116,13 @@ export default {
   mounted() {
     this.fetchData();
     this.setInitialInterval();
-    this.fetchData(); 
   },
   methods: {
     async fetchData() {
       try {        
         const response = await axiosInst.fastApi
         .get(`/stock/${this.ticker}/${this.period}/${this.interval}`);
+
         const formattedData = response.data.map((item) => {
           return {
             x: new Date (item.Date),
@@ -133,34 +133,33 @@ export default {
         this.$set(this.series, 0, { name: 'OHLC', data: formattedData }); // updated line
 
         this.series[0].data = formattedData;
-        console.log("formmated data", formattedData)
         this.isLoading = false;
       } catch (error) {
         console.error("An error occurred while fetching the data:", error);
       }
     },
     setInitialInterval() {
-    if (this.period === "1d") {
-      this.interval = "5m";
-    } else if (this.period === "5d") {
-      this.interval = "60m";
-    } else if (this.period === "1mo") {
-      this.interval = "90m";
-    } else if (this.period === "3mo") {
-      this.interval = "1d";
-    } else if (this.period === "6mo") {
-      this.interval = "1d";
-    } else if (this.period === "1y") {
-      this.interval = "5d";
-    } else if (this.period === "5y") {
-      this.interval = "1wk";
-    } else if (this.period === "10y") {
-      this.interval = "1mo";
-    } else if (this.period === "max") {
-      this.interval = "1mo";
-    }
-    // 다른 period에 대한 기본 인터벌도 여기에 추가하십시오
-  },
+      if (this.period === "1d") {
+        this.interval = "5m";
+      } else if (this.period === "5d") {
+        this.interval = "60m";
+      } else if (this.period === "1mo") {
+        this.interval = "90m";
+      } else if (this.period === "3mo") {
+        this.interval = "1d";
+      } else if (this.period === "6mo") {
+        this.interval = "1d";
+      } else if (this.period === "1y") {
+        this.interval = "5d";
+      } else if (this.period === "5y") {
+        this.interval = "1wk";
+      } else if (this.period === "10y") {
+        this.interval = "1mo";
+      } else if (this.period === "max") {
+        this.interval = "1mo";
+      }
+      // 다른 period에 대한 기본 인터벌도 여기에 추가하십시오
+    },
   },
   computed: {
     // 변경된 부분: 선택 가능한 intervals와 함께 period에 따른 조건 추가
