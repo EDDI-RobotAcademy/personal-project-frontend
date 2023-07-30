@@ -15,10 +15,9 @@ export default {
         AccountModifyForm,
     },
     methods: {
-        ...mapActions(accountModule, ["requestAccountModifyToSpring"]),
+        ...mapActions(accountModule, ["requestAccountModifyToSpring", 'requestLogoutToSpring']),
 
         async accountModify(payload) {
-            console.log(payload)
             if (payload.nickname === '') {
                 payload.nickname = null
             }
@@ -27,9 +26,22 @@ export default {
             }
             this.modifyCheckPass = await this.requestAccountModifyToSpring(payload)
             if (this.modifyCheckPass) {
-                localStorage.setItem("nickname", payload.nickname)
-                this.$router.push({ name: 'AccountMyPage' })
+                if (payload.password != null) {
+                    this.accountLogout()
+                    alert('바뀐 비밀번호로 다시 로그인 해주세요')
+                }
+
+                if (payload.nickname != null && payload.password == null) {
+                    localStorage.setItem("nickname", payload.nickname)
+                    this.$router.push({ name: 'AccountMyPage' })
+                }
             }
+        },
+
+        async accountLogout() {
+            await this.requestLogoutToSpring()
+            localStorage.removeItem('isLogin')
+            await this.$router.push({ name: 'home' })
         },
     }
 }

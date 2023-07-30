@@ -17,7 +17,6 @@ export default {
     requestSongCountToSpring({ }) {
         return axiosInst.springAxiosInst.post('/song/count-song')
             .then((res) => {
-                console.log("res.data = " + res.data)
                 return res.data
             })
     },
@@ -30,7 +29,6 @@ export default {
         console.log(requestData)
         return axiosInst.springAxiosInst.post("/song/register", requestData)
             .then((res) => {
-                alert("등록 성공!")
                 return res.data;
             })
             .catch(() => {
@@ -52,7 +50,6 @@ export default {
         console.log(requestData)
         return axiosInst.springAxiosInst.post('/song/modify', requestData)
             .then((res) => {
-                alert('수정 성공!')
                 return res.data
             })
             .catch(() => {
@@ -63,7 +60,6 @@ export default {
     requestDeleteSongToSpring({ }, payload) {
         return axiosInst.springAxiosInst.delete(`/song/${payload}`)
             .then((res) => {
-                alert('삭제 성공!')
                 return true
             })
             .catch(() => {

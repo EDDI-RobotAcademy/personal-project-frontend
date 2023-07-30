@@ -29,17 +29,19 @@
                   </v-btn>
                 </router-link>
               </div>
-              <router-link to="/playlist-register-page">
-                <v-btn v-if="isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text mr-2">플레이리스트 등록
+              <div class="login">
+                <router-link to="/playlist-register-page">
+                  <v-btn v-if="isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text mr-2">플레이리스트 등록
+                  </v-btn>
+                </router-link>
+                <v-btn v-if="isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text mr-2"
+                  @click="accountLogout">로그아웃
                 </v-btn>
-              </router-link>
-              <v-btn v-if="isLogin" :style="{ fontSize: '17px' }" color="black" class="white--text mr-2"
-                @click="accountLogout">로그아웃
-              </v-btn>
-              <router-link to="/account-my-page">
-                <v-btn v-if="isLogin" :style="{ fontSize: '20px' }" color="black" class="white--text">마이페이지
-                </v-btn>
-              </router-link>
+                <router-link to="/account-my-page">
+                  <v-btn v-if="isLogin" :style="{ fontSize: '20px' }" color="black" class="white--text">마이페이지
+                  </v-btn>
+                </router-link>
+              </div>
             </v-col>
           </v-row>
         </v-col>
@@ -58,7 +60,7 @@ export default {
   data: () => ({
   }),
   created() {
-    if (localStorage.getItem("userToken")) {
+    if (localStorage.getItem("isLogin")) {
       this.LOGIN_COMPLETE(true)
     }
   },
@@ -66,15 +68,13 @@ export default {
     ...mapState(accountModule, ['isLogin'])
   },
   methods: {
+    ...mapMutations(accountModule, ['LOGIN_COMPLETE']),
     ...mapActions(accountModule, ["requestLogoutToSpring"]),
 
     async accountLogout() {
       await this.requestLogoutToSpring()
       localStorage.removeItem('isLogin')
       await this.$router.push({ name: 'home' })
-        .catch(
-          location.reload()
-        )
     },
   },
 };
@@ -83,7 +83,6 @@ export default {
 <style>
 .custom-app-bar {
   height: 130px !important;
-  padding-top: 25px !important;
   padding-bottom: 5px !important;
 }
 
@@ -106,6 +105,8 @@ export default {
 
 .custom-btn {
   font-size: 20px !important;
+  height: auto !important;
+  padding-top: 8px !important;
 }
 
 .container {
@@ -113,6 +114,7 @@ export default {
 }
 
 .notLogin {
+  padding-top: 15px !important;
   margin-left: 200px;
 }
 </style>

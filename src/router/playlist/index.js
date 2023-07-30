@@ -6,7 +6,8 @@ import PlaylistRegisterPage from '@/views/playlist/manage/PlaylistRegisterPage'
 import PlaylistModifyManagePage from '@/views/playlist/manage/PlaylistModifyManagePage'
 import PlaylistListManagePage from '@/views/playlist/manage/PlaylistListManagePage'
 import PlaylistReadManagePage from '@/views/playlist/manage/PlaylistReadManagePage'
-PlaylistReadManagePage
+import LikedPlaylistListPage from '@/views/playlist/user/LikedPlaylistListPage'
+
 Vue.use(VueRouter)
 
 const playlistRoutes = [
@@ -49,6 +50,11 @@ const playlistRoutes = [
     props: {
       default: true
     },
+  },
+  {
+    path: '/liked-playlist-list-page',
+    name: 'LikedPlaylistListPage',
+    component: LikedPlaylistListPage
   },
 ]
 
