@@ -15,6 +15,8 @@ import BoardReadPage from 'board/page/BoardReadPage';
 import BoardModifyPage from 'board/page/BoardModifyPage';
 import MapContainer from 'map/MapContainer';
 import MapBoardListPage from 'map/boardMapPage/MapBoardListPage';
+import SearchResultsPage from 'pages/SearchResultsPage';
+import Upload from 'Image/Upload';
 
 function App(): JSX.Element {
   return (
@@ -26,11 +28,13 @@ function App(): JSX.Element {
               <Header>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/search/:searchTerm" element={<SearchResultsPage />} />
                   <Route path="/login" element={<LogInPage />} />
                   <Route path="/signupHome" element={<SignUpHome />} />
                   <Route path="/myPage" element={<MyInfoPage />} />
                   <Route path="/board" element={<BoardListPage />} />
                   <Route path="/map" element={<MapContainer/>} />
+                  <Route path="/image" element={<Upload/>} />
                 </Routes>
               </Header>
           </div>

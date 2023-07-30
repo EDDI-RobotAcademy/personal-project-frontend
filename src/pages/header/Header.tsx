@@ -1,26 +1,26 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Nav.css';
 import { useAuth } from 'pages/AuthConText';
+import SearchBar from './SearchBar';
 
 type HeaderProps = {
   children?: ReactNode;
 };
 
 const Header: React.FC<HeaderProps> = ({ children }) => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
 
-
   const handleLogout = () => {
-    // accessToken 토큰 삭제
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('accountId')
+    localStorage.removeItem('accountId');
     setIsLoggedIn(false);
+    alert('로그아웃했습니다.');
+    navigate('/');
   };
 
   useEffect(() => {
-    // 페이지 로드 시 로그인 상태 확인
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       setIsLoggedIn(true);
@@ -29,23 +29,38 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
 
   return (
     <div>
+      <div className='top-bar'>
+        <div className='menu-container'>
+          {isLoggedIn ? (
+            <>
+              <button className='Menu-logout' onClick={handleLogout}>로그아웃</button>
+              <Link className='Menu' to={'/myPage'}>마이페이지</Link>
+            </>
+          ) : (
+            <>
+              <Link className='Menu' to={'/login'}>로그인</Link>
+              <Link className='Menu' to={'/signupHome'}>회원가입</Link>
+            </>
+          )}
+        </div>
+      </div>
+      <div className='bar'>
+      <Link className='PetCareFinder' to={'/'}>
+        <img src='img/logo.png' alt='PetCareFinder' />
+      </Link>
+        {/* <SearchBar /> */}
+      </div>
       <div className='navbar'>
-        <Link className='PetCareFinder' to={'/'}>PetCareFinder</Link>
-        {isLoggedIn ? (
-          <>
-            <button className='Menu-logout' onClick={handleLogout}>로그아웃</button>
-            <Link className='Menu' to={'/myPage'}>마이페이지</Link>
-            <Link className='Menu' to={'/board'}>게시판</Link>
-            <Link className='Menu' to={'/map'}>병원찾기</Link>
-          </>
-        ) : (
-          <>
-            <Link className='Menu' to={'/login'}>로그인</Link>
-            <Link className='Menu' to={'/signupHome'}>회원가입</Link>
-            <Link className='Menu' to={'/board'}>게시판</Link>
-            <Link className='Menu' to={'/map'}>병원찾기</Link>
-          </>
-        )}
+        <div id="menu_under_line"></div>
+        <div className='bottom-links'>
+        <Link className='MenuImage' to={'/board'}>
+          <img src='img/PETTALK.png' alt='PETTALK' />
+        </Link>
+        <Link className='MenuImage' to={'/map'}>
+          <img src='img/병원찾기.png' alt='동물병원' />
+        </Link>
+          {/* {isLoggedIn && <Link className='Menu' to={'/image'}>이미지</Link>} */}
+        </div>
       </div>
       {children}
     </div>
