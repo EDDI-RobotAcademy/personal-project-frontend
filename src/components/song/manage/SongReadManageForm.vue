@@ -11,7 +11,6 @@
                         <form @submit.prevent="onSubmit">
                             <v-text-field label="제목" :value="song.title" readonly />
                             <v-text-field label="가수" :value="song.singer" readonly />
-                            <v-text-field label="장르" :value="song.genre" readonly />
                             <v-text-field label="유튜브 링크" :value="song.link" readonly />
                             <v-row>
                                 <v-col style="text-align: center;">
