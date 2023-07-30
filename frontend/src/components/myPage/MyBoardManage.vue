@@ -1,17 +1,10 @@
 <template lang="html">
     <v-container class="boardList">
       
-      <div style="display: flex; "><v-btn @click="goRegister">글쓰기</v-btn>
-        <input type="text" v-model="keyword" style="background-color: white; margin-left: auto;border: 1px solid #ccc;">
-        <v-btn color=primary style="margin-left: 10px;" @click="">검색</v-btn>
-      </div>
-     
-      <br><br>
-       
-        <v-row v-if="boards && boards.length > 0">
-            <v-col v-for="(item, index) in boards" :key="index" cols="3">
+        <v-row v-if="myBoards && myBoards.length > 0">
+            <v-col v-for="(item, index) in myBoards" :key="index" cols="4">
                 <v-card class="card-item" @click="goRead(item.id)" style="height: 250px; width: 226px;"> 
-                  <v-img :src="dynamicLink(item.imgPath)" height="66%" />
+                    <v-img :src="dynamicLink(item.imgPath)" height="66%"/>
                     <v-card-text style="font-weight:900; height:16%;font-size: 20px;"  >
                         {{ item.boardTitle }}
                     </v-card-text>
@@ -20,68 +13,50 @@
                     </v-card-text>
                 </v-card>
             </v-col>
+            
         </v-row>
         
         <div v-else>
            
         </div>
-        <br>
-      
     </v-container>
 </template>
 <script>
 import router from '@/router';
-const LINK = process.env.VUE_APP_S3_LINK
-const BoardModule = 'BoardModule';
+const ProfileModule = 'ProfileModule';
 import { mapActions, mapState } from 'vuex';
-
+const LINK = process.env.VUE_APP_S3_LINK
 export default {
     computed:{
-        ...mapState(BoardModule,['boards'])
+        ...mapState(ProfileModule,['myBoards'])
     },
     data() {
         return {
-          link:LINK,
             prevBoards: [] ,
-            keyword:'',
-          
-    
+            userToken:'',
+            link:LINK
         }
     },
     methods: {
-      dynamicLink(extraPath) {
-      return `${this.link}/${extraPath}`;
-    },
-        ...mapActions(BoardModule, ['requestBoardListToSpring']),
+        ...mapActions(ProfileModule, ['requestMyBoardListToSpring']),
         goRead(id) {
             router.push({
                 name: 'myWalkBoardRead',
                 params: { id }
-            });},
-        goRegister(){
-          if (localStorage.getItem('userToken')==null) {
-            alert("로그인 후 이용해 주시길 바랍니다.")            
-          } else{
-            router.push('/myBoardRegister')
-          }
-            
-        },  
- 
-        
+            });
+        }, dynamicLink(extraPath) {
+      return `${this.link}/${extraPath}`;
+    },
+        async fetchData() {
+            this.userToken = localStorage.getItem('userToken'); // Retrieve userToken from localStorage
+            console.log(this.userToken);
+            const payload = { userToken: this.userToken };
+            await this.requestMyBoardListToSpring(payload);
+        }
     },
     async created() {
-        await this.requestBoardListToSpring()
-  .then((data) => {
-    // this.consoleBoard()
-  })
-  .catch((error) => {
-    throw(error)
-  });
-
-
-    },
-    
-    
+        await this.fetchData();
+    }
 }
 </script>
 <style lang="css">
@@ -95,5 +70,4 @@ export default {
     width: 1200px;
     
 }
-
 </style>

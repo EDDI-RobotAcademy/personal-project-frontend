@@ -13,11 +13,9 @@
         <h1>Trail of {{board.writer}}</h1>
       </td>
     </tr>
-      
-      
       <tr>
         <td>
-          <h2>현재 {{weatherInfo}} 섭씨 {{temp}}도 입니다.</h2><br>
+          <h3>현재 {{weatherInfo}} 섭씨 {{temp}}도 입니다.</h3><br><br><br>
           <v-textarea class="inputValue" v-model="board.boardInfo" 
           color="#f18893" readonly/>
         </td>
@@ -35,7 +33,9 @@
           
 
       
-      </table><v-btn @click="deleteBoard">삭제</v-btn><v-btn @click="modifyBoard(board.id)">수정</v-btn>
+      </table>
+      <div>조회수 {{board.view}}</div>
+      <v-btn @click="deleteBoard">삭제</v-btn><v-btn @click="modifyBoard(board.id)">수정</v-btn>
       
   </form>
 </v-card-text>
@@ -80,10 +80,22 @@ export default {
         temp:null,
             }
     },
+    watch: {
+    'board.id': {
+      immediate: true,
+      handler(newBoardId, oldBoardId) {
+        // Check if the boardId has changed
+        if (newBoardId !== oldBoardId) {
+          // Call the weather API method to update weatherInfo and temp
+          this.weatherMethod();
+        }
+      },
+    },
+  },
     mounted() {
       this.nick=localStorage.getItem('nickname')
       this.loadMap();
-      this.weatherMethod()
+      
       
     },
     methods: {
@@ -95,7 +107,7 @@ export default {
             return '흐린 날씨입니다.';
           } else if (key === 'shower rain' || key === 'light rain' || key === 'moderate rain' || key === 'Rain') {
             return '비가 오고 있습니다.';
-          } else if (key === 'Thunderstorm') {
+          } else if (key === 'thunderstorm') {
             return '천둥번개가 칩니다.';
           } else if (key === 'snow') {
             return '눈이 내리고 있습니다.';
@@ -180,7 +192,7 @@ export default {
           params: {id}
         })
         }else{
-          alert("수정 권한이 없습니다.")
+          alert("수정 권한이 없습니다.") 
         }
         
       }

@@ -1,6 +1,6 @@
 import axiosInst from "@/utility/axiosInst";
 import { REQUEST_COMMENT_LIST_TO_SPRING } from "./mutation-types"
-// import router from "@/router";
+
 
 export default{
   requestCommentRegisterToSpring({ }, payload) {
@@ -32,38 +32,35 @@ export default{
          commit(REQUEST_COMMENT_LIST_TO_SPRING, res.data)
        })
    },
-  // requestBoardListToSpring({ commit }) {
-  //  return axiosInst.post("/board/list")
-  //     .then((res)=>{
-  //       commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
-  //     })
-  // },
-  // requestBoardToSpring({commit}, id){
-  //   console.log(id)
-  //   return axiosInst.post(`/board/read/${id}`)
-  //       .then((res)=>{
-  //         commit(REQUEST_BOARD_TO_SPRING, res.data)
-  //       })
-  //   },
+ 
     requestCommentDeleteToSpring({},id){
     return axiosInst.delete(`/comment/${id}`)
        .then((res)=>{
        
     })
        .catch((res)=>{
-      alert('상품 삭제가 실패하였습니다.')
+      alert('댓글 삭제가 실패하였습니다.')
     })
    },
-  //  requestBoardModifyToSpring({}, payload){
 
-  //   const {boardTitle, boardInfo,boardTransport, id} = payload
-  //   return axiosInst.put(`/board/${id}`,{boardTitle, boardInfo,boardTransport, id})
-  //   .then((res)=>{
-  //     alert('게시물이 수정되었습니다.')
-  //   })
-  //   .catch(()=>{
-  //     alert('상품 수정 실패')
-  //   })
-   
-  // }
+   requestReportedCommentToSpring({},payload) {
+   console.log('액션에 받은 ID: '+payload)
+     return  axiosInst.post(`/comment/${payload}/report`)
+      .then((res) => {
+        alert('댓글이 신고되었습니다.');
+      })
+      .catch((error) => {
+        // 오류 처리 로직 추가
+      });
+  },
+  requestRejectReportCommentToSpring({},payload){
+    return axiosInst.delete(`/comment/reported-comment/${payload}`)
+      .then((res)=>{
+        alert('신고가 반려되었습니다.')
+      })
+      .catch((error)=>{
+        
+      })
+  }
+ 
 }
