@@ -1,56 +1,77 @@
 <template lang="">
     <div>
-        <div style="position: relative; z-index:2">
-            <!-- 미니창박스 -->
-            <MiniWindow v-if="popState" @close="changePopState()" v-bind:placeData="this.placeData"></MiniWindow>
-        </div>        
-        <div class="map_wrap" style="position: relative; z-index:1">
-            <!-- 지도박스 -->
-            <div id="map" ref="map" style="width: 600px; height: 500px; margin: auto; overflow: hidden;"></div>
-            
-            <!-- 메뉴박스 -->
-            <div id="menu_wrap" class="bg_white">
-                <div class="option">
-                    <div>
-                        <form @submit.prevent="searchPlaces">
-                            키워드 : <input type="text" v-model="keyword" size="15">
-                            <button type="submit">검색하기</button> 
-                        </form>
+        <NaviTest/>
+        <div style="padding-top: 90px">
+            <div style="position: relative; z-index:3">
+                <!-- 미니창박스 -->
+                <MiniWindow v-if="popState" @close="changePopState()" v-bind:placeData="this.placeData"></MiniWindow>
+            </div>        
+            <div class="map_wrap" style="position: relative; z-index:1;">
+                <!-- 지도박스 -->
+                <div id="map" ref="map" style="width: 600px; height: 500px; margin: auto; overflow: hidden;"></div>
+                
+                <!-- 메뉴박스 -->
+                <div id="menu_wrap" class="bg_white">
+                    <div class="option" style="padding-top:10px;">
+                        <div>
+                            <form @submit.prevent="searchPlaces">
+                                <div class="row">
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" v-model="keyword" style="width: 90%; margin: auto;">
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col-sm-5"></div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-outline-primary" style="margin-left: 20%;">검색하기</button> 
+                                    </div>
+                                    <div class="col-sm-5"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-6">
+                            <ul id="placesList" style="list-style: none; padding-inline-start: 10%">
+                                <li style="margin: 10px;" v-for="(place, index) in places" :key="index" @mouseover="onMouseOver(index)" @mouseout="onMouseOut">
+                                    <!-- index+1로 클래스명 지정 -->
+                                    <span :class="`markerbg marker_${index + 1}`"></span> 
+                                    <div class="info">
+                                        <h5>{{ place.place_name }}</h5>
+                                        <span v-if="place.road_address_name">{{ place.road_address_name }}</span>
+                                        <span class="jibun gray">{{ place.address_name }}</span>
+                                        <br/>
+                                        <span class="tel">{{ place.phone }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div id="pagination" style="padding-inline-start: 50%"">
+                                <a v-for="pageNum in pagination.last" :key="pageNum" :class="{ on: pageNum === pagination.current }" @click="gotoPage(pageNum)">
+                                    {{ pageNum }}
+                                </a>
+                            </div>                            
+                        </div>
+                        <div class="col-sm-3"></div>
                     </div>
                 </div>
-                
-
-                <ul id="placesList" style="list-style: none; padding-inline-start: 0px">
-                    <li style="margin: 10px;" v-for="(place, index) in places" :key="index" @mouseover="onMouseOver(index)" @mouseout="onMouseOut">
-                        <!-- index+1로 클래스명 지정 -->
-                        <span :class="`markerbg marker_${index + 1}`"></span> 
-                        <div class="info">
-                            <h5>{{ place.place_name }}</h5>
-                            <span v-if="place.road_address_name">{{ place.road_address_name }}</span>
-                            <span class="jibun gray">{{ place.address_name }}</span>
-                            <br/>
-                            <span class="tel">{{ place.phone }}</span>
-                        </div>
-                    </li>
-                </ul>
-                <div id="pagination">
-                    <a v-for="pageNum in pagination.last" :key="pageNum" :class="{ on: pageNum === pagination.current }" @click="gotoPage(pageNum)">
-                        {{ pageNum }}
-                    </a>
-                </div>
-            </div>
-
+            </div>        
         </div>
-
     </div>
 </template>
 <script>
 import MiniWindow from '@/components/map/MiniWindow.vue'
+import NaviTest from '@/components/NaviTest.vue'
 
 export default {
-    components : {
-        MiniWindow
-    },   
+    components: {
+        MiniWindow,
+        NaviTest
+    },
     data() {
         return {
             map: null,
@@ -59,10 +80,14 @@ export default {
             places: [],
             pagination: {},
             infowindow: new window.kakao.maps.InfoWindow({ zIndex: 1 }),
-            
+            place_url: {},
+
+
             //미니창 상태를 관리할 변수
-            popState : true,
-            placeData : []
+            popState: false,
+            placeData: {},
+            title: [],
+            place_url: []
         };
     },
     mounted() {
@@ -114,7 +139,7 @@ export default {
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
 
-                this.attachMarkerEvents(marker, place.place_name);
+                this.attachMarkerEvents(marker, place.place_name, place.place_url);
             });
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정
             this.map.setBounds(bounds);
@@ -139,7 +164,7 @@ export default {
 
             return marker;
         },
-        attachMarkerEvents(marker, title) {
+        attachMarkerEvents(marker, title, place_url) {
             // 마커와 검색결과 항목에 mouseover 했을때
             // 해당 장소에 인포윈도우에 장소명을 표시합니다
             window.kakao.maps.event.addListener(marker, "mouseover", () => {
@@ -152,35 +177,37 @@ export default {
             // click 했을 때는 미니윈도우를 토글
             window.kakao.maps.event.addListener(marker, "click", () => {
                 this.changePopState();
-                this.placeData = title;
+                this.placeData = { title, place_url };
             });
         },
         // 지도 위에 표시되고 있는 마커를 모두 제거
         removeMarker() {
             this.markers.forEach((marker) => marker.setMap(null));
             this.markers = [];
-    },
-    displayInfowindow(marker, title) {
-        const content = `<div style="padding:5px;">${title}</div>`;
-        this.infowindow.setContent(content);
-        this.infowindow.open(this.map, marker);
-    },
-    onMouseOver(index) {
-        this.displayInfowindow(this.markers[index], this.places[index].place_name);
-    },
-    onMouseOut() {
-        this.infowindow.close();
-    },
-    gotoPage(pageNum) {
-        this.pagination.gotoPage(pageNum);
-    },
-    changePopState() { //미니창 토글
-        this.popState = !this.popState;
+        },
+        displayInfowindow(marker, title) {
+            const content = `<div style="padding:5px;">${title}</div>`;
+            this.infowindow.setContent(content);
+            this.infowindow.open(this.map, marker);
+        },
+        onMouseOver(index) {
+            this.displayInfowindow(this.markers[index], this.places[index].place_name);
+        },
+        onMouseOut() {
+            this.infowindow.close();
+        },
+        gotoPage(pageNum) {
+            this.pagination.gotoPage(pageNum);
+        },
+        changePopState() { //미니창 토글
+            this.popState = !this.popState;
+        }
     }
-    }
-    
+
 }
 </script>
-<style lang="">
-    
+<style>
+/* #map {
+        margin-top: 50px;
+    } */
 </style>
