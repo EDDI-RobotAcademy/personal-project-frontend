@@ -95,5 +95,22 @@ export default {
           alert("문제 발생");
         }
       },
-      
+      async requestNicknameToSpring({}, ) { 
+          const isLogin = localStorage.getItem('isLogin');
+          if (isLogin) {
+            const cookieString = document.cookie;
+            const value = cookieString
+            .split("; ")
+            .find((cookie) => cookie.startsWith("AccessToken"))
+            ?.split("=")[1];
+            try {
+                const res = await axiosInst.spring.post(`/account/request-nickname/${value}`);
+                return res.data;
+            } catch (error) {
+                alert("문제 발생");
+            }
+        } else {
+            return;
+        }
+      },
 }
