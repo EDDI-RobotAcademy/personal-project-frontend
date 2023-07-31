@@ -25,7 +25,7 @@ export default {
             this.playlistId = await this.requestRegisterPlaylistToSpring(payload)
             await this.$router.push({
                 name: 'PlaylistReadManagePage',
-                params: { id: this.playlistId }
+                params: { id: this.playlistId.toString() }
             })
         }
     }
