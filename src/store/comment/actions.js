@@ -25,7 +25,7 @@ export default {
                 if (res.data) {
                     alert("삭제 성공!")
                 } else {
-                    alert("문제 발생")
+                    // alert("문제 발생")
                 }
             })
             .catch(() => {
