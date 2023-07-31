@@ -47,7 +47,7 @@ export default {
                 if (res.data) {
                     alert("삭제 성공!")
                 } else {
-                    alert("문제 발생")
+                    alert("삭제 권한이 없습니다.")
                 }
             })
             .catch(() => {
