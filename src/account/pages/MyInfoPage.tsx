@@ -1,24 +1,17 @@
 import { Box, Button, Container, TextField } from '@mui/material'
 import { fetchAccount, useAccountQuery } from 'account/api/AccountApi'
 import React, { useEffect } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 const MyInfoPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const accessToken = localStorage.getItem('accessToken');
-  const { data: account } = useAccountQuery();
 
-  useEffect(() => {
-    if (accessToken && !account) { 
-      const fetchAccountData = async () => {
-        const accountData = await fetchAccount();
-      };
-
-      fetchAccountData();
-    }
-  }, [accessToken, account]);
+  const { data: account } = useQuery('account', fetchAccount, {
+    enabled: !!accessToken, 
+  });
 
   const handleEditClick = () => {
     navigate(`/account/myPage`);
@@ -36,7 +29,7 @@ const MyInfoPage = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '2em' }}>
+    <Container maxWidth="xs" sx={{ marginTop: '2em' }}>
       <Box display="flex" flexDirection="column" gap={2} p={2}>
         <TextField label="이메일" name="email" disabled 
                   value={ account?.email || '' } sx={{ borderRadius: '4px' }}/>
