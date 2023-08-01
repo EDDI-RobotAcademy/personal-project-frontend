@@ -10,28 +10,28 @@
                     <a href="/myProfilePage"><Strong>나의 정보 관리</Strong></a>
                 </v-col>
                 <v-col cols="6" id="menu">
-                    <a href="/myOrderPage"><Strong>나의 주문 내역</Strong></a>
+                    <a href="/myReservation"><Strong>나의 주문 내역</Strong></a>
                 </v-col>
             </v-row>
             <v-row no-gutters class="uesrInfo" v-if="this.roleType === 'NORMAL'">
-                <v-col cols="12" id="bookingTitle">
+                <v-col cols="2" id="bookingTitle">
                     <Strong>나의 예약 현황</Strong>
                 </v-col>
                 <v-col cols="2" id="status">
                     <Strong>예약 신청</Strong><br>
-                    <Strong id="value">{{ REQUESTED }}</Strong>
+                    <Strong id="value"><a @click="showReservation">{{ REQUESTED }}</a></Strong>
                 </v-col>
                 <v-col cols="2" id="status">
                     <Strong>이용 완료</Strong><br>
-                    <Strong id="value">{{ COMPLETED }}</Strong>
+                    <Strong id="value"><a @click="showReservation">{{ COMPLETED }}</a></Strong>
                 </v-col>
                 <v-col cols="2" id="status">
                     <Strong>취소 요청</Strong><br>
-                    <Strong id="value">{{ CANCEL_REQUESTED }}</Strong>
+                    <Strong id="value"><a @click="showReservation">{{ CANCEL_REQUESTED }}</a></Strong>
                 </v-col>
                 <v-col cols="2" id="status">
                     <Strong>취소 완료</Strong><br>
-                    <Strong id="value">{{ CANCELLED }}</Strong>
+                    <Strong id="value"><a @click="showReservation">{{ CANCELLED }}</a></Strong>
                 </v-col>
             </v-row>
             <v-row no-gutters class="info" v-if="this.roleType === 'BUSINESS'">
@@ -43,7 +43,7 @@
                 </v-col>
             </v-row>
             <v-row no-gutters class="uesrInfo" v-if="this.roleType === 'BUSINESS'">
-                <v-col cols="12" id="bookingTitle">
+                <v-col cols="2" id="bookingTitle">
                     <Strong>예약 리스트</Strong>
                 </v-col>
                 <v-col cols="2" id="status">
@@ -64,15 +64,23 @@
                 </v-col>
             </v-row>
         </div>
+        <div class="reservationList" v-if="this.roleType === 'NORMAL'">
+            <my-cart-list-form :cartItems="cartItems"/>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import MyCartListForm from '@/components/cart/MyCartListForm.vue'
 
+const cartModule = 'cartModule'
 const reservationModule = 'reservationModule'
 
 export default {
+    components: {
+        MyCartListForm
+    },
     data () {
         return {
             email: '',
@@ -84,8 +92,16 @@ export default {
             CANCELLED: 0
         }
     },
+    computed: {
+        ...mapState(cartModule, ['cartItems']),
+    },
     methods: {
         ...mapActions(reservationModule, ['requestMemberInfoWithReservationStatusToSpring']),
+        ...mapActions(cartModule, ['requestCartItemListToSpring']),
+        showReservation() {
+            this.$router.push('/myReservation')
+            .catch(() => {})
+        },
     },
     async mounted() {
         this.response = await this.requestMemberInfoWithReservationStatusToSpring()
@@ -98,6 +114,9 @@ export default {
             this.COMPLETED = this.response.amountList[1]
             this.CANCEL_REQUESTED = this.response.amountList[2]
             this.CANCELLED = this.response.amountList[3]
+            if(this.roleType === 'NORMAL') {
+                await this.requestCartItemListToSpring()
+            }
         } else {
             alert("문제 발생")
         }
@@ -112,6 +131,7 @@ export default {
     font-weight: bold;
     padding-block: 20px;
     margin-top: 100px;
+    font-size: 32px;
 }
 .myPageheader h4 {
     font-family: 'SUIT-Regular';
@@ -121,12 +141,15 @@ export default {
 }
 .info {
     padding: 1%;
+    padding-top: 40px;
+    padding-bottom: 60px;
     text-align: center;
     justify-content: center !important;
 }
 .uesrInfo {
     text-align: center;
     justify-content: center !important;
+    padding-bottom: 20px;
 }
 #menu {
     background-color: rgb(248, 248, 248);
@@ -153,6 +176,10 @@ a {
     text-align: center;
     font-family: 'SUIT-Regular';
 }
+#status a{
+    color: red;
+    font-weight: 600;
+}
 #bookingTitle {
     padding-bottom: 2%;
     padding-top: 2%;
@@ -160,6 +187,7 @@ a {
     font-weight: bold;
     font-family: 'SUIT-Regular';
     text-align: center;
+    margin: auto;
 }
 #value {
     color: red; 
@@ -181,5 +209,15 @@ a {
     align-content: flex-end;
     align-items: flex-end;
     justify-content: center;
+}
+.reservationList {
+    padding-top: 20px;
+    padding-bottom: 100px;
+    width: 70%;
+    margin: auto;
+}
+.myPageMenu {
+    width: 70%;
+    margin: auto;
 }
 </style>

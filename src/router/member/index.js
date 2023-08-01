@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MemberLoginPage from '@/views/member/MemberLoginPage.vue'
-import NormalMemberSignupPage from '@/views/member/NormalMemberSignupPage.vue'
-import BusinessMemberSignupPage from '@/views/member/BusinessMemberSignupPage.vue'
 import MemberMyPage from '@/views/member/MemberMyPage.vue'
-import NormalMemberProfileRegisterPage from '@/views/member/NormalMemberProfileRegisterPage.vue'
-import BusinessMemberSellerInfoRegisterPage from '@/views/member/BusinessMemberSellerInfoRegisterPage.vue'
-import WithdrawMemberPage from '@/views/member/WithdrawMemberPage.vue'
+import MemberWithdrawalPage from '@/views/member/MemberWithdrawalPage.vue'
+
+import NormalMemberSignupPage from '@/views/member/normal/NormalMemberSignupPage.vue'
+import NormalMemberProfileRegisterPage from '@/views/member/normal/NormalMemberProfileRegisterPage.vue'
+
+import BusinessMemberSignupPage from '@/views/member/business/BusinessMemberSignupPage.vue'
+import BusinessMemberSellerInfoRegisterPage from '@/views/member/business/BusinessMemberSellerInfoRegisterPage.vue'
 
 Vue.use(VueRouter)
 
@@ -46,9 +48,9 @@ const memberRoutes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/withdraw',
-    name: 'WithdrawMemberPage',
-    component: WithdrawMemberPage,
+    path: '/withdrawal',
+    name: 'MemberWithdrawalPage',
+    component: MemberWithdrawalPage,
     meta: { requiresAuth: true }
   },
 ]

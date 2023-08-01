@@ -1,109 +1,219 @@
 <template lang="">
-    <div>  
-        <div class="mySellerInfoMenu">
-            <h2>상품 등록</h2>
-            <form>
+    <v-container class="registerContainer">
+        <h2>REGISTER</h2>
 
-                <Strong>기본정보</Strong>
-                <div class="infomenu">
-                    <v-row justify="center">
-                        <v-col cols="2" id="menu">
-                            <p>카테고리</p>
-                        </v-col>
-                        <v-col cols="10 ">
-                            <v-select
-                            :items="categoryName"
-                            color="pink"
-                            v-model="category"
-                            ></v-select>
-                        </v-col>
-                        <v-col cols="2" id="menu">
-                            <p>상품명</p>
-                        </v-col>
-                        <v-col cols="10">
-                            <v-text-field v-model="productName" label="상품명을 입력하세요."></v-text-field>
-                        </v-col>
-                    </v-row>
-                </div>
+        <!-- 기본 정보 -->
+        <div class="infomenu">
+            <v-col cols="12" id="menutitle">기본정보
+                <v-badge
+                bordered
+                inline
+                dot
+                color="red"
+                ></v-badge>
+            </v-col>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-col cols="2" id="menu">
+                    <p>카테고리</p>
+                </v-col>
+                <v-col cols="10">
+                    <v-select
+                    :items="categoryName"
+                    dense
+                    v-model="category"
+                    label="카테고리를 선택하세요."
+                    ></v-select>
+                </v-col>
+                <v-col cols="2" id="menu">
+                    <p>상품명</p>
+                </v-col>
+                <v-col cols="10">
+                    <v-text-field 
+                    v-model="productName" 
+                    label="상품명을 입력하세요."
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+        </div>
 
-                <Strong>상세정보</Strong>
-                <div class="infomenu">
-                    <v-row justify="center">
-                        <v-col cols="2" id="menu">
-                            <p>상품내용</p>
-                        </v-col>
-                        <v-col cols="10">
-                            <v-textarea
-                            label="상품 내용을 입력하세요."
-                            v-model="productDetails"
-                            ></v-textarea>
-                        </v-col>
-                    </v-row>
-                </div>
+        <!-- 상세 정보 -->
+        <div class="infomenu">
+            <v-col cols="12" id="menutitle">상세정보
+                <v-badge
+                bordered
+                inline
+                dot
+                color="red"
+                ></v-badge>
+            </v-col>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-col cols="2" id="menu">
+                    <p>상품내용</p>
+                </v-col>
+                <v-col cols="10">
+                    <v-textarea
+                    label="상품 내용을 입력하세요."
+                    v-model="productDetails"
+                    ></v-textarea>
+                </v-col>
+                <v-col cols="2" id="menu">
+                    <p>주소</p>
+                </v-col>
+                <v-col cols="10">
+                    <v-text-field 
+                    id="address"
+                    v-model="address"
+                    label="주소를 검색하여 입력하세요." 
+                    prepend-inner-icon="mdi-map-marker" 
+                    readonly 
+                    @click="postOpen"
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+        </div>
 
-                <Strong>주소입력</Strong>
-                <div class="infomenu">
-                    <v-row justify="center">
-                        <v-col cols="2" id="menu">
-                            <p>주소<v-btn class="serchBtn" @click="postOpen">주소검색</v-btn></p>
-                        </v-col>
-                        <v-col cols="10">
-                            <v-text-field v-model="address" id="address" label="주소를 검색하여 입력하세요." prepend-inner-icon="mdi-map-marker" readonly></v-text-field>
-                        </v-col>
-                    </v-row>
-                </div>
-                
-                <Strong>이미지 등록</Strong>
-                <div class="infomenu">
-                    <v-row justify="center">
-                        <v-col cols="2" id="menu">
-                            <p>메인 이미지</p>
-                        </v-col>
-                        <v-col cols="10">
-                            <input id="file-selector" ref="mainfile" type="file" @change="handleMainFileUpload()">
-                        </v-col>
-                        <v-col cols="2" id="menu">
-                            <p>상세 이미지</p>
-                        </v-col>
-                        <v-col cols="10">
-                            <input id="file-selector" ref="detailsfile" type="file" multiple @change="handleFileUpload()">
-                            </v-file-input>
-                        </v-col>
-                    </v-row>
-                </div>
+        <div class="infomenu">
+            <v-col cols="12" id="menutitle">시설 정보 등록
+                <v-badge
+                bordered
+                inline
+                dot
+                color="red"
+                ></v-badge>
+            </v-col>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-col cols="12">
+                    <v-select
+                    v-model="selectedFacilities"
+                    :items="facilities"
+                    multiple
+                    chips
+                    label="시설을 선택하여 추가해주세요."
+                    variant="outlined"
+                    ></v-select>
+                </v-chip>
+                </v-col>
+            </v-row>
+        </div>
 
-                <Strong>옵션 정보</Strong>
-                <div class="infomenu">
-                    <v-btn @click="addRow">옵션 추가</v-btn>
-                    <v-btn @click="deleteRow(index)">옵션 삭제</v-btn>
-                    <v-row justify="center">
-                        <v-col v-for="(option, index) in options" :key="index" cols="12" id="menu">
-                            <p>옵션{{ index + 1 }}</p>
-                            <v-text-field v-model="option.optionName" label="옵션명을 입력하세요." @change="handleOptionNameUpload(index)"></v-text-field>
-                            <v-text-field v-model="option.optionPrice" label="옵션 가격을 입력하세요." @change="handleOptionPriceUpload(index)"></v-text-field>
-                            <input type="date" v-model="option.startDate" @change="handleStartDateUpload(index)">Start Date<br>
-                            <input type="date" v-model="option.endDate" @change="handleEndDateUpload(index)">End Date<br>
-                            <input type="number" v-model="option.campsiteVacancy" @change="handleCampsiteVacancyUpload(index)">Campsite Vacancy
-                        </v-col>
-                    </v-row>
-                </div>
+        <!-- 이미지-->
+        <div class="infomenu">
+            <v-col cols="12" id="menutitle">이미지 등록
+                <v-badge
+                bordered
+                inline
+                dot
+                color="red"
+                ></v-badge>
+            </v-col>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-col cols="12">
+                    <v-file-input
+                    chips
+                    v-model="mainFile"
+                    label="메인 이미지 업로드"
+                    accept="image/*"
+                    ></v-file-input>
+                </v-col>
+                <v-col cols="12">
+                    <v-file-input
+                    chips
+                    v-model="detailsFiles"
+                    label="상세 이미지 업로드"
+                    accept="image/*"
+                    multiple
+                    @change="handleFileUpload"
+                    ></v-file-input>
+                </v-col>
+            </v-row>
+        </div>
 
-                <v-row align="center" justify="center">
-                    <v-col cols="auto">
-                        <v-btn class="submitBtn" color="black" elevation="0" @click="onSubmit">등록하기</v-btn>
+        <!-- 옵션 정보 -->
+        <div class="infomenu">
+            <v-col cols="12" id="menutitle">옵션정보
+                <v-badge
+                bordered
+                inline
+                dot
+                color="red"
+                ></v-badge>
+            </v-col>
+            <v-btn class="optionstyle" x-small plain @click="addRow">+ 추가</v-btn>
+            <v-btn class="optionstyle" x-small plain @click="deleteRow(index)">- 삭제</v-btn>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-row class="optionMenu">
+                    <v-col cols="4">옵션명</v-col>
+                    <v-col cols="3">옵션가격</v-col>
+                    <v-col cols="4">판매 기간</v-col>
+                    <v-col cols="1">잔여석</v-col>
+                </v-row>
+            </v-row>
+            <v-row no-gutters justify="center" class="infoDetails">
+                <v-row v-for="(option, index) in options" :key="index">
+                    <v-col cols="4">
+                        <v-text-field 
+                        v-model="option.optionName" 
+                        label="옵션명을 입력하세요." 
+                        @change="handleOptionNameUpload(index)"
+                        ></v-text-field>
                     </v-col>
-                    <v-col cols="auto">
-                        <v-btn class="clearBtn" elevation="0" @click="clear">취소</v-btn>
+                    <v-col cols="3">
+                        <v-text-field 
+                        v-model="option.optionPrice" 
+                        label="옵션 가격을 입력하세요." 
+                        @change="handleOptionPriceUpload(index)"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="4">
+                        <v-menu 
+                            v-model="option.menu" 
+                            :close-on-content-click="false" 
+                            :nudge-right="40" 
+                            transition="scale-transition" 
+                            offset-y min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                v-model="option.dates"
+                                label="기간을 선택하세요."
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker 
+                            v-model="option.dates" 
+                            @input="onDateInput"
+                            range 
+                            multiple
+                            no-title>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-col>
+                    <v-col cols="1">
+                        <v-text-field 
+                        type="number" 
+                        v-model="option.campsiteVacancy" 
+                        @change="handleCampsiteVacancyUpload(index)"
+                        ></v-text-field>
                     </v-col>
                 </v-row>
-            </form>
+            </v-row>
         </div>
-    </div>
+
+        <v-row no-gutters align="center" justify="center">
+            <v-col cols="auto">
+                <v-btn class="submitBtn" color="black" elevation="0" @click="onSubmit">등록하기</v-btn>
+            </v-col>
+            <v-col cols="auto">
+                <v-btn class="clearBtn" elevation="0" @click="clear">취소</v-btn>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
-import AWS from 'aws-sdk'
-import env from '../../env'
+import { awsS3Config, uploadAwsS3 } from '../../utility/awsS3';
 
 export default {
     head() {
@@ -115,12 +225,29 @@ export default {
     },
     data () {
         return {
+            menu: false,
             productName: '',
             categoryName: ['오토캠핑', '글램핑', '카라반'],
             category: '',
             productDetails: '',
-
             address:'',
+            facilities: [
+                'TOILET',
+                'SHOWER_ROOM',
+                'WATER_FOUNTAIN',
+                'WIFI',
+                'CONVENIENCE_STORE',
+                'BBQ_AREA',
+                'WALKING_TRAIL',
+                'PET_FRIENDLY',
+                'TRAMPOLINE',
+                'SWIMMING_POOL',
+                'CAFE',
+                'PLAYGROUND',
+                'SOCCER_FIELD',
+            ],
+            facilityType: [],
+            selectedFacilities: [],
 
             optionNameList: [],
             optionPriceList: [],
@@ -130,27 +257,29 @@ export default {
             optionsRegisterRequestFormList: [],
             options: [{ optionName: '', optionPrice: '', startDate: null, endDate: null, campsiteVacancy: 0 }],
 
-            s3: null,
-            awsBucketName: env.api.MAIN_AWS_BUCKET_NAME,
-            awsBucketRegion: env.api.MAIN_AWS_BUCKET_REGION,
-            awsIdentityPoolId: env.api.MAIN_AWS_BUCKET_IDENTITY_POOL_ID,
-
             file: null,
+            mainFile: null,
             fileNames: [],
+            detailsFiles: [],
             mainImageName: '',
             imageNameList:[],
-            selectedFiles: [],
         }
     },
+    computed: {
+        dateRangeText () {
+            return this.options.map(option => option.dates.join(' ~ '));
+        },
+    },
     methods: {
-        handleMainFileUpload() {
-            this.file = this.$refs.mainfile.files[0]
-            console.log("main Image upload: " + this.file.name)
+        onDateInput() {
+            this.options.forEach(option => {
+                if (option.dates.length === 2) {
+                    this.menu = false;
+                }
+            })
         },
         handleFileUpload() {
-            this.selectedFiles = Array.from(this.$refs.detailsfile.files);
-
-            this.fileNames = this.selectedFiles.map(file => file.name);
+            this.fileNames = this.detailsFiles.map(file => file.name);
             console.log(this.fileNames);
         },
         handleOptionNameUpload(optionIndex) {
@@ -160,12 +289,17 @@ export default {
             console.log(`옵션${optionIndex + 1} 옵션 가격:`, this.options[optionIndex].optionPrice);
         },
         handleStartDateUpload(optionIndex) {
-            console.log(`옵션${optionIndex + 1} 시작 날짜:`, this.options[optionIndex].startDate);
+            const startDate = this.options[optionIndex].dates[0];
+            console.log(`옵션${optionIndex + 1} 시작 날짜:`, startDate);
         },
         handleEndDateUpload(optionIndex) {
-            console.log(`옵션${optionIndex + 1} 끝 날짜:`, this.options[optionIndex].endDate);
+            const endDate = this.options[optionIndex].dates[1];
+            console.log(`옵션${optionIndex + 1} 끝 날짜:`, endDate);
         },
         handleCampsiteVacancyUpload(optionIndex) {
+            if (this.options[optionIndex].campsiteVacancy <= 0) {
+                return alert("0 이하를 입력할 수 없습니다.")
+            }
             console.log(`옵션${optionIndex + 1} 빈 자리:`, this.options[optionIndex].campsiteVacancy);
         },
         addRow() {
@@ -177,76 +311,9 @@ export default {
         clear () {
             router.push('/')
         },
-        awsS3Config () {
-            AWS.config.update({
-                region: this.awsBucketRegion,
-                credentials: new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: this.awsIdentityPoolId
-                })
-            })
-
-            this.s3 = new AWS.S3({
-                apiVersion: '2006-03-01',
-                params: {
-                    Bucket: this.awsBucketName
-                }
-            })
-        },
-        uploadAwsS3 () {    
-            this.awsS3Config()
-
-            this.s3.upload({
-                Key: this.file.name,
-                Body: this.file,
-                ACL: 'public-read',
-            }, (err, data) => {
-                if (err) {
-                    console.log(err)
-                    return alert("메인 이미지 업로드 중 문제 발생", err.message)
-                }
-                console.log('메인 이미지 업로드 성공!')
-            })
-            
-            this.selectedFiles.forEach((file) => {
-                this.s3.upload({
-                    Key: file.name,
-                    Body: file,
-                    ACL: 'public-read',
-                }, (err, data) => {
-                    if (err) {
-                        console.log(err);
-                        return alert("상세 이미지 업로드 중 문제 발생", err.message)
-                    }
-                    console.log(`파일 ${file.name} 업로드 성공!`)
-                });
-            });
-        },
-        async onSubmit () {
-            this.optionsRegisterRequestFormList = this.options.map(option => {
-                return {
-                    startDate: option.startDate,
-                    endDate: option.endDate,
-                    campsiteVacancy: option.campsiteVacancy
-                };
-            });
-
-            console.log("campsiteVacancyList", JSON.stringify(this.optionsRegisterRequestFormList));
-
-            this.optionNameList = this.options.map(option => option.optionName);
-            console.log("option name list:" + this.optionNameList);
-
-            this.optionPriceList = this.options.map(option => option.optionPrice);
-            console.log("option price list:" + this.optionPriceList);
-
-            this.mainImageName = this.file.name
-            console.log("main image name:", this.mainImageName);
-            
-            this.imageNameList = this.fileNames
-            console.log("details image name list: " + this.imageNameList)
-
-            this.uploadAwsS3 ()
-            const { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList } = this
-            this.$emit('submit', { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList})
+        uploadImages() {
+            const s3 = awsS3Config();
+            uploadAwsS3(s3, this.mainFile, this.detailsFiles)
         },
         postOpen() {
             const vm = this;
@@ -257,37 +324,80 @@ export default {
                 }
             }).open();
         },
+        async onSubmit () {
+            this.optionsRegisterRequestFormList = this.options.map(option => {
+                const startDate = option.dates[0];
+                const endDate = option.dates[1];
+                    return {
+                        startDate: startDate,
+                        endDate: endDate,
+                        campsiteVacancy: option.campsiteVacancy
+                    };
+            });
+
+            console.log("campsiteVacancyList", JSON.stringify(this.optionsRegisterRequestFormList));
+
+            this.optionNameList = this.options.map(option => option.optionName);
+            console.log("option name list:" + this.optionNameList);
+
+            this.optionPriceList = this.options.map(option => option.optionPrice);
+            console.log("option price list:" + this.optionPriceList);
+
+            this.mainImageName = this.mainFile.name;
+            console.log("main image name:", this.mainImageName);
+            
+            this.imageNameList = this.fileNames
+            console.log("details image name list: " + this.imageNameList)
+
+            this.facilityType = this.selectedFacilities
+
+            this.uploadImages()
+            const { productName, category, productDetails, address, facilityType, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList } = this
+            this.$emit('submit', { productName, category, productDetails, address, facilityType, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList})
+        },
+    },
+    computed: {
+        dateRangeText () {
+            this.options.forEach(option => {
+                return option.dates.join(' ~ ')
+                });
+        },
     },
 }
 </script>
 
 <style scoped>
 @import "../../assets/styles/fonts.css";
-.mySellerInfoMenu {
-    padding-top: 100px;
-}
-h2{
+.optionMenu {
     text-align: center;
     font-family: 'SUIT-Regular';
-    font-weight: 200;
-    font-size: 38px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    font-weight: 600;
 }
-form {
+.registerContainer {
     width: 60%;
-    height: 400px;
-    margin: auto;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    margin-top: 100px;
+}
+.optionstyle {
+    font-size: 12px;
+    font-weight: 600;
     font-family: 'SUIT-Regular';
-    font-weight: 100;
+}
+.infoDetails {
+    background-color: rgb(255, 255, 255);
+    padding: 1%;
+    font-family: 'SUIT-Regular';
+}
+.registerContainer h2{
+    font-family: 'SUIT-Regular';
+    text-align: center;
+    font-weight: bold;
+    padding-block: 20px;
+    font-size: 32px;
 }
 .submitBtn {
     width: 200px;
     min-height: 60px;
-    margin-top: 40px;
-    margin-bottom: 80px;
+    margin-top: 60px;
     color: white;
     font-family: 'SUIT-Regular';
     font-size: 18px;
@@ -296,8 +406,7 @@ form {
 .clearBtn {
     width: 200px;
     min-height: 60px;
-    margin-top: 40px;
-    margin-bottom: 80px;
+    margin-top: 60px;
     font-family: 'SUIT-Regular';
     font-size: 18px;
     font-weight: 200;
@@ -308,9 +417,22 @@ Strong {
     font-weight: 600;
 }
 .infomenu {
-    padding-bottom: 80px;
+    padding: 1%;
+    background-color: rgb(255, 255, 255);
+    width: 96%;
+    margin: auto;
+}
+.v-text-field {
+    font-weight: 100;
 }
 #menu {
     margin: auto;
+    font-family: 'SUIT-Regular';
+    font-weight: 600;
+}
+#menutitle {
+    font-family: 'SUIT-Regular';
+    font-weight: 600;
+    background-color: rgb(240, 240, 240);
 }
 </style>

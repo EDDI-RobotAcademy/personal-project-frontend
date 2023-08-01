@@ -2,17 +2,21 @@
     <nav>
         <v-app-bar color="white" elevation="0" class="bar1" height="60px" v-show="isBar1Visible">
             <a href="/">
-                <span id="happy">HAPPY </span>
-                <span id="camper">CAMPER</span>
+                <v-img :src="require('@/assets/happycamper/logo/happy_text_logo_2.png')" width="220"></v-img>
             </a>
         </v-app-bar>
         <v-app-bar color="white" elevation="0" class="bar2" height="60px">
-            <a @click="showAuto">AUTO</a>
-            <a @click="showGlamping">GLAMPING</a>
-            <a @click="showCaravan">CARAVAN</a>
+            <a href="/" v-show="!isBar1Visible">
+                <v-img :src="require('@/assets/happycamper/logo/happy_home.png')" width="30"></v-img>
+            </a>
+            <a href="/list"><span><Strong class="allProduct">ALL</Strong></span></a>
+            <a @click="showAuto"><span><Strong>AUTO</Strong></span></a>
+            <a @click="showGlamping"><span><Strong>GLAMPING</Strong></span></a>
+            <a @click="showCaravan"><span><Strong>CARAVAN</Strong></span></a>
+            <a href="/map"><span><Strong id="mapBtn"><span class="mdi mdi-map-marker-radius"></span> 지도에서 빈자리 찾기</Strong></span></a>
             <div class="searchBox">
-                <input type="text" class="inputKeyword">
-                <button text class="searchBtn">
+                <input type="text" class="inputKeyword" v-model="keyword" placeholder="  캠핑장 이름으로 검색이 가능해요" @keyup.enter="searchProduct">
+                <button text class="searchBtn" @click="searchProduct">
                     <v-icon color="black">mdi-magnify</v-icon>
                 </button>
             </div>
@@ -34,36 +38,33 @@
 
 <script>
 import router from '@/router'
-import { mapActions } from 'vuex';
-import ProductListByCategoryPage from '@/views/product/ProductListByCategoryPage.vue'
+import { mapActions, mapState } from 'vuex';
 
 const memberModule = 'memberModule'
+const productModule = 'productModule'
 
 export default {
-    components: {
-        ProductListByCategoryPage
-    },
     data () {
         return {
             isLogin: false,
             isBar1Visible: true,
-            category: ""
+            category: '',
+            keyword: ''
         }
     },
     methods: {
         ...mapActions(memberModule, ['requestMemberLogoutToSpring']),
+        ...mapActions(productModule, ['requestProductListByKeywordToSpring']),
         signUp () {
             router.push('/signup')
         },
         signIn () {
             router.push('/login')
-            // this.isLogin = localStorage.getItem("isLogin")
         },
         async signOut () {
             await this.requestMemberLogoutToSpring()
             location.reload()
             .catch(() => {})
-            // location.reload()
         },
         myPage () {
             router.push('/myPage')
@@ -91,6 +92,16 @@ export default {
             .catch(() => {})
             location.reload()
         },
+        showMap () {
+            router.push('/map')
+        },
+        async searchProduct() {
+            await this.$router.push(`/list/keyword/${this.keyword}`)
+            location.reload()
+        }
+    },
+    computed: {
+        ...mapState(productModule, ["products"]),
     },
     mounted () {
         const isLoginValue = localStorage.getItem("isLogin");
@@ -108,6 +119,7 @@ export default {
 .bar2 {
     position: fixed;
     z-index: 999;
+    padding-left: 22px;
 }
 .bar1 a {
     font-size: 24px;
@@ -115,6 +127,7 @@ export default {
     font-weight: 600;
     text-decoration: none;
     padding-left: 40px;
+    padding-top: 20px;
     color: #73916A;
     display: inline-block;
     white-space: nowrap;
@@ -125,39 +138,50 @@ export default {
     font-weight: 600;
     color: #73916A;
 }
-#camper {
-    font-size: 32px;
-    font-family: 'SUIT-Regular';
-    font-weight: 400;
-    color: #73916A;
+#mapBtn {
+    color: #ffffff;
+    background-color: rgb(0, 0, 0);
+    padding: 2% 11% 3% 8%;
+    border-radius: 22px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.mdi.mdi-map-marker-radius {
+    color: #ff3300;
 }
 .bar2 a {
     font-family: 'SUIT-Regular';
     font-weight: 600;
     font-size: 18px;
     text-decoration: none;
-    padding-left: 40px;
-    color: #000000;
+    padding-left: 20px;
+    color: #252525;
     display: inline-block;
     white-space: nowrap;
 }
 .v-application span {
     font-family: 'SUIT-Regular';
     font-weight: 400;
-    font-size: 16px;
-    color: rgb(0, 0, 0);
+    font-size: 14px;
+    color: rgb(31, 31, 31);
 }
 .searchBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 68%;
-  padding-right: 90px;
+    font-family: 'SUIT-Regular';
+    font-weight: 100;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 72%;
+    padding-right: 190px;
 }
 .inputKeyword {
     border: none;
     outline: none;
     border-bottom: 1px solid rgb(122, 122, 122);
     width: 300px;
+}
+.allProduct {
+    color: #ff3300;
 }
 </style>

@@ -1,15 +1,41 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import MyReservationPage from '@/views/reservation/MyReservationPage.vue'
+import CreateReservationPage from '@/views/reservation/CreateReservationPage.vue'
+import MyReservationListPage from '@/views/reservation/MyReservationListPage.vue'
+import MyReservationDetailPage from '@/views/reservation/MyReservationDetailPage.vue'
+import KakaoPaymentPage from '@/views/reservation/KakaoPaymentPage.vue'
 
 Vue.use(VueRouter)
 
 const reservationRoutes = [
   {
     path: '/reservation',
-    name: 'MyReservationPage',
-    component: MyReservationPage,
+    name: 'CreateReservationPage',
+    component: CreateReservationPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/myReservation',
+    name: 'MyReservationListPage',
+    component: MyReservationListPage,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/myReservationDetail/:id',
+    name: 'MyReservationDetailPage',
+    components: {
+      default: MyReservationDetailPage,
+    },
+    props: {
+      default: true,
+    },
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/kakaosuccess/:orderId/:userId',
+    name: 'KakaoPaymentPage',
+    component: KakaoPaymentPage,
     meta: { requiresAuth: true }
   },
 ]

@@ -4,16 +4,18 @@ import {
 } from './mutation-types'
 
 import axiosInst from '@/utility/axiosInst'
+import router from '@/router';
 
 export default {
     requestRegisterProductToSpring ({}, payload) {
-        const { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList } = payload
+        const { productName, category, productDetails, address, facilityType, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList } = payload
 
         return axiosInst.post('/product/register', 
-        { productName, category, productDetails, address, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList })
+        { productName, category, productDetails, address, facilityType, mainImageName, imageNameList, optionNameList, optionPriceList, optionsRegisterRequestFormList })
             .then((res) => {
                 if(res.data == true) {
                     alert("상품 등록 성공!")
+                    router.push('/Mylist')
                 } else {
                     alert("상품 등록 실패")
                 }
@@ -29,6 +31,12 @@ export default {
                 console.log("res.data: " + JSON.stringify(res.data))
             });
     },
+    requestProductTop8ListToSpring({ commit }) {
+        return axiosInst.get('/product/topList')
+            .then((res) => {
+                commit(REQUEST_PRODUCT_LIST_TO_SPRING, res.data);
+            });
+    },
     requestMyProductToSpring({ }) {
         return axiosInst.get('/product/myList')
             .then((res) => {
@@ -38,6 +46,13 @@ export default {
     },
     requestProductListByCategoryToSpring({ commit }, category) {
         return axiosInst.get(`/product/category/${category}`)
+            .then((res) => {
+                commit(REQUEST_PRODUCT_LIST_TO_SPRING, res.data);
+                console.log("res.data: " + JSON.stringify(res.data))
+            });
+    },
+    requestProductListByKeywordToSpring({ commit }, keyword) {
+        return axiosInst.get(`/product/search/${keyword}`)
             .then((res) => {
                 commit(REQUEST_PRODUCT_LIST_TO_SPRING, res.data);
                 console.log("res.data: " + JSON.stringify(res.data))
@@ -68,10 +83,31 @@ export default {
         })
     },
     requestDeleteProductToSpring({ }, id) {
-        console.log("delete 진행!")
         return axiosInst.delete(`/product/${id}`)
         .then((res) => {
-            alert("삭제가 완료되었습니다.")
+            if(res.data == true) {
+                alert("상품 삭제가 완료되었습니다.")
+                router.push('/myPage')
+            } else {
+                alert("예약 내역이 존재하여 상품을 삭제할 수 없습니다.")
+            }
         })
+        .catch(() => {
+            alert('통신 실패')
+        })
+    },
+    requestModifyProductToSpring({ }, { id, productDetails, imageNameList, optionNameList, optionPriceList, optionModifyRequestFormList }) {
+        return axiosInst.put(`/product/${id}`, { productDetails, imageNameList, optionNameList, optionPriceList, optionModifyRequestFormList })
+            .then((res) => {
+                if(res.data == true) {
+                    alert("상품이 성공적으로 수정되었습니다.")
+                    router.push(`/product/${id}`)
+                } else {
+                    alert("상품 수정 실패")
+                }
+            })
+            .catch(() => {
+                alert("통신 실패");
+            });
     }
 }

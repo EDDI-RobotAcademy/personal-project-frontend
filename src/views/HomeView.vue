@@ -25,9 +25,6 @@
           </v-icon>
         </div>
         <ProductListPage/>
-        <div class="footer">
-          <FooterPage/>
-        </div>
     </div>
 </template>
 
@@ -45,9 +42,9 @@ export default {
         return {
             carouselModel: false,
             bannerPictures: [
-                { img: require("@/assets/happycamper/automain.jpg")},
-                { img: require("@/assets/happycamper/kidsmain.jpg")},
-                { img: require("@/assets/happycamper/dogsmain.jpg")},
+                { img: require("@/assets/happycamper/banner/automain.jpg")},
+                { img: require("@/assets/happycamper/banner/kidsmain.jpg")},
+                { img: require("@/assets/happycamper/banner/dogsmain.jpg")},
             ],
             cycle: true,
             interval: 10000,
@@ -77,6 +74,7 @@ p {
   padding-top: 60px;
 }
 .moveTop {
+  z-index: 1;
   position: fixed;
   bottom: 2rem;
   right: 2rem;
@@ -85,8 +83,5 @@ p {
   background-color: rgb(230, 104, 55);
   border-radius: 60%;
   color: rgb(255, 255, 255)
-}
-.footer {
-  padding-top: 160px
 }
 </style>
