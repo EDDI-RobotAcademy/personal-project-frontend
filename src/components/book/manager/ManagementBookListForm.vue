@@ -1,14 +1,16 @@
 <template lang="">
     <div>
-      <h3>도서 목록</h3>
+      <h2>도서 목록</h2>
+      <hr class="custom-hr">
       <table style="width: 100%; height: 100%">
         <tr>
           <th align="center" width="10%">관리자</th>
           <th align="center" width="15%">도서 번호</th>
           <th align="center" width="25%">도서 명</th>
           <th align="center" width="15%">지은이</th>
-          <th align="center" width="5%">수량</th>
-          <th align="center" width="25%">작성일자</th>
+          <th align="center" width="8%">전체 수량</th>
+          <th align="center" width="8%">대여</br>가능수량</th>
+          <th align="center" width="20%">작성일자</th>
           <th align="center" width="8%"></th>
           <th align="center" width="8%"></th>
         </tr>
@@ -29,6 +31,9 @@
             {{ book.author }}
           </td>
           <td align="center">
+            {{ book.bookAmount }}
+          </td>
+          <td align="center" :class="{ 'zero-amount': book.rentalAmount === 0 }">
             {{ book.rentalAmount }}
           </td>
           <td align="center">
@@ -152,16 +157,17 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .popup {
 background-color: white;
 padding: 20px;
 border-radius: 5px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
 .error-message {
 color: red;
 font-size: 12px;
+}
+.zero-amount {
+  color: red;
 }
 </style>

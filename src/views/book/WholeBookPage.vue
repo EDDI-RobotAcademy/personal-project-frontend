@@ -69,9 +69,9 @@ export default {
 
 <style lang="css">
 .full{
-    background-color: #d7f2ff;
+    background-color: #B3E5FC;
     width: 100%;
-    height: 1250px;
+    height: 200%;
     color: black;
 }
 .btn-container {

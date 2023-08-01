@@ -4,50 +4,38 @@
             <tr>
                 <td>도서 번호</td>
                 <td>
-                    <input type="text" :value="book.hopeBookNumber" readonly/>
+                    <input type="text" :value="hopeBook.hopeBookNumber" readonly/>
                 </td>
             </tr>
-            <!-- <tr>
-                <td>총 수량</td>
-                <td>
-                    <input type="text" :value="book.bookAmount" readonly/>
-                </td>
-            </tr> -->
             <tr>
                 <td>저자</td>
                 <td>
-                    <input type="text" :value="book.author" readonly/>
+                    <input type="text" :value="hopeBook.author" readonly/>
                 </td>
             </tr>
             <tr>
                 <td>도서명</td>
                 <td>
-                    <input type="text" :value="book.bookName" readonly/>
+                    <input type="text" :value="hopeBook.bookName" readonly/>
                 </td>
             </tr>
             <tr>
                 <td>출판사</td>
                 <td>
-                    <input type="text" :value="book.publishCompany" readonly/>
+                    <input type="text" :value="hopeBook.publishCompany" readonly/>
                 </td>
             </tr>
-            <!-- <tr>
-                <td>카테고리</td>
-                <td>
-                    <input type="text" :value="book.categorizationSymbol" readonly/>
-                </td>
-            </tr> -->
-            <!-- <tr>
-                <td>줄거리</td>
-                <td>
-                    <textarea cols="60" rows="20" :value="book.content" readonly/>
-                </td>
-            </tr> -->
             <tr>
-                <td>등록일자</td>
+                <td>신청일자</td>
                 <td>
-                    <input type="text" :value="book.applicationDate" readonly/>
+                    <input type="text" :value="hopeBook.applicationDate" readonly/>
                 </td>
+            </tr>
+            <tr>
+                <td>신청인</td>
+                <!-- 'book.member'가 정의되어 있을 때만 'memberId'를 표시 -->
+                <input type="text" v-if="hopeBook.member" :value="hopeBook.member.memberId" readonly/>
+                <span v-else>신청인 정보 없음</span>
             </tr>
         </table>
     </div>
@@ -57,7 +45,7 @@
 export default {
     name: "HopeReadBookForm",
     props: {
-        book: {
+        hopeBook: {
             type: Object,
             required: true,
         }

@@ -1,6 +1,12 @@
 export default {
-    books: [],
-    book: {},
     rentalBooks: [],
-    rentalBook: {}
+    reservationBooks: [],
+    hopeBooks: [],
+    hopeBook: {},
+    personalRentalAmount: {},
+    personalReservationAmount: {},
+    personalhopeAmount: {},
+    managerRentalAmount: {},
+    managerReservationAmount: {},
+    managerhopeAmount: {},
 };

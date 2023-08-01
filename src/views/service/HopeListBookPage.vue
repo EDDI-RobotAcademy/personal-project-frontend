@@ -12,10 +12,11 @@
                 font-size: 16px;
                 border-radius: 12px;"
                 @click="bookApplication"
+                v-if="isMember()"
                 >
                 도서 신청
             </v-btn>
-            <hope-list-book-form :books="books"/>
+            <hope-list-book-form :hopeBooks="hopeBooks"/>
         </div>
     </div>
 </template>
@@ -23,14 +24,22 @@
 <script>
 import HopeListBookForm from '../../components/service/HopeListBookForm.vue';
 import { mapActions, mapState } from "vuex";
+
 const ServiceModule = "ServiceModule";
+const MemberModule = 'MemberModule';
 
 export default {
+    data() {
+        return {
+            // isMember: false,
+        }
+    },
     components: {
         HopeListBookForm
     },
     computed: {
-        ...mapState(ServiceModule, ["books"]),
+        ...mapState(ServiceModule, ["hopeBooks"]),
+        ...mapState(MemberModule, ["memberInfo"]),
     },
     mounted() {
         this.requestHopeBookListToSpring();
@@ -41,6 +50,9 @@ export default {
             this.$router.push({
                 name: "HopeRegisterBookPage"
             });
+        },
+        isMember() {
+            return this.memberInfo != null;
         }
     }
     

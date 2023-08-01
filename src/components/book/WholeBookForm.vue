@@ -11,7 +11,8 @@
                                 name: 'ReadBookPage',
                                 params: { bookNumber:book.bookNumber.toString() },
                             }"> -->
-                        <img src="@/assets/downloadImg/꿀벌의 예언.jpg" style="max-width: 65%; height: auto;"/>
+                        <!-- <img src="@/assets/downloadImg/꿀벌의 예언.jpg" style="max-width: 65%; height: auto;"/> -->
+                        <img :src="getImageUrl(book.filePathList)" style="max-width: 100%; margin-top: 10px;"/>
                         <div>
                             {{ book.bookName }}
                         </div>
@@ -44,6 +45,9 @@ export default {
       isSidePageOpen: false,
       selectedBook: null,
       selectedBookNumber: null,
+      awsBucketName: process.env.VUE_APP_S3_BUCKET_NAME,
+      awsBucketRegion: process.env.VUE_APP_S3_REGION,
+      awsIdentityPoolId: process.env.VUE_APP_S3_IDENTITY_POOL_ID,
     };
   },
   methods: {
@@ -54,6 +58,15 @@ export default {
     },
     closeSidePage() {
       this.isSidePageOpen = false; // isSidePageOpen을 false로 설정하여 페이지를 숨깁니다.
+    },
+    // S3에서 업로드한 사진 가져오기
+    getImageUrl(filePath) {
+        if(filePath != null) {
+            return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${filePath}`;
+        }
+        else {
+            return `https://${this.awsBucketName}.s3.${this.awsBucketRegion}.amazonaws.com/${basicFile}`;
+        }
     },
   },
 };
