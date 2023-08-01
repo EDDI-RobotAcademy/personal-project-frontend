@@ -16,10 +16,6 @@
                                     <td><v-text-field :value="song.singer" readonly /></td>
                                 </tr>
                                 <tr>
-                                    <td>장르</td>
-                                    <td><v-text-field :value="song.genre" readonly /></td>
-                                </tr>
-                                <tr>
                                     <td>유튜브 링크</td>
                                     <td><v-text-field :value="song.link" readonly @click="goYoutube(song.link)" /></td>
                                 </tr>
