@@ -1,1 +1,2 @@
 export const LOGIN_COMPLETE = 'LOGIN_COMPLETE'
+export const SET_NICKNAME = 'SET_NICKNAME'

@@ -1,9 +1,12 @@
 import {
-    LOGIN_COMPLETE,
+    LOGIN_COMPLETE, SET_NICKNAME
 } from './mutation-types'
 
 export default {
-    [LOGIN_COMPLETE] (state, receivedData) { //리스트안에 들어있는 형식
+    [LOGIN_COMPLETE] (state, receivedData) {
         state.isLogin = receivedData
+    },
+    [SET_NICKNAME] (state, receivedData) {
+        state.nickname = receivedData
     },
 }

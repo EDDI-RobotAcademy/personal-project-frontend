@@ -1,17 +1,22 @@
 <template>
   <v-app>
     <navigation-menu/>
-    <v-main>
+    <v-main class="main" style="padding-top: 49px;">
       <router-view/>
     </v-main>
+  <Footer/>
+
   </v-app>
 </template>
 
 <script>
 import NavigationMenu from '@/views/NavigationMenu.vue'
+import Footer from './components/Footer/Footer.vue'
 
 export default {
-  components: { NavigationMenu,
+  components: { 
+    NavigationMenu,
+    Footer
   },
   name: 'App',
 
@@ -20,7 +25,6 @@ export default {
       login: false
     }
   },
-  name: 'App',
 
   created(){
     this.check() 
@@ -81,5 +85,4 @@ abbr[title]:hover::after {
 #app{
   font-family: IBMPlexSansKR-Regular;
 }
-
 </style>

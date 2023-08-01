@@ -29,13 +29,13 @@
 
                                 <div style="padding:20px 0px 0px 0px; text-align: center; display:inline-block">
                                     <div class="fl" style="border-bottom:solid #bfbfbf 1px;"></div>
-                                    <div class="fl tc" style="width:40px; font-size: 15px;">or</div>
+                                    <div class="fl tc" style="width:30px; font-size: 15px;">or</div>
                                     <div class="fr" style="border-bottom:solid #bfbfbf 1px;"></div>
                 				</div>
                                 <div style="padding:20px 0;">
-                                    <v-btn block x-large color="#26c826"><p style="color:white; margin: 0">네이버 로그인</p></v-btn>
-                                    <v-btn block x-large color="black"><p style="color:white; margin: 0">구글 로그인</p></v-btn>
+                                    <v-img @click="kakaoOauthLogin" :src="require('@/assets/icon/kakao_login.png')"/>
                                 </div>
+
                             </v-form>
                         </v-card-text>
                     </v-card>
@@ -46,13 +46,13 @@
 </template>
 
 <script>
-// import axiosInst from '@/utility/axiosInst'
+import axiosInst from '@/router/utility/axiosInst'
 import { mapActions } from 'vuex'
 
 const memberModule = 'memberModule'
 
 export default {
-    data () {
+    data() {
         return {
             email: "",
             nickName: "",
@@ -69,8 +69,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions('memberModule', ['requestSpringToLogin']),
-        onSubmit () {
+        ...mapActions('memberModule', ['requestSpringToLogin', 'requestSpringToAddresskakaoOauthLogin']),
+        onSubmit() {
             if (this.$refs.form.validate()) {
                 const { email, password, roleType } = this
                 this.$emit("submit", { email, password, roleType })
@@ -78,7 +78,9 @@ export default {
                 alert('올바른 정보를 입력하세요!')
             }
         },
-        
+        kakaoOauthLogin() {
+            this.requestSpringToAddresskakaoOauthLogin()
+        },
     }
 
 }
@@ -88,14 +90,13 @@ export default {
 <style scoped>
 .fl {
     float: left;
-    width:160px; 
-    height:15px;
+    width: 160px;
+    height: 15px;
 }
 
 .fr {
     float: right;
-    width:160px; 
-    height:15px;
+    width: 160px;
+    height: 15px;
 }
-
 </style>
