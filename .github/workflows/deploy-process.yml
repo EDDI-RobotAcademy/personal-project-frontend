@@ -1,8 +1,9 @@
 name: Deploy
 
 on: 
-  repository_dispatch:
-    types: [CI_TEST_FINISH_TRIGGER]
+  push:
+    branches:
+      - main
   
 jobs:
   build:
