@@ -81,7 +81,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd fast-front-deploy
+            cd automation_front
             cp -r ~/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
