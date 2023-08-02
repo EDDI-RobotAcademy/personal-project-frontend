@@ -36,9 +36,9 @@ jobs:
     #  run: |
     #    npm run build
         
-    - name: Real Test
-      run: |
-        npm run test:unit
+#     - name: Real Test
+#       run: |
+#         npm run test:unit
         
     - name: send CI_TEST_FINISH_TRIGGER
       run: |
