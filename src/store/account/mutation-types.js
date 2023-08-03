@@ -1,0 +1,4 @@
+export const LOGIN_COMPLETE = 'LOGIN_COMPLETE';
+export const SET_USER_NICKNAME = 'SET_USER_NICKNAME'; // 사용자 닉네임 설정 뮤테이션 타입 추가
+export const REQUEST_ACCOUNT_TO_SPRING = 'REQUEST_ACCOUNT_TO_SPRING'
+export const RESET_ACCOUNT = 'RESET_ACCOUNT';

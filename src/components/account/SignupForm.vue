@@ -1,180 +1,157 @@
 <template>
-  <form class="signup-form" @submit.prevent="submitSignupForm">
-    <h1 class="signup-form__title">회원정보 입력</h1>
-    <h2 class="signup-form__desc">
-      Room Story 서비스 이용을 위해 정보를 입력해주세요.
-    </h2>
-    <div class="signup-form__input">
-      <label for="signup-user-email-input">아이디</label>
-      <div class="signup-form__input__main">
-        <input type="text" id="signup-user-email-input" placeholder="이메일 주소 입력" v-model="userEmail" />
-        <button class="user-email-auth-btn">인증</button>
-      </div>
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-user-name-input">이름</label>
-      <input type="text" id="signup-user-name-input" placeholder="이름 입력" v-model="userName" />
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-nickname-input">닉네임</label>
-      <div class="signup-form__input__main">
-        <input type="text" id="signup-nickname-input" placeholder="한글 또는 영문만 가능" v-model="nickname" />
-        <button class="duplication-check-btn">중복 검사</button>
-      </div>
-    </div>
-    <div class="signup-form__input">
-      <label for="signup-password-input">비밀번호</label>
-      <input type="text" id="signup-password-input" placeholder="8자리 이상 영문, 숫자, 특수문자 포함" v-model="password" />
-      <input type="text" id="signup-password-input--check" placeholder="비밀번호 확인" v-model="passwordConfirm" />
-    </div>
-    <button type="submit" class="signup-form__submit-btn">확인</button>
-  </form>
+	<div class="signup-form">
+		<h1 class="signup-form__title">회원정보 입력</h1>
+		<h2 class="signup-form__desc">
+			Room Story 서비스 이용을 위해 정보를 입력해주세요.
+		</h2>
+		<div class="signup-form__input">
+			<label for="signup-user-email-input">아이디</label>
+			<div class="signup-form__input__main">
+				<input type="text" id="signup-user-email-input" placeholder="이메일 주소 입력" v-model="email" />
+
+				<v-btn text large outlined style="font-size: 13px" class="user-email-auth-btn" color="teal lighten-1"
+					@click="checkEmail" :disabled="false">
+					중복 확인
+				</v-btn>
+			</div>
+		</div>
+
+		<div class="signup-form__input">
+			<label for="signup-ussignup-form__inputer-name-input">이름</label>
+			<input type="text" id="signup-user-name-input" placeholder="이름 입력" v-model="userName" />
+		</div>
+
+		<div class="signup-form__input">
+			<label for="signup-nickname-input">닉네임</label>
+			<div class="signup-form__input__main">
+				<input type="text" id="signup-nickname-input" placeholder="한글 또는 영문만 가능" v-model="nickname" />
+			</div>
+		</div>
+
+		<div class="signup-form__input">
+			<label for="signup-password-input">비밀번호</label>
+			<input type="password" id="signup-password-input" placeholder="8자리 이상 영문, 숫자, 특수문자 포함" v-model="password" />
+			<input type="password" id="signup-password-input--check" placeholder="비밀번호 확인" v-model="passwordCheck" />
+			<span v-if="comparePassword" class="warning">
+				비밀번호가 일치하지 않습니다.
+			</span>
+		</div>
+
+		<div class="signup-form__input">
+	      <label for="signup-roleType">회원유형</label>
+	      <select type="radio" id="signup-roleType-select" v-model="roleType">
+	        <option value="">선택</option>
+	        <option value="NORMAL">NORMAL</option>
+	        <option value="BUSINESS">BUSINESS</option>
+	      </select>
+	    </div>
+
+		<button type="submit" class="signup-form__submit-btn" @click.prevent="onSubmit" :disabled="!isFormValid">
+			회원가입
+		</button>
+	</div>
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex';
+
+const accountModule = 'accountModule';
+
 export default {
-  data() {
-    return {
-      userEmail: '',
-      userName: '',
-      nickname: '',
-      password: '',
-      passwordConfirm: '',
-    };
-  },
-  methods: {
-    async submitSignupForm() {
-      try {
-        const signupUserData = {
-          userEmail: this.userEmail,
-          userName: this.userName,
-          nickname: this.nickname,
-          password: this.password,
-        };
-        const response = await registerUser(signupUserData);
+	data() {
+		return {
+			email: '',
+			userName: '',
+			nickname: '',
+			password: '',
+			passwordConfirm: '',
+			passwordCheck: '',
+			roleType: '',
+			emailPass: false,
+			email_rule: [
+				v => !!v || '이메일을 입력해주세요!',
+				v => {
+					const replaceV = v.replace(/(\s*)/g, '');
+					const pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+					return pattern.test(replaceV) || ' 이메일 형식으로 입력해주세요!';
+				}
+			],
+			checkEmailValid: false,
+			checkPasswordValid: true, // 초기에는 true로 설정하여 일치 여부를 확인하지 않도록 함
+		};
+	},
+	computed: {
+		comparePassword() {
+			return this.passwordConfirm !== '' && this.password !== this.passwordConfirm;
+		},
+	},
+	methods: {
+		...mapActions(accountModule, ['requestNormalRegisterAccountToSpring', 'requestSpringToCheckEmailDuplication']),
+		// ...mapMutations(accountModule, ['SET_USER_NICKNAME']),
+		async onSubmit() {
+			if (!this.emailPass) {
+				alert('이메일 중복 확인을 해주세요!');
+				return;
+			}
 
-        console.log('[회원가입 성공]', response);
+			if (!this.checkPassword()) {
+				alert('비밀번호를 확인해주세요.');
+				return;
+			}
+			if (this.nickname.trim() === '') { // Check if the nickname is empty or contains only whitespace
+				alert('닉네임을 입력하세요!');
+				return;
+			}
 
-        this.$router.push('/login');
-      } catch (error) {
-        console.log('[회원가입 실패]', error);
-      }
-    },
-  },
+			if (!this.isFormValid()) {
+				alert('올바른 정보를 입력하세요!');
+				return;
+			}
+
+			if (!this.roleType) {
+				window.alert('회원유형을 선택해주세요!');
+				return;
+			}
+
+			const { email, userName, nickname, password, roleType } = this;
+			await this.requestNormalRegisterAccountToSpring({ email, userName, nickname, password, roleType });
+			// this.SET_USER_NICKNAME(nickname); // 사용자의 닉네임을 상태에 설정합니다
+			// 회원가입이 성공한 경우, isAuthenticated 상태를 false로 초기화합니다.
+			this.$store.commit('accountModule/LOGIN_COMPLETE', false);
+			this.$emit('submit', { email, userName, nickname, password, roleType });
+		},
+		async checkEmail() {
+			const emailValid = this.email.match(
+				/^(([^<>()[\]\\.,;:\s@]+(\.[^<>()[\]\\.,;:\s@]+)*)|(.+))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			);
+			this.checkEmailValid = emailValid;
+
+			if (!emailValid) {
+				// 이메일 형식이 올바르지 않을 때 메시지를 띄웁니다.
+				alert('올바른 이메일 형식으로 입력해주세요!');
+			} else {
+				const { email } = this;
+				console.log('before actions - email: ' + email);
+				this.emailPass = await this.requestSpringToCheckEmailDuplication({ email });
+			}
+		},
+		isFormValid() {
+			return (
+				this.emailPass &&
+				this.email_rule[1](this.email) === true &&
+				this.checkEmailValid &&
+				this.checkPasswordValid &&
+				this.password === this.passwordCheck // 비밀번호와 비밀번호 확인 값이 같은지 확인
+			);
+		},
+		checkPassword() {
+			this.checkPasswordValid = this.password === this.passwordCheck;
+			return this.checkPasswordValid;
+		},
+	}
 };
 </script>
 
 <style lang="scss" scoped>
-$light-dark: #3a3a3a;
-$normal-grey: #979797;
-$lignt-gray: #f5f5f5;
-
-.signup-form {
-  max-width: 590px;
-  margin: 0 auto;
-  padding: 64px;
-  border: 2px solid $lignt-gray;
-  border-radius: 3px;
-
-  .signup-form__title {
-    padding-bottom: 24px;
-    border-bottom: 1.5px solid $lignt-gray;
-    font-size: 30px;
-    color: $light-dark;
-    line-height: 48px;
-  }
-
-  .signup-form__desc {
-    padding: 32px 0 48px;
-    font-size: 16px;
-    color: $light-dark;
-  }
-
-  .signup-form__input {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 24px;
-
-    label {
-      margin-bottom: 8px;
-      font-size: 16px;
-      color: $light-dark;
-    }
-
-    input {
-      max-width: 460px;
-      height: 44px;
-      padding: 10px 16px;
-      border: 1px solid rgb(237, 237, 237);
-      border-radius: 3px;
-      background-color: rgb(255, 255, 255);
-      color: rgb(34, 34, 34);
-      font-size: 16px;
-      font-weight: 300;
-      line-height: 24px;
-      transition: all 150ms ease-out 0s;
-
-      &:hover {
-        outline: 1px solid rgba(50, 108, 249, 0.6);
-      }
-
-      &:focus {
-        outline: 1.5px solid rgba(50, 108, 249, 0.9);
-      }
-    }
-
-    .signup-form__input__main {
-      display: flex;
-      justify-content: space-between;
-
-      #signup-user-email-input,
-      #signup-nickname-input {
-        width: 100%;
-        margin-right: 5px;
-      }
-
-      .user-email-auth-btn,
-      .duplication-check-btn {
-        background-color: #f3f3f3;
-        border: 1.5px solid #ededed;
-        border-radius: 3px;
-        color: $light-dark;
-        cursor: pointer;
-      }
-
-      .user-email-auth-btn {
-        width: 65px;
-      }
-
-      .duplication-check-btn {
-        width: 100px;
-      }
-    }
-
-    #signup-password-input {
-      margin-bottom: 8px;
-    }
-  }
-
-  .signup-form__submit-btn {
-    width: 100%;
-    min-width: 80px;
-    margin-top: 32px;
-    padding: 0px 16px;
-    height: 56px;
-    border: 1px solid rgb(50, 108, 249);
-    border-radius: 3px;
-    background-color: rgba(50, 108, 249, 0.9);
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-    transition: all 150ms ease-out 0s;
-    cursor: pointer;
-
-    &:hover {
-      border: 1px solid rgb(50, 108, 249);
-      background-color: rgb(50, 108, 249);
-    }
-  }
-}
+@import '../scss/SignupForm.scss';
 </style>
