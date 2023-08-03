@@ -15,7 +15,7 @@
           <label for="term-age-check"> [필수] 만 14세 이상입니다. </label>
         </div>
         <a href="#" target="_blank">
-          <a-icon type="right" />
+          <v-icon type="right" />
         </a>
       </div>
       <div class="terms-group__term">
@@ -26,7 +26,7 @@
           </label>
         </div>
         <a href="#" target="_blank">
-          <a-icon type="right" />
+          <v-icon type="right" />
         </a>
       </div>
       <div class="terms-group__term">
@@ -37,7 +37,7 @@
           </label>
         </div>
         <a href="#" target="_blank">
-          <AIcon type="right" />
+          <v-icon type="right" />
         </a>
       </div>
     </div>

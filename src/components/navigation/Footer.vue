@@ -1,0 +1,90 @@
+<template>
+	<footer id="footer">
+		<div class="footer__inner">
+			<div class="footer__top">
+				<nav>
+					<ul>
+						<li>
+							<RouterLink to="#" class="footer__info"> 개발팀 소개 </RouterLink>
+						</li>
+						<li>
+							<RouterLink to="#" class="footer__terms"> 이용약관 </RouterLink>
+						</li>
+						<li>
+							<RouterLink to="#" class="footer__policy"> 개인정보처리방침 </RouterLink>
+						</li>
+						<li>
+							<RouterLink to="#" class="footer__rule"> 매물관리규정 </RouterLink>
+						</li>
+					</ul>
+				</nav>
+				<button class="top__move-to-top-btn" @click="toTop">
+					<v-icon type="caret-up" class="move-to-top-btn__icon" />
+					TOP
+				</button>
+			</div>
+			<div class="footer__content">
+				<div class="content__info">
+					<ul>
+						<li>(주)Room Story</li>
+						<li>대표: 김진호</li>
+						<li>
+							사업자 번호: 123-45-6789 통신판매업신고번호 : 제2021-서울
+							강남-00000호
+						</li>
+						<li>
+							주소 : 서울 강남구 테헤란로 14길 6 (주) Room Story
+						</li>
+						<li></li>
+						<li>
+							고객센터 : 02-1234-5678 (평일 10:00 ~ 18:30 토·일요일, 공휴일
+							휴무)
+						</li>
+						<li>팩스 : 02-123-4567 허위 신고 : 112</li>
+					</ul>
+					<div class="content__btn-group">
+						<RouterLink to="/service/qna" class="footer__ask">자주묻는 질문</RouterLink>
+						<RouterLink to="/service/inquiry" class="footer__inquiry">1:1문의</RouterLink>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			scrollTimer: 0,
+			scrollY: 0,
+		};
+	},
+	mounted() {
+		window.addEventListener('scroll', this.handleScroll);
+	},
+	methods: {
+		handleScroll() {
+			if (this.scrollTimer) {
+				return;
+			}
+
+			this.scrollTimer = setTimeout(() => {
+				this.scrollY = window.scrollY;
+				clearInterval(this.scrollTimer);
+				this.scrollTimer = 0;
+			}, 100);
+		},
+		toTop() {
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
+		},
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+@import '../scss/footer';
+</style>

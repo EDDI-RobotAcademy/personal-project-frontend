@@ -6,6 +6,7 @@
 </template>
 
 <script>
+
 import TermsForm from '@/components/account/TermsForm.vue';
 import SignupForm from '@/components/account/SignupForm.vue';
 import { mapActions } from 'vuex';

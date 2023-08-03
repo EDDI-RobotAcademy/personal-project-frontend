@@ -35,13 +35,18 @@ export default {
     return {
       userEmail: '',
       password: '',
+      saveIdStatus: false,
     };
   },
   methods: {
-    onSubmit () {
-            const { userEmail, password } = this
-            this.$emit('submit', { userEmail, password })
-        }
+    onSubmit() {
+      const { userEmail, password } = this;
+      if (userEmail === '' || password === '') {
+        alert('아이디와 비밀번호를 입력하세요.');
+        return;
+      }
+      this.$emit('submit', { userEmail, password });
+    },
   },
 };
 </script>

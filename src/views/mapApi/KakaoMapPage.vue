@@ -1,6 +1,7 @@
-<template lang="">
-    <KakaoMap />
+<template>
+  <KakaoMap />
 </template>
+
 <script>
 import KakaoMap from '@/components/mapApi/KakaoMap.vue';
 
@@ -8,8 +9,8 @@ export default {
   components: {
     KakaoMap,
   },
-}
+};
 </script>
-<style lang="">
-  
+
+<style>
 </style>
