@@ -1,8 +1,9 @@
 name: Build and Deploy
 
 on:
-  repository_dispatch:
-    types: [CI_TEST_FINISH_TRIGGER]
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -81,11 +82,10 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd automation_front
+            cd fast-front-deploy
             cp -r ~/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
             docker logout
             
             docker-compose up -d
-      

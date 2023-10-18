@@ -9,7 +9,16 @@
             </tr>
             <tr v-for="board in boards" :key="board.boardId" class="textCenter">
                 <td>{{ board.boardId }}</td>
-                <td>{{ board.title }}</td>
+                <!-- <td @click="goReadPage(board)">{{ board.title }}</td> -->
+                <td>
+                    <router-link :to="{
+                        name: 'BoardReadPage',
+                        params: { boardId: board.boardId.toString() }
+                        // params: { boardId: board.boardId }
+                    }">
+                        {{ board.title }}
+                    </router-link>
+                </td>
                 <td>{{ board.userEmail }}</td>
             </tr>
         </table>
@@ -21,8 +30,19 @@ export default {
         boards: {
             type: Array
         }
+    },
+    methods: {
+        // goReadPage(board) {
+        //     // board 데이터를 props로 전달하여 BoardReadPage에서 활용
+        //     this.$router.push({
+        //         name: 'BoardReadPage',
+        //         params: { boardId: board.boardId },
+        //         props: { boardData: board }
+        //     })
+        // }
     }
 }
+
 </script>
 <style>
 .textCenter {

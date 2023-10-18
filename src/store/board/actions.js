@@ -7,6 +7,22 @@ import {
 import axiosInst from "@/utility/axiosInst";
 
 export default {
+    // requestBoardToSpring ({ commit }, boardId) {
+    //     console.log("boardId: " + boardId)
+    //     return axiosInst.axiosInst.get(`/board/${boardId}`)
+    //         .then((res) => {
+    //             commit(REQUEST_BOARD_TO_SPRING, res.data)
+    //         })
+    // },
+    requestBoardToSpring({ commit }, boardId) {
+        console.log("boardId: " + boardId)
+        return axiosInst.get(`/board/read/${boardId}`)
+            .then((res) => {
+                commit(REQUEST_BOARD_TO_SPRING, res.data)
+            })
+    },
+
+
     requestBoardListToSpring({ commit }) {
         axiosInst.get('board/list')
         .then((res) => {

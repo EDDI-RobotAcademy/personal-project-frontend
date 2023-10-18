@@ -10,6 +10,7 @@ import SignupPage from "../views/SignupPage.vue";
 
 import BoardRegisterPage from "../views/Board/BoardRegisterPage.vue";
 import BoardListPage from "../views/Board/BoardListPage.vue";
+import BoardReadPage from "../views/Board/BoardReadPage.vue";
 
 import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue";
 import ReviewListPage from "../views/reviewBoard/ReviewListPage.vue";
@@ -74,6 +75,14 @@ const routes = [
     component: ReviewListPage,
     props: true
   },
+  {
+    path: '/boardReadPage/:boardId',
+    name: 'BoardReadPage',
+    components: { default: BoardReadPage },
+    props: { default: true },
+},
+
+
 ];
 
 const router = new VueRouter({
