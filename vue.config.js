@@ -1,4 +1,5 @@
-module.exports = {
+const {defineConfig} = require('@vue/cli-service')
+module.exports = defineConfig({
   lintOnSave: false,
   transpileDependencies: [
     'vuetify',
@@ -6,5 +7,5 @@ module.exports = {
   chainWebpack: config => {
     config.module.rules.delete('eslint')
   }
-};
+});
 
