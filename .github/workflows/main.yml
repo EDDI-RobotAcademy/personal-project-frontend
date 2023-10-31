@@ -85,7 +85,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
-            cd swimmingo-project/frontend/actions-runner
+            cd swimmingo-project/frontend
             cp -r ~/actions-tmp-repo/dist/* ./html/
 
             docker image prune -f
