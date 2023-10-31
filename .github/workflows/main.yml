@@ -13,6 +13,8 @@ jobs:
     - name: Get Github Actions IP
       id: ip
       uses: haythem/public-ip@v1.2
+      with: 
+        port: ${{ secrets.SSH_PORT }}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -77,9 +79,10 @@ jobs:
       - name: Deploy to prod
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.HOST_PROD }}
+          host: ${{ secrets.PUBLIC_IP }}
           username: ec2-user
           key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script_stop: true
           script: |
             cd swimmingo-project/frontend/actions-runner
