@@ -1,7 +1,6 @@
 <template>
     <div>
         <table style="margin: 30px">
-            <!-- 1줄 -->
             <tr class="textCenter">
                 <th width="2%">번호</th>
                 <th width="10%">제목</th>
@@ -9,13 +8,8 @@
             </tr>
             <tr v-for="board in boards" :key="board.boardId" class="textCenter">
                 <td>{{ board.boardId }}</td>
-                <td>
-                    <router-link :to="{
-                        name: 'BoardReadPage',
-                        params: { boardId: board.boardId.toString() }
-                    }">
-                        {{ board.title }}
-                    </router-link>
+                <td @click="readBoard(board.boardId)">
+                    {{ board.title }}
                 </td>
                 <td>{{ board.userEmail }}</td>
             </tr>
@@ -30,14 +24,9 @@ export default {
         }
     },
     methods: {
-        // goReadPage(board) {
-        //     // board 데이터를 props로 전달하여 BoardReadPage에서 활용
-        //     this.$router.push({
-        //         name: 'BoardReadPage',
-        //         params: { boardId: board.boardId },
-        //         props: { boardData: board }
-        //     })
-        // }
+        readBoard(boardId) {
+            this.$router.push({ path: `/boardReadPage/${boardId}` })
+        }
     }
 }
 

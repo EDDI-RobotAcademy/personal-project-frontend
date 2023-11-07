@@ -1,28 +1,24 @@
 <template>
     <div>
         <NaviTest />
-        <board-read-form v-if="board" :board="board" />
-        <!-- <BoardReadForm v-if="board" :board="board" /> -->
+        <div style="padding-top: 100px;">
+            <h1>작성번호: {{ board.boardId }}</h1>
+            <h1>작성자 : {{ board.userEmail }}</h1>
+            <h1>제목 : {{ board.title }}</h1>
+            <h1>내용 : {{ board.content }}</h1>
+        </div>
     </div>
 </template>
 <script>
 import NaviTest from "@/components/NaviTest.vue"
-import BoardReadForm from '@/components/board/BoardReadForm.vue'
 
 import { mapActions, mapState } from 'vuex';
 
 const boardModule = 'boardModule'
 export default {
-    name: "BoardReadForm",
-    props: {
-        boardId: {
-            type: String,
-            required: true,
-        }
-    },
+    name: "BoardReadPage",
     components: {
         NaviTest,
-        BoardReadForm
     },
     computed: {
         ...mapState(boardModule, ['board'])
@@ -32,9 +28,10 @@ export default {
             boardModule, ['requestBoardToSpring']
         ),
     },
-    created() {
-        console.log(this.boardId)
-        this.requestBoardToSpring(this.boardId)
+    mounted() {
+        const boardId = this.$route.params.boardId;
+        console.log(boardId)
+        this.requestBoardToSpring(boardId)
     }
 }
 </script>
