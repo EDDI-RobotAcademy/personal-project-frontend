@@ -1,12 +1,33 @@
 <template>
     <div>
         <NaviTest />
-        <div style="padding-top: 100px;">
-            <h1>작성번호: {{ board.boardId }}</h1>
-            <h1>작성자 : {{ board.userEmail }}</h1>
-            <h1>제목 : {{ board.title }}</h1>
-            <h1>내용 : {{ board.content }}</h1>
-        </div>
+        <div style="padding-top: 90px;"></div>
+        <h4 style="text-align: center; margin: 30px; font-weight: bold; color: #83c1e7;;">Board</h4>
+        <table class="table table-light" style="width: 800px; margin: auto; font-weight: 700;">
+            <colgroup>
+                <col width=20%>
+                <col width=80%>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="table-warning">작성번호</td>
+                    <td> {{ board.boardId }} </td>
+                </tr>
+                <tr>
+                    <td class="table-warning">작성자</td>
+                    <td> {{ board.userEmail }} </td>
+                </tr>
+                <tr>
+                    <td class="table-warning">제목</td>
+                    <td> {{ board.title }} </td>
+                </tr>
+                <tr style="height: 200px;">
+                    <td class="table-warning">내용</td>
+                    <td> {{ board.content }} </td>
+                </tr>
+            </tbody>
+
+        </table>
     </div>
 </template>
 <script>
@@ -35,4 +56,8 @@ export default {
     }
 }
 </script>
-<style></style>
+<style>
+.table-warning {
+    text-align: center;
+}
+</style>
