@@ -8,22 +8,22 @@
                 <!-- <input class="form-control boardContentBox" type="text" value="board.title" readonly>
                 <input class="form-control boardContentBox" type="text" value="board.userEmail" readonly>
                 <input class="form-control boardContentBox" type="text" value="board.content" readonly> -->
-                <form @submit.prevent="onSubmit">
-                    <table>
-                        <tr>
-                            <td>
-                                {{ board.title }}
-                            </td>
-                            <td>
-                                {{ board.userEmail }}
-                            </td>
-                            <td>
-                                {{ board.content }}
-                            </td>
-                        </tr>
+                <!-- <form @submit.prevent="onSubmit"> -->
+                <!-- <table>
+                    <tr>
+                        <td>
+                            {{ board.title }}
+                        </td>
+                        <td>
+                            {{ board.userEmail }}
+                        </td>
+                        <td>
+                            {{ board.content }}
+                        </td>
+                    </tr>
 
-                    </table>
-                </form>
+                </table> -->
+                <!-- </form> -->
             </div>
         </div>
     </div>
@@ -37,14 +37,14 @@ export default {
             required: true,
         }
     },
-    data() {
-        return {
-            boardId: '',
-            title: '',
-            userEmail: '',
-            content: ''
-        }
-    },
+    // data() {
+    //     return {
+    //         boardId: '',
+    //         title: '',
+    //         userEmail: '',
+    //         content: ''
+    //     }
+    // },
 }
 </script>
 <style>

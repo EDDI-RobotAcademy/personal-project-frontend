@@ -79,7 +79,8 @@ const routes = [
     path: '/boardReadPage/:boardId',
     name: 'BoardReadPage',
     components: { default: BoardReadPage },
-    props: { default: true },
+    props: true
+    // props: { default: true },
 },
 
 

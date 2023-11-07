@@ -9,12 +9,10 @@
             </tr>
             <tr v-for="board in boards" :key="board.boardId" class="textCenter">
                 <td>{{ board.boardId }}</td>
-                <!-- <td @click="goReadPage(board)">{{ board.title }}</td> -->
                 <td>
                     <router-link :to="{
                         name: 'BoardReadPage',
                         params: { boardId: board.boardId.toString() }
-                        // params: { boardId: board.boardId }
                     }">
                         {{ board.title }}
                     </router-link>

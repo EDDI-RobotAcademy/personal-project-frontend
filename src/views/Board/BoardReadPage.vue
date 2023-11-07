@@ -1,7 +1,8 @@
 <template>
     <div>
         <NaviTest />
-        <BoardReadForm v-if="board" :board="board" />
+        <board-read-form v-if="board" :board="board" />
+        <!-- <BoardReadForm v-if="board" :board="board" /> -->
     </div>
 </template>
 <script>
@@ -13,10 +14,6 @@ import { mapActions, mapState } from 'vuex';
 const boardModule = 'boardModule'
 export default {
     name: "BoardReadForm",
-    data() {
-        return {
-        }
-    },
     props: {
         boardId: {
             type: String,
