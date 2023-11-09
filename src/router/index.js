@@ -14,6 +14,7 @@ import BoardReadPage from "../views/Board/BoardReadPage.vue";
 
 import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue";
 import ReviewListPage from "../views/reviewBoard/ReviewListPage.vue";
+import ReviewReadPage from "../views/reviewBoard/ReviewReadPage.vue";
 
 Vue.use(VueRouter);
 
@@ -81,7 +82,13 @@ const routes = [
     components: { default: BoardReadPage },
     props: true
     // props: { default: true },
-},
+  },
+  {
+    path: '/reviewReadPage/:id',
+    name: 'ReviewReadPage',
+    components: { default: ReviewReadPage },
+    props: true
+  },
 
 
 ];
