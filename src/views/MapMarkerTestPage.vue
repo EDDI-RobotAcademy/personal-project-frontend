@@ -66,7 +66,9 @@
 <script>
 import MiniWindow from '@/components/map/MiniWindow.vue'
 import NaviTest from '@/components/NaviTest.vue'
+import { mapActions } from 'vuex';
 
+const poolModule = 'poolModule'
 export default {
     components: {
         MiniWindow,
@@ -100,6 +102,9 @@ export default {
         this.searchPlaces();// 키워드로 장소를 검색합니다
     },
     methods: {
+        ...mapActions(
+            poolModule, ['requestStarAvg']
+        ),
         searchPlaces() {// 키워드 검색을 요청하는 함수
             const keyword = this.keyword.trim();
             if (!keyword) {
@@ -178,6 +183,7 @@ export default {
             window.kakao.maps.event.addListener(marker, "click", () => {
                 this.changePopState();
                 this.placeData = { title, place_url };
+                this.requestStarAvg(this.placeData.title)
             });
         },
         // 지도 위에 표시되고 있는 마커를 모두 제거

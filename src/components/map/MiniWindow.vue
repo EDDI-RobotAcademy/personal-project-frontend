@@ -6,14 +6,13 @@
         <div class="white-bg form-floating mb-3">
             <div style="text-align: center; padding-top:10px;">
                 <a :href=this.placeData.place_url class="titleLink">{{ this.placeData.title }}</a>
+                <p>수질 : {{starAvg.starRating1Avg}}점</p>
+                <p>시설 : {{starAvg.starRating2Avg}}점</p>
             </div>
-            <!-- <h4 style="text-align: center; padding: 10px;">{{ this.placeData.title }}</h4>
-            <h4 style="text-align: center; padding: 10px;">{{ this.placeData.place_url }}</h4> -->
             <br/>
             <div class="row" style="text-align: center;">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    <!-- <button type="button" class="btn btn-custom1" @click="$router.push('/reviewRegisterPage')"> 후기 남기기 </button> -->
                     <button type="button" class="btn btn-custom1" @click="clickPlace"> 후기 남기기 </button>
                 </div>
                 <div class="col-sm-4"></div>
@@ -32,7 +31,8 @@
     </div>
 </template>
 <script>
-// import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue"
+import { mapState } from 'vuex';
+const poolModule = 'poolModule'
 export default {
     props: ['placeData'],
     methods: {
@@ -43,6 +43,9 @@ export default {
                 params: { placeName: this.placeData.title }
             })
         }
+    },
+    computed: {
+        ...mapState(poolModule, ['starAvg'])
     },
 
 }
