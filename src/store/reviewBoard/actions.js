@@ -33,5 +33,17 @@ export default {
         .catch(()=>{
             alert("게시물 등록 실패");
         });
+    },
+
+    requestDeleteReviewToSpring({ }, id){
+        console.log("reviewId: " + id)
+        return axiosInst
+        .delete(`/review/delete/${id}`)
+        .then((res) =>  {
+            alert('삭제 성공!')
+            router.push('/reviewListPage')
+        }).catch(() => {
+            alert('문제 발생!')
+        })
     }
 }

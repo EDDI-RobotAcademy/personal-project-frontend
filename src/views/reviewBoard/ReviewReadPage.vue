@@ -31,6 +31,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="deleteDiv">
+            <button type="button" class="btn btn-custom2" @click="deleteReview()">삭제</button>
+        </div>
     </div>
 </template>
 <script>
@@ -48,8 +51,12 @@ export default {
     },
     methods: {
         ...mapActions(
-            reviewModule, ['requestReviewBoardToSpring']
+            reviewModule, ['requestReviewBoardToSpring', 'requestDeleteReviewToSpring']
         ),
+        deleteReview() {
+            const id = this.$route.params.id;
+            this.requestDeleteReviewToSpring(id)
+        }
     },
     mounted() {
         const id = this.$route.params.id;
@@ -58,6 +65,9 @@ export default {
     }
 }
 </script>
-<style lang="">
-    
+<style>
+.deleteDiv {
+    text-align: center;
+    margin-top: 10px;
+}
 </style>
