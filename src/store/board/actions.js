@@ -8,7 +8,7 @@ import axiosInst from "@/utility/axiosInst";
 
 export default {
     requestBoardToSpring({ commit }, boardId) {
-        console.log("boardId: " + boardId)
+        // console.log("boardId: " + boardId)
         return axiosInst.get(`/board/read/${boardId}`)
             .then((res) => {
                 commit(REQUEST_BOARD_TO_SPRING, res.data)
@@ -34,5 +34,16 @@ export default {
         .catch(()=>{
             alert("게시물 등록 실패");
         });
-    } 
+    },
+    requestDeleteBoardToSpring({ }, boardId){
+        console.log("boardId: " + boardId)
+        return axiosInst
+        .delete(`/board/delete/${boardId}`)
+        .then((res) =>  {
+            alert('삭제 성공!')
+            router.push('/boardListPage')
+        }).catch(() => {
+            alert('문제 발생!')
+        })
+    }
 }

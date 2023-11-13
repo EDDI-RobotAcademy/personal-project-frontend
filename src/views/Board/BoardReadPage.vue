@@ -26,8 +26,10 @@
                     <td> {{ board.content }} </td>
                 </tr>
             </tbody>
-
         </table>
+        <div class="deleteDiv">
+            <button type="button" class="btn btn-custom2" @click="deleteBoard()">삭제</button>
+        </div>
     </div>
 </template>
 <script>
@@ -46,12 +48,15 @@ export default {
     },
     methods: {
         ...mapActions(
-            boardModule, ['requestBoardToSpring']
+            boardModule, ['requestBoardToSpring', 'requestDeleteBoardToSpring']
         ),
+        deleteBoard() {
+            const boardId = this.$route.params.boardId;
+            this.requestDeleteBoardToSpring(boardId)
+        }
     },
     mounted() {
         const boardId = this.$route.params.boardId;
-        console.log(boardId)
         this.requestBoardToSpring(boardId)
     }
 }
@@ -59,5 +64,10 @@ export default {
 <style>
 .table-warning {
     text-align: center;
+}
+
+.deleteDiv {
+    text-align: center;
+    margin-top: 10px;
 }
 </style>
