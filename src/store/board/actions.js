@@ -8,7 +8,6 @@ import axiosInst from "@/utility/axiosInst";
 
 export default {
     requestBoardToSpring({ commit }, boardId) {
-        // console.log("boardId: " + boardId)
         return axiosInst.get(`/board/read/${boardId}`)
             .then((res) => {
                 commit(REQUEST_BOARD_TO_SPRING, res.data)
@@ -42,6 +41,15 @@ export default {
         .then((res) =>  {
             alert('삭제 성공!')
             router.push('/boardListPage')
+        }).catch(() => {
+            alert('문제 발생!')
+        })
+    },
+    requestModifyBoardToSpring({}, payload){
+        const { boardId, title, content, userEmail } = payload
+        return axiosInst.put(`/board/modify/${boardId}`, { title, content, userEmail })
+        .then((res) => {
+            alert("수정 성공!")
         }).catch(() => {
             alert('문제 발생!')
         })

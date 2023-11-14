@@ -30,6 +30,9 @@
         <div class="deleteDiv">
             <button type="button" class="btn btn-custom2" @click="deleteBoard()">삭제</button>
         </div>
+        <div class="deleteDiv">
+            <button type="button" class="btn btn-custom2" @click="goModifyPage()">수정</button>
+        </div>
     </div>
 </template>
 <script>
@@ -53,6 +56,18 @@ export default {
         deleteBoard() {
             const boardId = this.$route.params.boardId;
             this.requestDeleteBoardToSpring(boardId)
+        },
+        goModifyPage() {
+            // this.$router.push('/boardModifyPage')
+            let datas = {};
+            datas.boardId = this.board.boardId;
+            datas.title = this.board.title;
+            datas.content = this.board.content;
+            this.$router.push({
+                name: 'BoardModifyPage',
+                params: { boardId: this.board.boardId }
+                // params: { datas: datas }
+            })
         }
     },
     mounted() {
