@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
-import MapTestPage from "../views/MapTestPage.vue";
 import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 
 import LoginPage from "../views/LoginPage.vue";
@@ -33,11 +32,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
-  {
-    path: "/mapTestPage",
-    name: "MapTestPage",
-    component: MapTestPage,
   },
   {
     path: "/mapMarkerTestPage",

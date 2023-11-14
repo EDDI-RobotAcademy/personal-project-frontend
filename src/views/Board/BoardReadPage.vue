@@ -58,7 +58,6 @@ export default {
             this.requestDeleteBoardToSpring(boardId)
         },
         goModifyPage() {
-            // this.$router.push('/boardModifyPage')
             let datas = {};
             datas.boardId = this.board.boardId;
             datas.title = this.board.title;
@@ -66,7 +65,6 @@ export default {
             this.$router.push({
                 name: 'BoardModifyPage',
                 params: { boardId: this.board.boardId }
-                // params: { datas: datas }
             })
         }
     },

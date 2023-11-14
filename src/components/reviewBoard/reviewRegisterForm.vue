@@ -136,7 +136,6 @@ export default {
         placeName: {
             type: String,
             required: true,
-            // default: ''
         }
     },
     data() {
@@ -150,7 +149,6 @@ export default {
     },
     methods: {
         onSubmit() {
-            // this.placeName2 = this.placeName;
             const { content, placeName, userEmail, starRating1, starRating2 } = this
             this.$emit('submit', { content, placeName, userEmail, starRating1, starRating2 })
         }

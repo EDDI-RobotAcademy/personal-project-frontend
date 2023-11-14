@@ -17,7 +17,6 @@
                 </tr>
                 <tr>
                     <td class="table-warning">제목</td>
-                    <!-- <td> {{ board.title }} </td> -->
                     <td>
                         <input type="text" v-model="title"/>
                     </td>
