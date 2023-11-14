@@ -11,7 +11,7 @@
             </tr>
             <tr v-for="reviewBoard in reviewBoards" :key="reviewBoard.id" class="textCenter">
                 <td>{{ reviewBoard.id }}</td>
-                <td>{{ reviewBoard.placeName }}</td>
+                <td @click="readReview(reviewBoard.id)">{{ reviewBoard.placeName }}</td>
                 <td>{{ reviewBoard.starRating1 }}</td>
                 <td>{{ reviewBoard.starRating2 }}</td>
                 <td>{{ reviewBoard.userEmail }}</td>
@@ -24,6 +24,11 @@ export default {
     props: {
         reviewBoards: {
             type: Array
+        }
+    },
+    methods: {
+        readReview(id) {
+            this.$router.push({ path: `/reviewReadPage/${id}` })
         }
     }
 }

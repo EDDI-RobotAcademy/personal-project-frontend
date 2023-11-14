@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
-import MapTestPage from "../views/MapTestPage.vue";
 import MapMarkerTestPage from "../views/MapMarkerTestPage.vue";
 
 import LoginPage from "../views/LoginPage.vue";
@@ -10,9 +9,12 @@ import SignupPage from "../views/SignupPage.vue";
 
 import BoardRegisterPage from "../views/Board/BoardRegisterPage.vue";
 import BoardListPage from "../views/Board/BoardListPage.vue";
+import BoardReadPage from "../views/Board/BoardReadPage.vue";
+import BoardModifyPage from "../views/Board/BoardModifyPage.vue";
 
 import ReviewRegisterPage from "../views/reviewBoard/ReviewRegisterPage.vue";
 import ReviewListPage from "../views/reviewBoard/ReviewListPage.vue";
+import ReviewReadPage from "../views/reviewBoard/ReviewReadPage.vue";
 
 Vue.use(VueRouter);
 
@@ -30,11 +32,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
-  {
-    path: "/mapTestPage",
-    name: "MapTestPage",
-    component: MapTestPage,
   },
   {
     path: "/mapMarkerTestPage",
@@ -72,6 +69,25 @@ const routes = [
     path: "/reviewListPage",
     name: "ReviewListPage",
     component: ReviewListPage,
+    props: true
+  },
+  {
+    path: '/boardReadPage/:boardId',
+    name: 'BoardReadPage',
+    components: { default: BoardReadPage },
+    props: true
+    // props: { default: true },
+  },
+  {
+    path: '/reviewReadPage/:id',
+    name: 'ReviewReadPage',
+    components: { default: ReviewReadPage },
+    props: true
+  },
+  {
+    path: "/boardModifyPage",
+    name: "BoardModifyPage",
+    component: BoardModifyPage,
     props: true
   },
 ];

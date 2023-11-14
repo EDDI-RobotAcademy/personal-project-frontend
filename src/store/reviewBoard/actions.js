@@ -7,6 +7,13 @@ import {
 import axiosInst from "@/utility/axiosInst";
 
 export default {
+    requestReviewBoardToSpring({ commit }, id) {
+        console.log("reviewId: " + id)
+        return axiosInst.get(`/review/read/${id}`)
+            .then((res) => {
+                commit(REQUEST_REVIEW_TO_SPRING, res.data)
+            })
+    },
     requestReviewBoardListToSpring({ commit }) {
         axiosInst.get('review/list')
         .then((res) => {
@@ -26,5 +33,17 @@ export default {
         .catch(()=>{
             alert("게시물 등록 실패");
         });
-    } 
+    },
+
+    requestDeleteReviewToSpring({ }, id){
+        console.log("reviewId: " + id)
+        return axiosInst
+        .delete(`/review/delete/${id}`)
+        .then((res) =>  {
+            alert('삭제 성공!')
+            router.push('/reviewListPage')
+        }).catch(() => {
+            alert('문제 발생!')
+        })
+    }
 }

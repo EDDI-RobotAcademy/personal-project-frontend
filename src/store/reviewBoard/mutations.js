@@ -8,6 +8,6 @@ export default {
         state.reviewBoards  = receiveData;
     },
     [REQUEST_REVIEW_TO_SPRING](state, receiveData) {
-        state.reviewBoards  = receiveData;
+        state.reviewBoard  = receiveData;
     }
 }

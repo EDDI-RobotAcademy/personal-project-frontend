@@ -7,8 +7,15 @@ import {
 import axiosInst from "@/utility/axiosInst";
 
 export default {
+    requestBoardToSpring({ commit }, boardId) {
+        return axiosInst.get(`/board/read/${boardId}`)
+            .then((res) => {
+                commit(REQUEST_BOARD_TO_SPRING, res.data)
+            })
+    },
+
     requestBoardListToSpring({ commit }) {
-        axiosInst.get('board/list')
+        axiosInst.get('/board/list')
         .then((res) => {
             commit(REQUEST_BOARD_LIST_TO_SPRING, res.data)
         })
@@ -26,5 +33,25 @@ export default {
         .catch(()=>{
             alert("게시물 등록 실패");
         });
-    } 
+    },
+    requestDeleteBoardToSpring({ }, boardId){
+        console.log("boardId: " + boardId)
+        return axiosInst
+        .delete(`/board/delete/${boardId}`)
+        .then((res) =>  {
+            alert('삭제 성공!')
+            router.push('/boardListPage')
+        }).catch(() => {
+            alert('문제 발생!')
+        })
+    },
+    requestModifyBoardToSpring({}, payload){
+        const { boardId, title, content, userEmail } = payload
+        return axiosInst.put(`/board/modify/${boardId}`, { title, content, userEmail })
+        .then((res) => {
+            alert("수정 성공!")
+        }).catch(() => {
+            alert('문제 발생!')
+        })
+    }
 }
